@@ -23,14 +23,16 @@ const { children } = Astro.slots;
     {sidebar ? <Sidebar>{children}</Sidebar> : <div class="h-screen overflow-auto">{children}</div>}
 
     <script is:inline>
-      const html = document.documentElement;
-      const theme = localStorage.getItem('theme') || 'light';
-      html.className = theme;
-      window.__toggleTheme = function() {
-        const isDark = html.className.includes('dark');
-        html.className = isDark ? 'light' : 'dark';
-        localStorage.setItem('theme', isDark ? 'light' : 'dark');
-      };
+      if (typeof window !== 'undefined') {
+        const html = document.documentElement;
+        const theme = localStorage.getItem('theme') || 'light';
+        html.className = theme;
+        window.__toggleTheme = function() {
+          const isDark = html.className.includes('dark');
+          html.className = isDark ? 'light' : 'dark';
+          localStorage.setItem('theme', isDark ? 'light' : 'dark');
+        };
+      }
     </script>
   </body>
 </html>

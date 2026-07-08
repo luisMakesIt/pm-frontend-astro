@@ -55,7 +55,7 @@ const navItems = [
     <nav class="flex-1 px-3 py-4 space-y-1 overflow-y-auto">
       <p class="nav-label text-xs font-semibold text-gray-400 uppercase tracking-wider px-3 mb-2">Principal</p>
       {navItems.map(item => {
-        const isActive = window.location.pathname === item.href;
+        const isActive = Astro.url.pathname === item.href;
         return (
           <a
             href={item.href}
