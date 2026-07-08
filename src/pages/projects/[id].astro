@@ -1,10 +1,7 @@
 ---
-import Layout from '../layouts/Layout.astro';
-import { useParams, Link } from 'astro:container';
+import Layout from '../../../layouts/Layout.astro';
 
-const { projectId } = await import('astro:container');
-
-const params = {};
+const { id } = Astro.params;
 const title = 'Detalle del Proyecto';
 ---
 
@@ -17,7 +14,7 @@ const title = 'Detalle del Proyecto';
         <span class="mx-2">/</span>
         <a href="/projects" class="hover:text-blue-600">Proyectos</a>
         <span class="mx-2">/</span>
-        <span class="text-gray-900 dark:text-gray-100">Detalle</span>
+        <span class="text-gray-900 dark:text-gray-100">Detalle #{id}</span>
       </nav>
       <div class="flex items-start justify-between">
         <div>
@@ -63,12 +60,12 @@ const title = 'Detalle del Proyecto';
     <!-- Tabs: Requirements | Activities | Team | Products | Reports -->
     <div class="border-b">
       <div class="flex gap-6 text-sm">
-        <a href="/projects/detail?tab=requirements" class="pb-2 border-b-2 border-blue-600 font-medium text-blue-600">Requerimientos</a>
-        <a href="/projects/detail?tab=actas" class="pb-2 border-b-2 border-transparent text-gray-500 hover:text-gray-700">Actas</a>
-        <a href="/projects/detail?tab=activities" class="pb-2 border-b-2 border-transparent text-gray-500 hover:text-gray-700">Actividades</a>
-        <a href="/projects/detail?tab=products" class="pb-2 border-b-2 border-transparent text-gray-500 hover:text-gray-700">Productos</a>
-        <a href="/projects/detail?tab=team" class="pb-2 border-b-2 border-transparent text-gray-500 hover:text-gray-700">Equipo</a>
-        <a href="/projects/detail?tab=reports" class="pb-2 border-b-2 border-transparent text-gray-500 hover:text-gray-700">Reportes</a>
+        <a href={`/projects/${id}?tab=requirements`} class="pb-2 border-b-2 border-blue-600 font-medium text-blue-600">Requerimientos</a>
+        <a href={`/projects/${id}?tab=actas`} class="pb-2 border-b-2 border-transparent text-gray-500 hover:text-gray-700">Actas</a>
+        <a href={`/projects/${id}?tab=activities`} class="pb-2 border-b-2 border-transparent text-gray-500 hover:text-gray-700">Actividades</a>
+        <a href={`/projects/${id}?tab=products`} class="pb-2 border-b-2 border-transparent text-gray-500 hover:text-gray-700">Productos</a>
+        <a href={`/projects/${id}?tab=team`} class="pb-2 border-b-2 border-transparent text-gray-500 hover:text-gray-700">Equipo</a>
+        <a href={`/projects/${id}?tab=reports`} class="pb-2 border-b-2 border-transparent text-gray-500 hover:text-gray-700">Reportes</a>
       </div>
     </div>
 
@@ -151,15 +148,15 @@ const title = 'Detalle del Proyecto';
 
     <!-- Quick Links -->
     <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mt-6">
-      <a href="/projects/detail?tab=activities" class="bg-white dark:bg-gray-900 rounded-xl border p-4 text-center hover:border-blue-300 transition cursor-pointer">
+      <a href={`/projects/${id}?tab=activities`} class="bg-white dark:bg-gray-900 rounded-xl border p-4 text-center hover:border-blue-300 transition cursor-pointer">
         <p class="text-2xl">📋</p>
         <p class="text-sm font-medium mt-2">Ver Actividades (7)</p>
       </a>
-      <a href="/projects/detail?tab=team" class="bg-white dark:bg-gray-900 rounded-xl border p-4 text-center hover:border-blue-300 transition cursor-pointer">
+      <a href={`/projects/${id}?tab=team`} class="bg-white dark:bg-gray-900 rounded-xl border p-4 text-center hover:border-blue-300 transition cursor-pointer">
         <p class="text-2xl">👥</p>
         <p class="text-sm font-medium mt-2">Ver Equipo (5)</p>
       </a>
-      <a href="/projects/detail?tab=reports" class="bg-white dark:bg-gray-900 rounded-xl border p-4 text-center hover:border-blue-300 transition cursor-pointer">
+      <a href={`/projects/${id}?tab=reports`} class="bg-white dark:bg-gray-900 rounded-xl border p-4 text-center hover:border-blue-300 transition cursor-pointer">
         <p class="text-2xl">📊</p>
         <p class="text-sm font-medium mt-2">Ver Reportes</p>
       </a>
