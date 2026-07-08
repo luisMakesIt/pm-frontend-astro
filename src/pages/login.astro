@@ -1,0 +1,71 @@
+---
+import Layout from '../../layouts/Layout.astro';
+---
+
+<Layout title="Iniciar Sesión" sidebar={false}>
+  <div class="min-h-screen flex">
+    <!-- Left panel: branding -->
+    <div class="hidden lg:flex lg:w-1/2 bg-gradient-to-br from-blue-600 to-indigo-700 p-12 flex-col justify-between">
+      <div>
+        <h1 class="text-4xl font-bold text-white mb-4">PM System</h1>
+        <p class="text-blue-100 text-lg">Gestión Integral de Proyectos de Software</p>
+      </div>
+      <div class="text-blue-200 text-sm">
+        <p>Administra proyectos, requerimientos, actividades y equipo desde un solo lugar.</p>
+      </div>
+    </div>
+
+    <!-- Right panel: form -->
+    <div class="w-full lg:w-1/2 flex items-center justify-center p-8">
+      <div class="w-full max-w-md">
+        <h2 class="text-2xl font-bold mb-2">Iniciar Sesión</h2>
+        <p class="text-gray-500 mb-8">Usa tus credenciales para acceder</p>
+
+        <form id="login-form" class="space-y-6">
+          <div>
+            <label class="block text-sm font-medium mb-1">Email</label>
+            <input type="email" id="email" required class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none" placeholder="admin@pmsystem.com">
+          </div>
+          <div>
+            <label class="block text-sm font-medium mb-1">Contraseña</label>
+            <input type="password" id="password" required class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none" placeholder="••••••••">
+          </div>
+          <div id="error-msg" class="hidden text-red-600 text-sm p-3 bg-red-50 rounded-lg"></div>
+          <button type="submit" class="w-full bg-blue-600 text-white py-2.5 rounded-lg font-medium hover:bg-blue-700 transition">Entrar</button>
+        </form>
+
+        <p class="text-center text-sm text-gray-400 mt-8">Demo: <code class="bg-gray-100 px-2 py-0.5 rounded">admin@pmsystem.com</code> / <code class="bg-gray-100 px-2 py-0.5 rounded">admin123</code></p>
+      </div>
+    </div>
+  </div>
+
+  <script is:inline>
+    document.getElementById('login-form')?.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const email = document.getElementById('email')?.value;
+      const password = document.getElementById('password')?.value;
+      const errEl = document.getElementById('error-msg');
+      try {
+        const res = await fetch('/api/auth/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email, password }),
+        });
+        const json = await res.json();
+        if (json.success && json.data) {
+          localStorage.setItem('pm_token', json.data.token);
+          localStorage.setItem('pm_user', JSON.stringify(json.data.user));
+          window.location.href = '/';
+        } else {
+          errEl!.textContent = json.message || 'Credenciales incorrectas';
+          errEl!.classList.remove('hidden');
+        }
+      } catch {
+        // If backend unreachable, try mock login
+        localStorage.setItem('pm_token', 'mock-token');
+        localStorage.setItem('pm_user', JSON.stringify({ id:'1', name:'Admin', email, role:'admin' }));
+        window.location.href = '/';
+      }
+    });
+  </script>
+</Layout>

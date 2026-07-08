@@ -1,0 +1,100 @@
+---
+import Layout from '../../layouts/Layout.astro';
+
+const title = 'Equipo';
+---
+
+<Layout title={title}>
+  <div class="p-6 space-y-6">
+    <div class="flex items-center justify-between">
+      <div>
+        <h1 class="text-2xl font-bold">Equipo</h1>
+        <p class="text-gray-500 text-sm mt-1">Miembros y roles del equipo</p>
+      </div>
+      <button class="bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-blue-700 transition">+ Agregar Miembro</button>
+    </div>
+
+    <!-- Team Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+      <!-- Member 1: Tech Lead -->
+      <div class="bg-white dark:bg-gray-900 rounded-xl border p-5 flex gap-4">
+        <div class="w-14 h-14 rounded-full bg-blue-100 flex items-center justify-center text-lg font-bold text-blue-700">PR</div>
+        <div class="flex-1">
+          <div class="flex items-start justify-between">
+            <h3 class="font-semibold">Pedro Ruiz</h3>
+            <span class="text-xs bg-green-100 text-green-700 px-2 py-0.5 rounded">Disponible</span>
+          </div>
+          <p class="text-sm text-gray-500">Tech Lead</p>
+          <div class="flex gap-3 mt-2 text-xs text-gray-400">
+            <span>5 proyectos</span>
+            <span>12 tareas</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Member 2: Developer Senior -->
+      <div class="bg-white dark:bg-gray-900 rounded-xl border p-5 flex gap-4">
+        <div class="w-14 h-14 rounded-full bg-purple-100 flex items-center justify-center text-lg font-bold text-purple-700">AG</div>
+        <div class="flex-1">
+          <div class="flex items-start justify-between">
+            <h3 class="font-semibold">Ana García</h3>
+            <span class="text-xs bg-green-100 text-green-700 px-2 py-0.5 rounded">Disponible</span>
+          </div>
+          <p class="text-sm text-gray-500">Programadora Senior · arXiv Parser</p>
+          <div class="flex gap-3 mt-2 text-xs text-gray-400">
+            <span>2 proyectos</span>
+            <span>8 tareas</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Member 3: Developer Mid -->
+      <div class="bg-white dark:bg-gray-900 rounded-xl border p-5 flex gap-4">
+        <div class="w-14 h-14 rounded-full bg-pink-100 flex items-center justify-center text-lg font-bold text-pink-700">CL</div>
+        <div class="flex-1">
+          <div class="flex items-start justify-between">
+            <h3 class="font-semibold">Carlos López</h3>
+            <span class="text-xs bg-green-100 text-green-700 px-2 py-0.5 rounded">Disponible</span>
+          </div>
+          <p class="text-sm text-gray-500">Desarrollador Full Stack</p>
+          <div class="flex gap-3 mt-2 text-xs text-gray-400">
+            <span>2 proyectos</span>
+            <span>6 tareas</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Member 4: QA Tester -->
+      <div class="bg-white dark:bg-gray-900 rounded-xl border p-5 flex gap-4">
+        <div class="w-14 h-14 rounded-full bg-orange-100 flex items-center justify-center text-lg font-bold text-orange-700">MT</div>
+        <div class="flex-1">
+          <div class="flex items-start justify-between">
+            <h3 class="font-semibold">María Torres</h3>
+            <span class="text-xs bg-green-100 text-green-700 px-2 py-0.5 rounded">Disponible</span>
+          </div>
+          <p class="text-sm text-gray-500">QA Tester Senior</p>
+          <div class="flex gap-3 mt-2 text-xs text-gray-400">
+            <span>1 proyecto</span>
+            <span>3 tareas</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Member 5: Designer -->
+      <div class="bg-white dark:bg-gray-900 rounded-xl border p-5 flex gap-4">
+        <div class="w-14 h-14 rounded-full bg-cyan-100 flex items-center justify-center text-lg font-bold text-cyan-700">LS</div>
+        <div class="flex-1">
+          <div class="flex items-start justify-between">
+            <h3 class="font-semibold">Laura Sánchez</h3>
+            <span class="text-xs bg-green-100 text-green-700 px-2 py-0.5 rounded">Disponible</span>
+          </div>
+          <p class="text-sm text-gray-500">Diseñadora UI/UX</p>
+          <div class="flex gap-3 mt-2 text-xs text-gray-400">
+            <span>1 proyecto</span>
+            <span>3 tareas</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</Layout>

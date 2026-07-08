@@ -1,0 +1,84 @@
+---
+import Layout from '../../layouts/Layout.astro';
+
+const title = 'Productos';
+---
+
+<Layout title={title}>
+  <div class="p-6 space-y-6">
+    <div class="flex items-center justify-between">
+      <div>
+        <h1 class="text-2xl font-bold">Productos</h1>
+        <p class="text-gray-500 text-sm mt-1">Artefactos y entregables del desarrollo</p>
+      </div>
+      <button class="bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-blue-700 transition">+ Nuevo Producto</button>
+    </div>
+
+    <!-- Product Types -->
+    <div class="flex gap-2 flex-wrap">
+      <button class="px-3 py-1.5 rounded-full bg-blue-100 text-blue-700 text-sm font-medium">Todos (5)</button>
+      <button class="px-3 py-1.5 rounded-full bg-gray-100 text-gray-600 text-sm hover:bg-gray-200">Código (3)</button>
+      <button class="px-3 py-1.5 rounded-full bg-gray-100 text-gray-600 text-sm hover:bg-gray-200">Documento (2)</button>
+    </div>
+
+    <!-- Products -->
+    <div class="space-y-3">
+      <!-- Product 1 -->
+      <div class="bg-white dark:bg-gray-900 rounded-xl border p-5">
+        <div class="flex items-start gap-3">
+          <div class="w-10 h-10 rounded-lg bg-purple-100 flex items-center justify-center text-purple-700 text-sm">📄</div>
+          <div class="flex-1">
+            <div class="flex items-center justify-between">
+              <h3 class="font-medium">Schema de base de datos</h3>
+              <span class="text-xs bg-gray-100 px-2 py-0.5 rounded text-gray-500">Documento v1.0</span>
+            </div>
+            <p class="text-sm text-gray-500 mt-0.5">Tablas y relaciones para el módulo de facturación</p>
+            <div class="flex gap-3 mt-2 text-xs text-gray-400">
+              <span>📋 Diseño de base de datos de facturas</span>
+              <span>•</span>
+              <span>por Ana García</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Product 2 -->
+      <div class="bg-white dark:bg-gray-900 rounded-xl border p-5">
+        <div class="flex items-start gap-3">
+          <div class="w-10 h-10 rounded-lg bg-green-100 flex items-center justify-center text-green-700 text-sm">📦</div>
+          <div class="flex-1">
+            <div class="flex items-center justify-between">
+              <h3 class="font-medium">Facturación API Module v1</h3>
+              <span class="text-xs bg-gray-100 px-2 py-0.5 rounded text-gray-500">Código v1.0.0</span>
+            </div>
+            <p class="text-sm text-gray-500 mt-0.5">Módulo completo de facturación con endpoints REST</p>
+            <div class="flex gap-3 mt-2 text-xs text-gray-400">
+              <span>📋 Implementación de API de facturación</span>
+              <span>•</span>
+              <span>por Carlos López</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Product 3 -->
+      <div class="bg-white dark:bg-gray-900 rounded-xl border p-5">
+        <div class="flex items-start gap-3">
+          <div class="w-10 h-10 rounded-lg bg-green-100 flex items-center justify-center text-green-700 text-sm">📦</div>
+          <div class="flex-1">
+            <div class="flex items-center justify-between">
+              <h3 class="font-medium">SAT Digital Signer</h3>
+              <span class="text-xs bg-gray-100 px-2 py-0.5 rounded text-gray-500">Código v1.2.0</span>
+            </div>
+            <p class="text-sm text-gray-500 mt-0.5">Librería de firma digital para documentos fiscales</p>
+            <div class="flex gap-3 mt-2 text-xs text-gray-400">
+              <span>📋 Implementación de firma digital</span>
+              <span>•</span>
+              <span>por Carlos López</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</Layout>

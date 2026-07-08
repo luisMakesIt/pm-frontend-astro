@@ -1,0 +1,69 @@
+---
+import Layout from '../layouts/Layout.astro';
+import SearchFilter from '../components/islands/SearchFilter';
+import ProjectCard from '../components/islands/ProjectCard';
+
+const title = 'Proyectos';
+---
+
+<Layout title={title}>
+  <div class="p-6 space-y-6">
+    <!-- Header -->
+    <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+      <div>
+        <h1 class="text-2xl font-bold">Proyectos</h1>
+        <p class="text-gray-500 text-sm mt-1">Gestiona todos los proyectos activos</p>
+      </div>
+      <button class="bg-blue-600 text-white px-4 py-2 rounded-lg font-medium hover:bg-blue-700 transition">
+        + Nuevo Proyecto
+      </button>
+    </div>
+
+    <!-- Filters -->
+    <SearchFilter />
+
+    <!-- Project Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+      <!-- Project cards will be loaded here; showing placeholder -->
+      <div class="bg-white dark:bg-gray-900 rounded-xl border p-6">
+        <div class="flex items-start justify-between mb-4">
+          <div>
+            <h3 class="font-semibold text-lg">Sistema de Facturación</h3>
+            <p class="text-gray-500 text-sm mt-1">Sistema completo de facturación electrónica</p>
+          </div>
+          <span class="bg-green-100 text-green-800 text-xs px-2 py-1 rounded-full">En Desarrollo</span>
+        </div>
+        <div class="mt-4">
+          <div class="flex justify-between text-sm text-gray-500 mb-1">
+            <span>Progreso</span>
+            <span>60%</span>
+          </div>
+          <div class="w-full bg-gray-200 rounded-full h-2">
+            <div class="bg-blue-600 h-2 rounded-full" style="width: 60%"></div>
+          </div>
+        </div>
+        <p class="text-gray-400 text-xs mt-3">5 miembros · 4 requerimientos</p>
+      </div>
+
+      <div class="bg-white dark:bg-gray-900 rounded-xl border p-6">
+        <div class="flex items-start justify-between mb-4">
+          <div>
+            <h3 class="font-semibold text-lg">App Móvil - E-commerce</h3>
+            <p class="text-gray-500 text-sm mt-1">Aplicación móvil para tienda online</p>
+          </div>
+          <span class="bg-yellow-100 text-yellow-800 text-xs px-2 py-1 rounded-full">Planificación</span>
+        </div>
+        <div class="mt-4">
+          <div class="flex justify-between text-sm text-gray-500 mb-1">
+            <span>Progreso</span>
+            <span>10%</span>
+          </div>
+          <div class="w-full bg-gray-200 rounded-full h-2">
+            <div class="bg-blue-600 h-2 rounded-full" style="width: 10%"></div>
+          </div>
+        </div>
+        <p class="text-gray-400 text-xs mt-3">2 miembros · 3 requerimientos</p>
+      </div>
+    </div>
+  </div>
+</Layout>

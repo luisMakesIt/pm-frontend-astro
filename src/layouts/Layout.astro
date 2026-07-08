@@ -17,22 +17,12 @@ const { title = 'PM System', sidebar = true } = Astro.props;
     <title>{title} — PM System</title>
   </head>
   <body class="min-h-screen bg-gray-50 dark:bg-gray-950 text-gray-900 dark:text-gray-100">
-    {sidebar ? (
-      <div class="flex h-screen overflow-hidden">
-        {children}
-      </div>
-    ) : (
-      <div class="min-h-screen flex flex-col">
-        {children}
-      </div>
-    )}
+    {sidebar ? <Sidebar>{children}</Sidebar> : <div class="h-screen overflow-auto">{children}</div>}
 
     <script is:inline>
-      // Dark mode toggle
       const html = document.documentElement;
       const theme = localStorage.getItem('theme') || 'light';
       html.className = theme;
-
       window.__toggleTheme = function() {
         const isDark = html.className.includes('dark');
         html.className = isDark ? 'light' : 'dark';

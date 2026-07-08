@@ -1,0 +1,151 @@
+---
+import Layout from '../../layouts/Layout.astro';
+
+const title = 'Requerimientos';
+---
+
+<Layout title={title}>
+  <div class="p-6 space-y-6">
+    <div class="flex items-center justify-between">
+      <div>
+        <h1 class="text-2xl font-bold">Requerimientos</h1>
+        <p class="text-gray-500 text-sm mt-1">Todos los requerimientos del sistema</p>
+      </div>
+      <button class="bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-blue-700 transition">+ Nuevo Requerimiento</button>
+    </div>
+
+    <!-- Filters -->
+    <div class="flex gap-2 flex-wrap">
+      <button class="px-3 py-1.5 rounded-full bg-blue-100 text-blue-700 text-sm font-medium">Todos (8)</button>
+      <button class="px-3 py-1.5 rounded-full bg-gray-100 text-gray-600 text-sm hover:bg-gray-200">Pendiente (2)</button>
+      <button class="px-3 py-1.5 rounded-full bg-gray-100 text-gray-600 text-sm hover:bg-gray-200">En Progreso (1)</button>
+      <button class="px-3 py-1.5 rounded-full bg-gray-100 text-gray-600 text-sm hover:bg-gray-200">Completado (4)</button>
+      <button class="px-3 py-1.5 rounded-full bg-gray-100 text-gray-600 text-sm hover:bg-gray-200">Alta Prioridad</button>
+    </div>
+
+    <!-- Requirements List -->
+    <div class="space-y-3">
+      <!-- Req 1: Generated - COMPL -->
+      <div class="bg-white dark:bg-gray-900 rounded-xl border p-5">
+        <div class="flex items-start justify-between">
+          <div>
+            <h3 class="font-medium">Generación de facturas</h3>
+            <p class="text-sm text-gray-500 mt-0.5">Módulo principal para crear y emitir facturas electrónicas</p>
+            <div class="flex gap-2 mt-2">
+              <span class="text-xs bg-red-100 text-red-700 px-2 py-0.5 rounded">Alta</span>
+              <span class="text-xs bg-blue-100 text-blue-700 px-2 py-0.5 rounded">Completado</span>
+              <span class="text-xs bg-gray-100 px-2 py-0.5 rounded text-gray-500">Sistema de Facturación</span>
+            </div>
+            <div class="flex gap-3 mt-2 text-xs text-gray-400">
+              <span>3 actividades</span>
+              <span>|</span>
+              <span>1 acta</span>
+              <span>|</span>
+              <span>2 productos</span>
+            </div>
+          </div>
+          <span class="text-green-600 text-lg">✅</span>
+        </div>
+      </div>
+
+      <!-- Req 2: COMPL -->
+      <div class="bg-white dark:bg-gray-900 rounded-xl border p-5">
+        <div class="flex items-start justify-between">
+          <div>
+            <h3 class="font-medium">Integración con SAT</h3>
+            <p class="text-sm text-gray-500 mt-0.5">Conexión y firma digital con el SAT mediante API CFDI 4.0</p>
+            <div class="flex gap-2 mt-2">
+              <span class="text-xs bg-red-100 text-red-700 px-2 py-0.5 rounded">Alta</span>
+              <span class="text-xs bg-blue-100 text-blue-700 px-2 py-0.5 rounded">Completado</span>
+              <span class="text-xs bg-gray-100 px-2 py-0.5 rounded text-gray-500">Sistema de Facturación</span>
+            </div>
+          </div>
+          <span class="text-green-600 text-lg">✅</span>
+        </div>
+      </div>
+
+      <!-- Req 3: IN PROGRESS -->
+      <div class="bg-white dark:bg-gray-900 rounded-xl border p-5">
+        <div class="flex items-start justify-between">
+          <div>
+            <h3 class="font-medium">Dashboard financiero</h3>
+            <p class="text-sm text-gray-500 mt-0.5">Vista de ingresos, gastos y estadísticas del sistema</p>
+            <div class="flex gap-2 mt-2">
+              <span class="text-xs bg-yellow-100 text-yellow-700 px-2 py-0.5 rounded">Media</span>
+              <span class="text-xs bg-blue-100 text-blue-700 px-2 py-0.5 rounded">En Progreso</span>
+              <span class="text-xs bg-gray-100 px-2 py-0.5 rounded text-gray-500">Sistema de Facturación</span>
+            </div>
+            <div class="flex gap-3 mt-2 text-xs text-gray-400">
+              <span>2 actividades</span>
+              <span>|</span>
+              <span>0 actas</span>
+            </div>
+          </div>
+          <span class="text-blue-600 text-lg">⏳</span>
+        </div>
+      </div>
+
+      <!-- Req 4: PENDING -->
+      <div class="bg-white dark:bg-gray-900 rounded-xl border p-5">
+        <div class="flex items-start justify-between">
+          <div>
+            <h3 class="font-medium">Reportes mensuales</h3>
+            <p class="text-sm text-gray-500 mt-0.5">Generación automática de reportes para contabilidad</p>
+            <div class="flex gap-2 mt-2">
+              <span class="text-xs bg-yellow-100 text-yellow-700 px-2 py-0.5 rounded">Media</span>
+              <span class="text-xs bg-gray-100 text-gray-700 px-2 py-0.5 rounded">Pendiente</span>
+              <span class="text-xs bg-gray-100 px-2 py-0.5 rounded text-gray-500">Sistema de Facturación</span>
+            </div>
+          </div>
+          <span class="text-gray-400 text-lg">📋</span>
+        </div>
+      </div>
+
+      <!-- More requirements for Project 2 -->
+      <div class="bg-white dark:bg-gray-900 rounded-xl border p-5">
+        <div class="flex items-start justify-between">
+          <div>
+            <h3 class="font-medium">Catálogo de productos</h3>
+            <p class="text-sm text-gray-500 mt-0.5">Listado y búsqueda de productos en la app</p>
+            <div class="flex gap-2 mt-2">
+              <span class="text-xs bg-red-100 text-red-700 px-2 py-0.5 rounded">Alta</span>
+              <span class="text-xs bg-gray-100 text-gray-700 px-2 py-0.5 rounded">Pendiente</span>
+              <span class="text-xs bg-gray-100 px-2 py-0.5 rounded text-gray-500">App Móvil E-commerce</span>
+            </div>
+          </div>
+          <span class="text-gray-400 text-lg">📋</span>
+        </div>
+      </div>
+
+      <div class="bg-white dark:bg-gray-900 rounded-xl border p-5">
+        <div class="flex items-start justify-between">
+          <div>
+            <h3 class="font-medium">Carrito de compras</h3>
+            <p class="text-sm text-gray-500 mt-0.5">Añadir, modificar y eliminar productos del carrito</p>
+            <div class="flex gap-2 mt-2">
+              <span class="text-xs bg-red-100 text-red-700 px-2 py-0.5 rounded">Alta</span>
+              <span class="text-xs bg-gray-100 text-gray-700 px-2 py-0.5 rounded">Pendiente</span>
+              <span class="text-xs bg-gray-100 px-2 py-0.5 rounded text-gray-500">App Móvil E-commerce</span>
+            </div>
+          </div>
+          <span class="text-gray-400 text-lg">📋</span>
+        </div>
+      </div>
+
+      <div class="bg-white dark:bg-gray-900 rounded-xl border p-5">
+        <div class="flex items-start justify-between">
+          <div>
+            <h3 class="font-medium">Pasarela de pagos</h3>
+            <p class="text-sm text-gray-500 mt-0.5">Integración con Stripe y PayPal</p>
+            <div class="flex gap-2 mt-2">
+              <span class="text-xs bg-red-100 text-red-700 px-2 py-0.5 rounded">Alta</span>
+              <span class="text-xs bg-gray-100 text-gray-700 px-2 py-0.5 rounded">Pendiente</span>
+              <span class="text-xs bg-gray-100 px-2 py-0.5 rounded text-gray-500">App Móvil E-commerce</span>
+            </div>
+          </div>
+          <span class="text-gray-400 text-lg">📋</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</Layout>

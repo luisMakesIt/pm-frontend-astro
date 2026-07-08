@@ -1,0 +1,78 @@
+---
+import Layout from '../../layouts/Layout.astro';
+
+const title = 'Reportes';
+---
+
+<Layout title={title}>
+  <div class="p-6 space-y-6">
+    <!-- Header -->
+    <div>
+      <h1 class="text-2xl font-bold">Reportes y Exportaciones</h1>
+      <p class="text-gray-500 text-sm mt-1">Genera reportes detallados del sistema</p>
+    </div>
+
+    <!-- Export Buttons -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <!-- Project Report -->
+      <div class="bg-white dark:bg-gray-900 rounded-xl border p-6">
+        <div class="text-3xl mb-3">📊</div>
+        <h3 class="font-semibold text-lg">Reporte de Proyecto</h3>
+        <p class="text-sm text-gray-500 mt-2 mb-4">Incluye requerimientos, actividades, productos y dev logs de un proyecto específico.</p>
+        <div class="space-y-3">
+          <select class="w-full border rounded-lg px-3 py-2 text-sm">
+            <option>Seleccionar proyecto...</option>
+            <option>Sistema de Facturación</option>
+            <option>App Móvil - E-commerce</option>
+          </select>
+          <div class="flex gap-2">
+            <button class="flex-1 bg-red-50 text-red-700 border border-red-200 px-3 py-2 rounded-lg text-sm font-medium hover:bg-red-100 transition">PDF</button>
+            <button class="flex-1 bg-green-50 text-green-700 border border-green-200 px-3 py-2 rounded-lg text-sm font-medium hover:bg-green-100 transition">CSV</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Developer Report -->
+      <div class="bg-white dark:bg-gray-900 rounded-xl border p-6">
+        <div class="text-3xl mb-3">👨‍💻</div>
+        <h3 class="font-semibold text-lg">Reporte de Desarrollador</h3>
+        <p class="text-sm text-gray-500 mt-2 mb-4">Historial de commits, fixes y actividades por desarrollador y proyecto.</p>
+        <div class="space-y-3">
+          <select class="w-full border rounded-lg px-3 py-2 text-sm">
+            <option>Seleccionar developer...</option>
+            <option>Ana García</option>
+            <option>Carlos López</option>
+            <option>María Torres</option>
+          </select>
+          <div class="flex gap-2">
+            <button class="flex-1 bg-red-50 text-red-700 border border-red-200 px-3 py-2 rounded-lg text-sm font-medium hover:bg-red-100 transition">PDF</button>
+            <button class="flex-1 bg-green-50 text-green-700 border border-green-200 px-3 py-2 rounded-lg text-sm font-medium hover:bg-green-100 transition">CSV</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Team Report -->
+      <div class="bg-white dark:bg-gray-900 rounded-xl border p-6">
+        <div class="text-3xl mb-3">👥</div>
+        <h3 class="font-semibold text-lg">Reporte de Equipo</h3>
+        <p class="text-sm text-gray-500 mt-2 mb-4">Agregado de stats del equipo completo: productividad, carga, tiempos.</p>
+        <select class="w-full border rounded-lg px-3 py-2 text-sm mb-3">
+          <option>Sistema de Facturación</option>
+        </select>
+        <div class="flex gap-2">
+          <button class="flex-1 bg-red-50 text-red-700 border border-red-200 px-3 py-2 rounded-lg text-sm font-medium hover:bg-red-100 transition">PDF</button>
+          <button class="flex-1 bg-green-50 text-green-700 border border-green-200 px-3 py-2 rounded-lg text-sm font-medium hover:bg-green-100 transition">CSV</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Previews -->
+    <div class="bg-white dark:bg-gray-900 rounded-xl border p-6">
+      <h3 class="font-semibold mb-4">Vista Previa del Reporte</h3>
+      <div class="bg-gray-50 rounded-lg p-6 border-2 border-dashed border-gray-300 text-center py-12">
+        <p class="text-gray-400">Selecciona un proyecto y formato para generar la vista previa</p>
+        <p class="text-gray-300 text-sm mt-2">Formatos disponibles: PDF, CSV, Excel</p>
+      </div>
+    </div>
+  </div>
+</Layout>

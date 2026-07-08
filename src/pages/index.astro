@@ -1,0 +1,118 @@
+---
+import Layout from '../../layouts/Layout.astro';
+
+const title = 'Dashboard';
+---
+
+<Layout title={title}>
+  <div class="p-6 space-y-6">
+    <!-- Header -->
+    <div class="flex items-center justify-between">
+      <div>
+        <h1 class="text-2xl font-bold">Dashboard</h1>
+        <p class="text-gray-500 text-sm mt-1">Vista general del sistema</p>
+      </div>
+    </div>
+
+    <!-- Stats Cards -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div class="bg-white dark:bg-gray-900 rounded-xl border p-5">
+        <p class="text-gray-500 text-sm">Proyectos Totales</p>
+        <p class="text-3xl font-bold mt-2">2</p>
+        <p class="text-green-500 text-xs mt-2">● 1 activo, 1 planificando</p>
+      </div>
+
+      <div class="bg-white dark:bg-gray-900 rounded-xl border p-5">
+        <p class="text-gray-500 text-sm">Requerimientos</p>
+        <p class="text-3xl font-bold mt-2">8</p>
+        <p class="text-yellow-500 text-xs mt-2">● 2 pendiente, 1 en progreso</p>
+      </div>
+
+      <div class="bg-white dark:bg-gray-900 rounded-xl border p-5">
+        <p class="text-gray-500 text-sm">Actividades</p>
+        <p class="text-3xl font-bold mt-2">8</p>
+        <p class="text-blue-500 text-xs mt-2">● 5 completadas, 2 en progreso</p>
+      </div>
+
+      <div class="bg-white dark:bg-gray-900 rounded-xl border p-5">
+        <p class="text-gray-500 text-sm">Equipo</p>
+        <p class="text-3xl font-bold mt-2">7</p>
+        <p class="text-purple-500 text-xs mt-2">● Todos disponibles</p>
+      </div>
+    </div>
+
+    <!-- Charts Row -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <div class="bg-white dark:bg-gray-900 rounded-xl border p-6">
+        <h3 class="font-semibold mb-4">Estado de Proyectos</h3>
+        <div class="space-y-3">
+          <div class="flex items-center justify-between">
+            <span class="text-sm">En Desarrollo</span>
+            <span class="text-sm font-medium text-green-600">1</span>
+          </div>
+          <div class="w-full bg-gray-200 rounded-full h-2.5">
+            <div class="bg-green-500 h-2.5 rounded-full" style="width: 50%"></div>
+          </div>
+          <div class="flex items-center justify-between">
+            <span class="text-sm">Planificación</span>
+            <span class="text-sm font-medium text-yellow-600">1</span>
+          </div>
+          <div class="w-full bg-gray-200 rounded-full h-2.5">
+            <div class="bg-yellow-500 h-2.5 rounded-full" style="width: 50%"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-white dark:bg-gray-900 rounded-xl border p-6">
+        <h3 class="font-semibold mb-4">Actividades por Estado</h3>
+        <div class="space-y-3">
+          <div class="flex items-center justify-between">
+            <span class="text-sm text-green-600">● Completadas</span>
+            <span class="text-sm font-medium">5</span>
+          </div>
+          <div class="w-full bg-gray-200 rounded-full h-2.5">
+            <div class="bg-green-500 h-2.5 rounded-full" style="width: 62%"></div>
+          </div>
+          <div class="flex items-center justify-between">
+            <span class="text-sm text-blue-600">● En Progreso</span>
+            <span class="text-sm font-medium">2</span>
+          </div>
+          <div class="w-full bg-gray-200 rounded-full h-2.5">
+            <div class="bg-blue-500 h-2.5 rounded-full" style="width: 25%"></div>
+          </div>
+          <div class="flex items-center justify-between">
+            <span class="text-sm text-gray-500">● Pendientes</span>
+            <span class="text-sm font-medium">1</span>
+          </div>
+          <div class="w-full bg-gray-200 rounded-full h-2.5">
+            <div class="bg-gray-400 h-2.5 rounded-full" style="width: 13%"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Latest Projects -->
+    <div class="bg-white dark:bg-gray-900 rounded-xl border p-6">
+      <div class="flex items-center justify-between mb-4">
+        <h3 class="font-semibold">Proyectos Recientes</h3>
+        <a href="/projects" class="text-blue-600 text-sm hover:underline">Ver todos →</a>
+      </div>
+      <div class="space-y-4">
+        <div class="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
+          <div>
+            <h4 class="font-medium">Sistema de Facturación</h4>
+            <p class="text-sm text-gray-500">En Desarrollo · 70% completado</p>
+          </div>
+          <span class="bg-green-100 text-green-700 text-xs px-2 py-1 rounded">En Desarrollo</span>
+        </div>
+        <div class="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
+          <div>
+            <h4 class="font-medium">App Móvil - E-commerce</h4>
+            <p class="text-sm text-gray-500">Planificación · 10% completado</p>
+          </div>
+          <span class="bg-yellow-100 text-yellow-700 text-xs px-2 py-1 rounded">Planificación</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</Layout>

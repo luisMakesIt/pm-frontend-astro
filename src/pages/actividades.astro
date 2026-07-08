@@ -1,0 +1,117 @@
+---
+import Layout from '../../layouts/Layout.astro';
+
+const title = 'Actividades';
+---
+
+<Layout title={title}>
+  <div class="p-6 space-y-6">
+    <div class="flex items-center justify-between">
+      <div>
+        <h1 class="text-2xl font-bold">Actividades</h1>
+        <p class="text-gray-500 text-sm mt-1">Todas las actividades del sistema</p>
+      </div>
+      <button class="bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-blue-700 transition">+ Nueva Actividad</button>
+    </div>
+
+    <!-- Filter tabs -->
+    <div class="border-b">
+      <div class="flex gap-6 text-sm">
+        <a href="#" class="pb-2 border-b-2 border-blue-600 font-medium text-blue-600">Todas (8)</a>
+        <a href="#" class="pb-2 border-b-2 border-transparent text-gray-500 hover:text-gray-700">En Progreso (2)</a>
+        <a href="#" class="pb-2 border-b-2 border-transparent text-gray-500 hover:text-gray-700">Pendientes (1)</a>
+        <a href="#" class="pb-2 border-b-2 border-transparent text-gray-500 hover:text-gray-700">Completadas (5)</a>
+      </div>
+    </div>
+
+    <!-- Activity List -->
+    <div class="space-y-3">
+      <!-- Activity 1: Completed -->
+      <div class="bg-white dark:bg-gray-900 rounded-xl border p-5">
+        <div class="flex items-start justify-between">
+          <div class="flex items-start gap-3">
+            <div class="mt-1 w-5 h-5 rounded-full bg-green-100 flex items-center justify-center">
+              <span class="text-green-600 text-xs">✓</span>
+            </div>
+            <div>
+              <h3 class="font-medium">Implementación de API de facturación</h3>
+              <p class="text-sm text-gray-500 mt-0.5">REST API endpoints para creación/consulta de facturas</p>
+              <div class="flex flex-wrap gap-2 mt-2 text-xs">
+                <span class="bg-gray-100 px-2 py-0.5 rounded">Generación de facturas</span>
+                <span class="bg-blue-50 text-blue-700 px-2 py-0.5 rounded">Carlos López</span>
+                <span class="bg-gray-100 px-2 py-0.5 rounded">⏱ 42h real / 40h est.</span>
+              </div>
+            </div>
+          </div>
+          <span class="text-xs text-gray-400">Hace 3 días</span>
+        </div>
+      </div>
+
+      <!-- Activity 2: Completed -->
+      <div class="bg-white dark:bg-gray-900 rounded-xl border p-5">
+        <div class="flex items-start gap-3">
+          <div class="mt-1 w-5 h-5 rounded-full bg-green-100 flex items-center justify-center">
+            <span class="text-green-600 text-xs">✓</span>
+          </div>
+          <div>
+            <h3 class="font-medium">Pruebas de integración</h3>
+            <p class="text-sm text-gray-500 mt-0.5">Testeo End-to-End del módulo de facturación</p>
+            <div class="flex flex-wrap gap-2 mt-2 text-xs">
+              <span class="bg-gray-100 px-2 py-0.5 rounded">Generación de facturas</span>
+              <span class="bg-blue-50 text-blue-700 px-2 py-0.5 rounded">María Torres</span>
+              <span class="bg-gray-100 px-2 py-0.5 rounded">⏱ 12h real / 15h est.</span>
+            </div>
+          </div>
+          <span class="text-xs text-gray-400">Hace 5 días</span>
+        </div>
+      </div>
+
+      <!-- Activity 3: In Progress -->
+      <div class="bg-white dark:bg-gray-900 rounded-xl border p-5">
+        <div class="flex items-start justify-between">
+          <div class="flex items-start gap-3">
+            <div class="mt-1 w-5 h-5 rounded-full bg-blue-100 flex items-center justify-center">
+              <span class="text-blue-600 text-xs">⟳</span>
+            </div>
+            <div>
+              <h3 class="font-medium">Implementación del frontend</h3>
+              <p class="text-sm text-gray-500 mt-0.5">Componentes React para el dashboard de ingresos</p>
+              <div class="flex flex-wrap gap-2 mt-2 text-xs">
+                <span class="bg-gray-100 px-2 py-0.5 rounded">Dashboard financiero</span>
+                <span class="bg-blue-50 text-blue-700 px-2 py-0.5 rounded">Carlos López</span>
+                <span class="bg-gray-100 px-2 py-0.5 rounded">⏱ 20h real / 40h est.</span>
+              </div>
+            </div>
+          </div>
+          <span class="text-xs text-gray-400">En curso</span>
+        </div>
+      </div>
+
+      <!-- Activity 4: In Progress -->
+      <div class="bg-white dark:bg-gray-900 rounded-xl border p-5">
+        <div class="flex items-start gap-3">
+          <div class="mt-1 w-5 h-5 rounded-full bg-blue-100 flex items-center justify-center">
+            <span class="text-blue-600 text-xs">⟳</span>
+          </div>
+          <div>
+            <h3 class="font-medium">Diseño UI del dashboard</h3>
+            <p class="text-sm text-gray-500 mt-0.5">Wireframes y diseño visual del panel financiero</p>
+            <div class="flex flex-wrap gap-2 mt-2 text-xs">
+              <span class="bg-gray-100 px-2 py-0.5 rounded">Dashboard financiero</span>
+              <span class="bg-blue-50 text-blue-700 px-2 py-0.5 rounded">Laura Sánchez</span>
+              <span class="bg-gray-100 px-2 py-0.5 rounded">⏱ 22h real / 24h est.</span>
+            </div>
+          </div>
+          <span class="text-xs text-gray-400">Completada</span>
+        </div>
+      </div>
+
+      <!-- More activities... -->
+      <div class="text-center py-4">
+        <a href="/projects/detail" class="text-blue-600 text-sm hover:underline inline-flex items-center gap-1">
+          Ver todas las actividades por proyecto →
+        </a>
+      </div>
+    </div>
+  </div>
+</Layout>
