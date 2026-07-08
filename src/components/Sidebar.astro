@@ -1,0 +1,195 @@
+---
+import {
+  LayoutDashboard, FolderKanban, FileText, Calendar,
+  FolderOutput, Users, BarChart3, LogOut, Settings,
+  ChevronLeft, Moon, Sun, Menu, X
+} from 'lucide-react';
+import { useState } from 'react';
+
+const navItems = [
+  { href: '/', label: 'Dashboard', icon: LayoutDashboard },
+  { href: '/projects', label: 'Proyectos', icon: FolderKanban },
+];
+
+interface NavGroup {
+  label: string;
+  items: { href: string; label: string; icon: any }[];
+}
+
+const projectNav: NavGroup['items'] = [
+  { href: '/projects', label: 'Lista', icon: FolderKanban },
+];
+
+export interface Props {
+  projectNav?: typeof projectNav;
+}
+
+const { projectNav: _projectNav } = Astro.props;
+---
+
+<div class="flex">
+  {/* Mobile overlay */}
+  <div class="fixed inset-0 z-40 bg-black/50 lg:hidden hidden" id="sidebar-overlay" onClick={() => document.getElementById('sidebar-mobile')?.classList.add('hidden')}></div>
+
+  {/* Sidebar toggle (mobile) */}
+  <button
+    class="lg:hidden fixed top-4 left-4 z-50 p-2 rounded-md bg-white dark:bg-gray-800 shadow-md"
+    onClick={() => {
+      const sb = document.getElementById('sidebar-mobile');
+      const ov = document.getElementById('sidebar-overlay');
+      sb?.classList.toggle('hidden');
+      ov?.classList.toggle('hidden');
+    }}
+    aria-label="Toggle sidebar"
+  >
+    <Menu class="w-5 h-5" />
+  </button>
+
+  {/* Sidebar */}
+  <aside
+    id="sidebar-desktop"
+    class="hidden lg:flex flex-col w-64 bg-white dark:bg-gray-900 border-r border-gray-200 dark:border-gray-800 h-screen fixed left-0 top-0 z-30 transition-all duration-300"
+  >
+    {/* Logo */}
+    <div class="flex items-center gap-3 px-6 py-5 border-b border-gray-200 dark:border-gray-800">
+      <div class="w-8 h-8 rounded-lg bg-primary flex items-center justify-center">
+        <span class="text-white font-bold text-sm">PM</span>
+      </div>
+      <span class="font-bold text-lg text-gray-900 dark:text-white">PM System</span>
+      <button class="ml-auto p-1 rounded hover:bg-gray-100 dark:hover:bg-gray-800" onClick={() => {
+        const sb = document.getElementById('sidebar-desktop');
+        sb?.classList.toggle('w-64');
+        sb?.classList.toggle('w-20');
+        const labels = sb?.querySelectorAll('.nav-label');
+        labels?.forEach(l => l.classList.toggle('hidden'));
+      }}>
+        <ChevronLeft class="w-4 h-4 text-gray-500" />
+      </button>
+    </div>
+
+    {/* Primary nav */}
+    <nav class="flex-1 px-3 py-4 space-y-1 overflow-y-auto">
+      <p class="nav-label text-xs font-semibold text-gray-400 uppercase tracking-wider px-3 mb-2">Principal</p>
+      {navItems.map(item => {
+        const Icon = item.icon;
+        const isActive = window.location.pathname === item.href;
+        return (
+          <a
+            href={item.href}
+            class={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors
+              ${isActive
+                ? 'bg-primary/10 text-primary'
+                : 'text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-gray-900 dark:hover:text-white'
+              }`}
+          >
+            <Icon class="w-5 h-5 flex-shrink-0" />
+            <span class="nav-label">{item.label}</span>
+          </a>
+        );
+      })}
+
+      <p class="nav-label text-xs font-semibold text-gray-400 uppercase tracking-wider px-3 mt-6 mb-2">Herramientas</p>
+      <a
+        href="/projects"
+        class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-gray-900 dark:hover:text-white transition-colors"
+      >
+        <FolderKanban class="w-5 h-5 flex-shrink-0" />
+        <span class="nav-label">Proyectos</span>
+      </a>
+      <a
+        href="#"
+        class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-gray-900 dark:hover:text-white transition-colors"
+      >
+        <BarChart3 class="w-5 h-5 flex-shrink-0" />
+        <span class="nav-label">Reportes</span>
+      </a>
+    </nav>
+
+    {/* Bottom section */}
+    <div class="px-3 py-4 border-t border-gray-200 dark:border-gray-800 space-y-1">
+      <button
+        onClick={() => window.__toggleTheme()}
+        class="flex items-center gap-3 w-full px-3 py-2.5 rounded-lg text-sm font-medium text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+      >
+        <Sun class="w-5 h-5 flex-shrink-0 hidden dark:block" />
+        <Moon class="w-5 h-5 flex-shrink-0 block dark:hidden" />
+        <span class="nav-label">Tema</span>
+      </button>
+      <a
+        href="/login"
+        class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-red-600 dark:hover:text-red-400 transition-colors"
+      >
+        <LogOut class="w-5 h-5 flex-shrink-0" />
+        <span class="nav-label">Cerrar sesión</span>
+      </a>
+    </div>
+  </aside>
+
+  {/* Mobile sidebar */}
+  <aside
+    id="sidebar-mobile"
+    class="fixed top-0 left-0 z-50 w-64 h-screen bg-white dark:bg-gray-900 border-r border-gray-200 dark:border-gray-800 transform -translate-x-full transition-transform duration-300 lg:hidden"
+  >
+    <div class="flex items-center justify-between px-6 py-5 border-b border-gray-200 dark:border-gray-800">
+      <div class="flex items-center gap-3">
+        <div class="w-8 h-8 rounded-lg bg-primary flex items-center justify-center">
+          <span class="text-white font-bold text-sm">PM</span>
+        </div>
+        <span class="font-bold text-lg">PM System</span>
+      </div>
+      <button onClick={() => {
+        document.getElementById('sidebar-mobile')?.classList.add('-translate-x-full');
+        document.getElementById('sidebar-overlay')?.classList.add('hidden');
+      }}>
+        <X class="w-5 h-5 text-gray-500" />
+      </button>
+    </div>
+    <nav class="px-3 py-4 space-y-1">
+      {navItems.map(item => {
+        const Icon = item.icon;
+        return (
+          <a href={item.href} class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
+            <Icon class="w-5 h-5" />{item.label}
+          </a>
+        );
+      })}
+    </nav>
+  </aside>
+
+  {/* Main content area */}
+  <main class="flex-1 lg:ml-64 overflow-y-auto">
+    {/* Top bar */}
+    <header class="sticky top-0 z-20 bg-white/80 dark:bg-gray-900/80 backdrop-blur-md border-b border-gray-200 dark:border-gray-800">
+      <div class="flex items-center justify-between px-4 lg:px-8 py-4">
+        <div>
+          <h1 class="text-xl lg:text-2xl font-bold text-gray-900 dark:text-white">
+            <slot name="page-title" default="Dashboard" />
+          </h1>
+        </div>
+        <div class="flex items-center gap-3">
+          <button
+            onClick={() => window.__toggleTheme()}
+            class="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+          >
+            <Sun class="w-5 h-5 hidden dark:block" />
+            <Moon class="w-5 h-5 block dark:hidden" />
+          </button>
+          <div class="w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center">
+            <span class="w-7 h-7 rounded-full bg-primary text-white flex items-center justify-center text-xs font-bold">
+              A
+            </span>
+          </div>
+        </div>
+      </div>
+    </header>
+    <div class="p-4 lg:p-8">
+      <slot />
+    </div>
+  </main>
+</div>
+
+<style>
+  .nav-label {
+    transition: opacity 0.2s;
+  }
+</style>
