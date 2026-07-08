@@ -1,10 +1,13 @@
 ---
+import Sidebar from '../components/Sidebar.astro';
+
 interface Props {
   title?: string;
   sidebar?: boolean;
 }
 
 const { title = 'PM System', sidebar = true } = Astro.props;
+const { children } = Astro.slots;
 ---
 
 <!doctype html>
