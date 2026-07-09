@@ -5,7 +5,7 @@ const title = 'Actualizar Datos';
 ---
 
 <Layout title={title}>
-  <div class="p-6 space-y-6 max-w-2xl">
+  <div class="space-y-6 max-w-2xl">
     <div>
       <a href="/perfil/" class="text-blue-600 text-sm hover:underline mb-2 inline-block">← Volver al perfil</a>
       <h1 class="text-2xl font-bold">Actualizar Datos</h1>
@@ -24,7 +24,7 @@ const title = 'Actualizar Datos';
         </div>
         <div id="error-msg" class="hidden text-red-600 text-sm p-3 bg-red-50 rounded-lg"></div>
         <div id="success-msg" class="hidden text-green-600 text-sm p-3 bg-green-50 rounded-lg"></div>
-        <div class="flex gap-3">
+        <div class="flex flex-wrap gap-3">
           <button type="submit" class="bg-blue-600 text-white px-6 py-2 rounded-lg font-medium hover:bg-blue-700 transition-colors">Guardar Cambios</button>
           <a href="/perfil/" class="border px-4 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">Cancelar</a>
         </div>

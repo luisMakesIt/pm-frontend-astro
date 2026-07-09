@@ -64,7 +64,7 @@ export default function ActaTemplate({ acta }: { acta: Acta }) {
   const estado = acta.estado_firma || 'sin_firmar';
 
   return (
-    <div className="max-w-4xl mx-auto bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 p-8 rounded-lg shadow print:shadow-none print:max-w-none print:p-0">
+    <div className="max-w-4xl mx-auto bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 p-4 sm:p-8 rounded-lg shadow print:shadow-none print:max-w-none print:p-0">
       {/* Header */}
       <div className="text-center border-b-2 border-gray-800 dark:border-gray-200 pb-6 mb-6">
         <h1 className="text-2xl font-bold tracking-wide uppercase">
@@ -80,7 +80,7 @@ export default function ActaTemplate({ acta }: { acta: Acta }) {
         <h2 className="text-lg font-bold border-b border-gray-300 dark:border-gray-700 pb-1 mb-3">
           Información del Cliente
         </h2>
-        <div className="grid grid-cols-2 gap-3 text-sm">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm">
           <div>
             <span className="font-medium text-gray-500">Nombre:</span>{' '}
             {acta.cliente_nombre || '-'}
@@ -153,7 +153,7 @@ export default function ActaTemplate({ acta }: { acta: Acta }) {
           </span>
         </div>
 
-        <div className="grid grid-cols-2 gap-8 mt-12">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 mt-12">
           <div className="text-center">
             <div className="border-t border-gray-400 dark:border-gray-600 pt-2 mx-8">
               <p className="text-sm font-medium">{acta.cliente_nombre || 'Cliente'}</p>
