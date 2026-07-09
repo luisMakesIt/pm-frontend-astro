@@ -60,8 +60,8 @@ const title = 'Productos';
               if (prjson.success && prjson.data) {
                 var prods = Array.isArray(prjson.data) ? prjson.data : [prjson.data];
                 prods.forEach(function(pr) {
-                  pr.act_title = acts[ai].titulo || 'Actividad ' + acts[ai].id;
-                  pr.project_name = projects[pi].nombre || 'Proyecto ' + projects[pi].id;
+                  pr.act_title = acts[ai].title || 'Actividad ' + acts[ai].id;
+                  pr.project_name = projects[pi].name || 'Proyecto ' + projects[pi].id;
                 });
                 allProducts = allProducts.concat(prods);
               }
@@ -77,9 +77,9 @@ const title = 'Productos';
         container.innerHTML = allProducts.map(function(p) {
           return '<div class="bg-white dark:bg-gray-900 rounded-xl border p-4">' +
             '<div class="flex items-start justify-between mb-2">' +
-            '<div><h4 class="font-medium">' + (p.nombre || p.titulo || 'Sin nombre') + '</h4>' +
+            '<div><h4 class="font-medium">' + (p.name || p.title || 'Sin nombre') + '</h4>' +
             '<p class="text-xs text-gray-400 mt-1">' + (p.project_name || '') + ' → ' + (p.act_title || '') + '</p></div></div>' +
-            '<p class="text-sm text-gray-500">' + (p.descripcion || '') + '</p></div>';
+            '<p class="text-sm text-gray-500">' + (p.description || '') + '</p></div>';
         }).join('');
       } catch(e) {
         container.innerHTML = '<p class="text-red-500 text-sm">Error al cargar productos</p>';

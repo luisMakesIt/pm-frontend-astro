@@ -10,7 +10,6 @@ const title = 'Reportes';
       <p class="text-gray-500 text-sm mt-1">Informes por proyecto, desarrollador y equipo</p>
     </div>
 
-    <!-- Summary Cards -->
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
       <div class="bg-white dark:bg-gray-900 rounded-xl border p-5">
         <p class="text-gray-500 text-sm">Total Proyectos</p>
@@ -30,7 +29,6 @@ const title = 'Reportes';
       </div>
     </div>
 
-    <!-- Project Report -->
     <div class="bg-white dark:bg-gray-900 rounded-xl border p-6">
       <div class="flex items-center justify-between mb-4">
         <h3 class="font-semibold">Reporte por Proyecto</h3>
@@ -46,7 +44,6 @@ const title = 'Reportes';
       </div>
     </div>
 
-    <!-- All Projects Summary -->
     <div class="bg-white dark:bg-gray-900 rounded-xl border p-6">
       <h3 class="font-semibold mb-4">Resumen de Proyectos</h3>
       <div id="all-projects-report" class="overflow-x-auto">
@@ -68,7 +65,7 @@ const title = 'Reportes';
       var token = getToken();
       if (!token) return;
       try {
-        var res = await fetch(API + '/reports/summary', { headers: { 'Authorization': 'Bearer ' + token } });
+        var res = await fetch(API + '/dashboard/stats', { headers: { 'Authorization': 'Bearer ' + token } });
         var json = await res.json();
         if (json.success && json.data) {
           var d = json.data;
@@ -77,19 +74,7 @@ const title = 'Reportes';
           document.getElementById('rep-acts').textContent = d.total_activities || 0;
           document.getElementById('rep-active').textContent = d.active_projects || 0;
         }
-      } catch(e) {
-        // Fallback to dashboard stats
-        try {
-          var res2 = await fetch(API + '/dashboard/stats', { headers: { 'Authorization': 'Bearer ' + token } });
-          var json2 = await res2.json();
-          if (json2.success && json2.data) {
-            document.getElementById('rep-projects').textContent = json2.data.total_projects || 0;
-            document.getElementById('rep-reqs').textContent = json2.data.total_requirements || 0;
-            document.getElementById('rep-acts').textContent = json2.data.total_activities || 0;
-            document.getElementById('rep-active').textContent = json2.data.active_projects || 0;
-          }
-        } catch(e2) {}
-      }
+      } catch(e) {}
     }
 
     async function loadProjectsDropdown() {
@@ -103,7 +88,7 @@ const title = 'Reportes';
           json.data.forEach(function(p) {
             var opt = document.createElement('option');
             opt.value = p.id;
-            opt.textContent = p.nombre || 'Proyecto ' + p.id;
+            opt.textContent = p.name || 'Proyecto ' + p.id;
             sel.appendChild(opt);
           });
         }
@@ -121,25 +106,30 @@ const title = 'Reportes';
       }
 
       try {
-        var res = await fetch(API + '/reports/projects/' + pid, { headers: { 'Authorization': 'Bearer ' + token } });
+        var res = await fetch(API + '/projects/' + pid, { headers: { 'Authorization': 'Bearer ' + token } });
         var json = await res.json();
         if (json.success && json.data) {
           var d = json.data;
+          var reqCount = (d.requirements || []).length;
+          var memberCount = (d.team_members || []).length;
+          var actCount = 0;
+          (d.requirements || []).forEach(function(r) { actCount += (r.activities || []).length; });
           var html = '<div class="space-y-4">';
           html += '<div class="grid grid-cols-2 md:grid-cols-4 gap-3">';
           html += '<div class="p-3 bg-gray-50 dark:bg-gray-800 rounded-lg"><p class="text-xs text-gray-400">Progreso</p><p class="font-bold">' + (d.progreso || 0) + '%</p></div>';
-          html += '<div class="p-3 bg-gray-50 dark:bg-gray-800 rounded-lg"><p class="text-xs text-gray-400">Requerimientos</p><p class="font-bold">' + (d.total_requirements || d.requirements_count || 0) + '</p></div>';
-          html += '<div class="p-3 bg-gray-50 dark:bg-gray-800 rounded-lg"><p class="text-xs text-gray-400">Actividades</p><p class="font-bold">' + (d.total_activities || d.activities_count || 0) + '</p></div>';
-          html += '<div class="p-3 bg-gray-50 dark:bg-gray-800 rounded-lg"><p class="text-xs text-gray-400">Miembros</p><p class="font-bold">' + (d.total_members || d.members_count || 0) + '</p></div>';
+          html += '<div class="p-3 bg-gray-50 dark:bg-gray-800 rounded-lg"><p class="text-xs text-gray-400">Requerimientos</p><p class="font-bold">' + reqCount + '</p></div>';
+          html += '<div class="p-3 bg-gray-50 dark:bg-gray-800 rounded-lg"><p class="text-xs text-gray-400">Actividades</p><p class="font-bold">' + actCount + '</p></div>';
+          html += '<div class="p-3 bg-gray-50 dark:bg-gray-800 rounded-lg"><p class="text-xs text-gray-400">Miembros</p><p class="font-bold">' + memberCount + '</p></div>';
           html += '</div>';
-          if (d.descripcion) html += '<p class="text-sm text-gray-500">' + d.descripcion + '</p>';
+          if (d.description) html += '<p class="text-sm text-gray-500">' + d.description + '</p>';
+          if (d.client_name) html += '<p class="text-sm text-gray-500">Cliente: ' + d.client_name + '</p>';
           html += '</div>';
           container.innerHTML = html;
         } else {
           container.innerHTML = '<p class="text-red-500 text-sm">No se pudo generar el reporte.</p>';
         }
       } catch(e) {
-        container.innerHTML = '<p class="text-red-500 text-sm">Error al cargar reporte: ' + e.message + '</p>';
+        container.innerHTML = '<p class="text-red-500 text-sm">Error al cargar reporte</p>';
       }
     }
 
@@ -153,13 +143,15 @@ const title = 'Reportes';
         if (json.success && json.data) {
           var projects = json.data;
           var html = '<table class="w-full text-sm"><thead><tr class="border-b text-left">';
-          html += '<th class="py-2">Proyecto</th><th>Estado</th><th>Progreso</th><th class="pb-2">Inicio</th></tr></thead><tbody>';
+          html += '<th class="py-2">Proyecto</th><th>Estado</th><th>Progreso</th><th>Inicio</th><th class="pb-2">Reqs</th></tr></thead><tbody>';
           projects.forEach(function(p) {
+            var reqCount = (p.requirements || []).length;
             html += '<tr class="border-b border-gray-100 dark:border-gray-800">' +
-              '<td class="py-2 font-medium">' + (p.nombre || '-') + '</td>' +
-              '<td>' + (p.estado || '-') + '</td>' +
+              '<td class="py-2 font-medium">' + (p.name || '-') + '</td>' +
+              '<td>' + (p.status || '-') + '</td>' +
               '<td>' + (p.progreso || 0) + '%</td>' +
-              '<td class="pb-2">' + (p.fecha_inicio || '-') + '</td></tr>';
+              '<td>' + ((p.start_date || '-').split('T')[0]) + '</td>' +
+              '<td class="pb-2">' + reqCount + '</td></tr>';
           });
           html += '</tbody></table>';
           container.innerHTML = html;

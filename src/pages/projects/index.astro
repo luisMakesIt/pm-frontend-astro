@@ -2,7 +2,6 @@
 import Layout from '../../layouts/Layout.astro';
 
 const title = 'Proyectos';
-const API = 'http://zasm8vmm79eejamdbgx3zwda.144.217.163.180.sslip.io/api';
 ---
 
 <Layout title={title}>
@@ -29,15 +28,19 @@ const API = 'http://zasm8vmm79eejamdbgx3zwda.144.217.163.180.sslip.io/api';
       <form id="form-create" class="space-y-4">
         <div>
           <label class="block text-sm font-medium mb-1">Nombre</label>
-          <input type="text" name="nombre" required class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none">
+          <input type="text" name="name" required class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none">
         </div>
         <div>
           <label class="block text-sm font-medium mb-1">Descripción</label>
-          <textarea name="descripcion" rows="3" class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"></textarea>
+          <textarea name="description" rows="3" class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"></textarea>
+        </div>
+        <div>
+          <label class="block text-sm font-medium mb-1">Cliente</label>
+          <input type="text" name="client_name" class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none">
         </div>
         <div>
           <label class="block text-sm font-medium mb-1">Estado</label>
-          <select name="estado" class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none">
+          <select name="status" class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none">
             <option value="planificacion">Planificación</option>
             <option value="activo">Activo</option>
             <option value="en_progreso">En Progreso</option>
@@ -47,11 +50,11 @@ const API = 'http://zasm8vmm79eejamdbgx3zwda.144.217.163.180.sslip.io/api';
         </div>
         <div>
           <label class="block text-sm font-medium mb-1">Fecha Inicio</label>
-          <input type="date" name="fecha_inicio" class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none">
+          <input type="date" name="start_date" class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none">
         </div>
         <div>
           <label class="block text-sm font-medium mb-1">Fecha Fin</label>
-          <input type="date" name="fecha_fin" class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none">
+          <input type="date" name="end_date" class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none">
         </div>
         <div id="create-error" class="hidden text-red-600 text-sm p-3 bg-red-50 rounded-lg"></div>
         <div class="flex gap-3">
@@ -70,15 +73,19 @@ const API = 'http://zasm8vmm79eejamdbgx3zwda.144.217.163.180.sslip.io/api';
         <input type="hidden" name="id" id="edit-id">
         <div>
           <label class="block text-sm font-medium mb-1">Nombre</label>
-          <input type="text" name="nombre" id="edit-nombre" required class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none">
+          <input type="text" name="name" id="edit-name" required class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none">
         </div>
         <div>
           <label class="block text-sm font-medium mb-1">Descripción</label>
-          <textarea name="descripcion" id="edit-descripcion" rows="3" class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"></textarea>
+          <textarea name="description" id="edit-description" rows="3" class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"></textarea>
+        </div>
+        <div>
+          <label class="block text-sm font-medium mb-1">Cliente</label>
+          <input type="text" name="client_name" id="edit-client_name" class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none">
         </div>
         <div>
           <label class="block text-sm font-medium mb-1">Estado</label>
-          <select name="estado" id="edit-estado" class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none">
+          <select name="status" id="edit-status" class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none">
             <option value="planificacion">Planificación</option>
             <option value="activo">Activo</option>
             <option value="en_progreso">En Progreso</option>
@@ -88,11 +95,11 @@ const API = 'http://zasm8vmm79eejamdbgx3zwda.144.217.163.180.sslip.io/api';
         </div>
         <div>
           <label class="block text-sm font-medium mb-1">Fecha Inicio</label>
-          <input type="date" name="fecha_inicio" id="edit-fecha_inicio" class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none">
+          <input type="date" name="start_date" id="edit-start_date" class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none">
         </div>
         <div>
           <label class="block text-sm font-medium mb-1">Fecha Fin</label>
-          <input type="date" name="fecha_fin" id="edit-fecha_fin" class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none">
+          <input type="date" name="end_date" id="edit-end_date" class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none">
         </div>
         <div id="edit-error" class="hidden text-red-600 text-sm p-3 bg-red-50 rounded-lg"></div>
         <div class="flex gap-3">
@@ -135,13 +142,13 @@ const API = 'http://zasm8vmm79eejamdbgx3zwda.144.217.163.180.sslip.io/api';
               'planificacion': 'bg-yellow-100 text-yellow-700',
               'pausado': 'bg-gray-100 text-gray-700'
             };
-            var sc = statusColors[p.estado] || 'bg-gray-100 text-gray-700';
+            var sc = statusColors[p.status] || 'bg-gray-100 text-gray-700';
             var progress = p.progreso || 0;
             return '<div class="bg-white dark:bg-gray-900 rounded-xl border p-5">' +
               '<div class="flex items-start justify-between mb-3">' +
-              '<h3 class="font-semibold">' + (p.nombre || 'Sin nombre') + '</h3>' +
-              '<span class="' + sc + ' text-xs px-2 py-1 rounded">' + (p.estado || 'activo') + '</span></div>' +
-              '<p class="text-sm text-gray-500 mb-3">' + (p.descripcion || 'Sin descripción') + '</p>' +
+              '<h3 class="font-semibold">' + (p.name || 'Sin nombre') + '</h3>' +
+              '<span class="' + sc + ' text-xs px-2 py-1 rounded">' + (p.status || 'activo') + '</span></div>' +
+              '<p class="text-sm text-gray-500 mb-3">' + (p.description || 'Sin descripción') + '</p>' +
               '<div class="w-full bg-gray-200 rounded-full h-2 mb-3"><div class="bg-blue-500 h-2 rounded-full" style="width:' + progress + '%"></div></div>' +
               '<p class="text-xs text-gray-400 mb-3">' + progress + '% completado</p>' +
               '<div class="flex gap-2">' +
@@ -196,11 +203,12 @@ const API = 'http://zasm8vmm79eejamdbgx3zwda.144.217.163.180.sslip.io/api';
         if (json.success && json.data) {
           var p = json.data;
           document.getElementById('edit-id').value = p.id;
-          document.getElementById('edit-nombre').value = p.nombre || '';
-          document.getElementById('edit-descripcion').value = p.descripcion || '';
-          document.getElementById('edit-estado').value = p.estado || 'activo';
-          document.getElementById('edit-fecha_inicio').value = p.fecha_inicio || '';
-          document.getElementById('edit-fecha_fin').value = p.fecha_fin || '';
+          document.getElementById('edit-name').value = p.name || '';
+          document.getElementById('edit-description').value = p.description || '';
+          document.getElementById('edit-client_name').value = p.client_name || '';
+          document.getElementById('edit-status').value = p.status || 'activo';
+          document.getElementById('edit-start_date').value = (p.start_date || '').split('T')[0];
+          document.getElementById('edit-end_date').value = (p.end_date || '').split('T')[0];
           document.getElementById('modal-edit').classList.remove('hidden');
         }
       } catch(e) {
@@ -216,10 +224,9 @@ const API = 'http://zasm8vmm79eejamdbgx3zwda.144.217.163.180.sslip.io/api';
       var formData = new FormData(this);
       var data = {};
       formData.forEach(function(v, k) { if (k !== 'id') data[k] = v; });
-      data._method = 'PUT';
       var errEl = document.getElementById('edit-error');
       try {
-        var res = await fetch(API + '/projects/' + id, {
+        var res = await fetch(API + '/projects/' + id + '?_method=PUT', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token },
           body: JSON.stringify(data)

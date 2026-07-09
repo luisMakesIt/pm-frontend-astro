@@ -30,7 +30,6 @@ const title = 'Actividades';
       var container = document.getElementById('acts-list');
 
       try {
-        // Get all projects
         var pres = await fetch(API + '/projects', { headers: { 'Authorization': 'Bearer ' + token } });
         var pjson = await pres.json();
         var projects = pjson.data || [];
@@ -53,8 +52,8 @@ const title = 'Actividades';
             if (ajson.success && ajson.data) {
               var acts = Array.isArray(ajson.data) ? ajson.data : [ajson.data];
               acts.forEach(function(a) {
-                a.req_title = reqs[ri].titulo || 'Req ' + reqs[ri].id;
-                a.project_name = projects[pi].nombre || 'Proyecto ' + projects[pi].id;
+                a.req_title = reqs[ri].title || 'Req ' + reqs[ri].id;
+                a.project_name = projects[pi].name || 'Proyecto ' + projects[pi].id;
               });
               allActs = allActs.concat(acts);
             }
@@ -67,14 +66,14 @@ const title = 'Actividades';
         }
 
         container.innerHTML = allActs.map(function(a) {
-          var status = a.estado || 'pendiente';
+          var status = a.status || 'pendiente';
           var sc = status === 'completada' ? 'bg-green-100 text-green-700' : status === 'en_progreso' ? 'bg-blue-100 text-blue-700' : 'bg-yellow-100 text-yellow-700';
           return '<div class="bg-white dark:bg-gray-900 rounded-xl border p-4">' +
             '<div class="flex items-start justify-between mb-2">' +
-            '<div><h4 class="font-medium">' + (a.titulo || a.nombre || 'Sin título') + '</h4>' +
+            '<div><h4 class="font-medium">' + (a.title || 'Sin título') + '</h4>' +
             '<p class="text-xs text-gray-400 mt-1">' + (a.project_name || '') + ' → ' + (a.req_title || '') + '</p></div>' +
             '<span class="' + sc + ' text-xs px-2 py-1 rounded">' + status + '</span></div>' +
-            '<p class="text-sm text-gray-500 mb-2">' + (a.descripcion || '') + '</p>' +
+            '<p class="text-sm text-gray-500 mb-2">' + (a.description || '') + '</p>' +
             '<a href="/productos" class="text-blue-600 text-sm hover:underline">Ver productos →</a></div>';
         }).join('');
       } catch(e) {

@@ -10,7 +10,6 @@ const title = 'Requerimientos';
       <p class="text-gray-500 text-sm mt-1">Listado general de requerimientos</p>
     </div>
 
-    <!-- Filter by project -->
     <div class="flex gap-3 items-end">
       <div class="flex-1">
         <label class="block text-sm font-medium mb-1">Filtrar por proyecto</label>
@@ -46,7 +45,7 @@ const title = 'Requerimientos';
           json.data.forEach(function(p) {
             var opt = document.createElement('option');
             opt.value = p.id;
-            opt.textContent = p.nombre || 'Proyecto ' + p.id;
+            opt.textContent = p.name || 'Proyecto ' + p.id;
             sel.appendChild(opt);
           });
         }
@@ -78,7 +77,7 @@ const title = 'Requerimientos';
           var json = await res.json();
           if (json.success && json.data) {
             var reqs = Array.isArray(json.data) ? json.data : [json.data];
-            reqs.forEach(function(r) { r.project_name = projects[i].nombre || 'Proyecto ' + projects[i].id; });
+            reqs.forEach(function(r) { r.project_name = projects[i].name || 'Proyecto ' + projects[i].id; });
             allReqs = allReqs.concat(reqs);
           }
         }
@@ -90,16 +89,16 @@ const title = 'Requerimientos';
 
         container.innerHTML = allReqs.map(function(r) {
           var prioColors = { 'alta': 'bg-red-100 text-red-700', 'media': 'bg-yellow-100 text-yellow-700', 'baja': 'bg-green-100 text-green-700' };
-          var pc = prioColors[r.prioridad] || 'bg-gray-100 text-gray-700';
-          var status = r.estado || 'pendiente';
+          var pc = prioColors[r.priority] || 'bg-gray-100 text-gray-700';
+          var status = r.status || 'pendiente';
           var sc = status === 'completado' ? 'bg-green-100 text-green-700' : status === 'en_progreso' ? 'bg-blue-100 text-blue-700' : 'bg-yellow-100 text-yellow-700';
           return '<div class="bg-white dark:bg-gray-900 rounded-xl border p-4">' +
             '<div class="flex items-start justify-between mb-2">' +
-            '<div><h4 class="font-medium">' + (r.titulo || 'Sin título') + '</h4>' +
+            '<div><h4 class="font-medium">' + (r.title || 'Sin título') + '</h4>' +
             '<p class="text-xs text-gray-400 mt-1">Proyecto: ' + (r.project_name || '-') + '</p></div>' +
-            '<div class="flex gap-1"><span class="' + pc + ' text-xs px-2 py-1 rounded">' + (r.prioridad || 'media') + '</span>' +
+            '<div class="flex gap-1"><span class="' + pc + ' text-xs px-2 py-1 rounded">' + (r.priority || 'media') + '</span>' +
             '<span class="' + sc + ' text-xs px-2 py-1 rounded">' + status + '</span></div></div>' +
-            '<p class="text-sm text-gray-500 mb-2">' + (r.descripcion || '') + '</p>' +
+            '<p class="text-sm text-gray-500 mb-2">' + (r.description || '') + '</p>' +
             '<a href="/actividades" class="text-blue-600 text-sm hover:underline">Ver actividades →</a></div>';
         }).join('');
       } catch(e) {

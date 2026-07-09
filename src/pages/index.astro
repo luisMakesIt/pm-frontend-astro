@@ -2,7 +2,6 @@
 import Layout from '../layouts/Layout.astro';
 
 const title = 'Dashboard';
-const API = 'http://zasm8vmm79eejamdbgx3zwda.144.217.163.180.sslip.io/api';
 ---
 
 <Layout title={title}>
@@ -84,16 +83,16 @@ const API = 'http://zasm8vmm79eejamdbgx3zwda.144.217.163.180.sslip.io/api';
           var projects = json2.data;
           var container = el('recent-projects');
           if (projects.length === 0) {
-            container.innerHTML = '<p class="text-gray-500 text-sm">No hay proyectos. <a href="/projects" class="text-blue-600 hover:underline">Crear uno →</a></p>';
+            container.innerHTML = '<p class="text-gray-500 text-sm">No hay proyectos. <a href="/projects" class="text-blue-600 hover:underline">Crear uno</a></p>';
           } else {
             container.innerHTML = projects.slice(0, 5).map(function(p) {
-              var status = p.estado || 'activo';
+              var status = p.status || 'activo';
               var statusColor = status === 'completado' ? 'bg-green-100 text-green-700' :
                 status === 'en_progreso' || status === 'activo' ? 'bg-blue-100 text-blue-700' :
                 'bg-yellow-100 text-yellow-700';
               var progress = p.progreso || 0;
               return '<div class="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">' +
-                '<div><h4 class="font-medium">' + (p.nombre || p.name || 'Sin nombre') + '</h4>' +
+                '<div><h4 class="font-medium">' + (p.name || 'Sin nombre') + '</h4>' +
                 '<p class="text-sm text-gray-500">' + status + ' · ' + progress + '% completado</p></div>' +
                 '<span class="' + statusColor + ' text-xs px-2 py-1 rounded">' + status + '</span></div>';
             }).join('');

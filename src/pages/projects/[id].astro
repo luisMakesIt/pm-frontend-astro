@@ -23,7 +23,6 @@ const title = 'Detalle del Proyecto';
       </div>
     </div>
 
-    <!-- Project Info -->
     <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
       <div class="bg-white dark:bg-gray-900 rounded-xl border p-4">
         <p class="text-gray-500 text-xs">Estado</p>
@@ -43,7 +42,6 @@ const title = 'Detalle del Proyecto';
       </div>
     </div>
 
-    <!-- Tabs -->
     <div class="border-b">
       <nav class="flex gap-4">
         <button onclick="switchTab('reqs')" id="tab-reqs" class="py-2 px-4 border-b-2 border-blue-500 font-medium text-sm">Requerimientos</button>
@@ -51,14 +49,12 @@ const title = 'Detalle del Proyecto';
       </nav>
     </div>
 
-    <!-- Requirements Tab -->
     <div id="tab-content-reqs" class="space-y-4">
       <div id="reqs-list" class="space-y-3">
         <p class="text-gray-500 text-sm">Cargando requerimientos...</p>
       </div>
     </div>
 
-    <!-- Members Tab -->
     <div id="tab-content-members" class="hidden space-y-4">
       <div id="members-list" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         <p class="text-gray-500 text-sm">Cargando miembros...</p>
@@ -73,15 +69,15 @@ const title = 'Detalle del Proyecto';
       <form id="form-req" class="space-y-4">
         <div>
           <label class="block text-sm font-medium mb-1">Título</label>
-          <input type="text" name="titulo" required class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none">
+          <input type="text" name="title" required class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none">
         </div>
         <div>
           <label class="block text-sm font-medium mb-1">Descripción</label>
-          <textarea name="descripcion" rows="3" class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"></textarea>
+          <textarea name="description" rows="3" class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"></textarea>
         </div>
         <div>
           <label class="block text-sm font-medium mb-1">Prioridad</label>
-          <select name="prioridad" class="w-full px-4 py-2 border rounded-lg">
+          <select name="priority" class="w-full px-4 py-2 border rounded-lg">
             <option value="alta">Alta</option>
             <option value="media" selected>Media</option>
             <option value="baja">Baja</option>
@@ -103,7 +99,7 @@ const title = 'Detalle del Proyecto';
       <form id="form-member" class="space-y-4">
         <div>
           <label class="block text-sm font-medium mb-1">Nombre</label>
-          <input type="text" name="nombre" required class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none">
+          <input type="text" name="name" required class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none">
         </div>
         <div>
           <label class="block text-sm font-medium mb-1">Email</label>
@@ -111,10 +107,10 @@ const title = 'Detalle del Proyecto';
         </div>
         <div>
           <label class="block text-sm font-medium mb-1">Rol</label>
-          <select name="rol" class="w-full px-4 py-2 border rounded-lg">
+          <select name="role" class="w-full px-4 py-2 border rounded-lg">
             <option value="developer">Desarrollador</option>
-            <option value="leader">Líder</option>
-            <option value="qa">QA</option>
+            <option value="tech_lead">Líder Técnico</option>
+            <option value="tester">QA / Tester</option>
             <option value="designer">Diseñador</option>
           </select>
         </div>
@@ -169,12 +165,12 @@ const title = 'Detalle del Proyecto';
         var json = await res.json();
         if (json.success && json.data) {
           var p = json.data;
-          document.getElementById('project-name').textContent = p.nombre || 'Sin nombre';
-          document.getElementById('project-desc').textContent = p.descripcion || '';
-          document.getElementById('project-status').textContent = p.estado || '-';
+          document.getElementById('project-name').textContent = p.name || 'Sin nombre';
+          document.getElementById('project-desc').textContent = p.description || '';
+          document.getElementById('project-status').textContent = p.status || '-';
           document.getElementById('project-progress').textContent = (p.progreso || 0) + '%';
-          document.getElementById('project-start').textContent = p.fecha_inicio || '-';
-          document.getElementById('project-end').textContent = p.fecha_fin || '-';
+          document.getElementById('project-start').textContent = (p.start_date || '-').split('T')[0];
+          document.getElementById('project-end').textContent = (p.end_date || '-').split('T')[0];
         }
       } catch(e) {
         document.getElementById('project-name').textContent = 'Error al cargar';
@@ -198,12 +194,14 @@ const title = 'Detalle del Proyecto';
           }
           container.innerHTML = reqs.map(function(r) {
             var prioColors = { 'alta': 'bg-red-100 text-red-700', 'media': 'bg-yellow-100 text-yellow-700', 'baja': 'bg-green-100 text-green-700' };
-            var pc = prioColors[r.prioridad] || 'bg-gray-100 text-gray-700';
+            var pc = prioColors[r.priority] || 'bg-gray-100 text-gray-700';
+            var status = r.status || 'pendiente';
             return '<div class="bg-white dark:bg-gray-900 rounded-xl border p-4">' +
               '<div class="flex items-start justify-between mb-2">' +
-              '<h4 class="font-medium">' + (r.titulo || r.titulo_requerimiento || 'Sin título') + '</h4>' +
-              '<span class="' + pc + ' text-xs px-2 py-1 rounded">' + (r.prioridad || 'media') + '</span></div>' +
-              '<p class="text-sm text-gray-500 mb-2">' + (r.descripcion || '') + '</p>' +
+              '<h4 class="font-medium">' + (r.title || 'Sin título') + '</h4>' +
+              '<div class="flex gap-1"><span class="' + pc + ' text-xs px-2 py-1 rounded">' + (r.priority || 'media') + '</span>' +
+              '<span class="bg-gray-100 text-gray-700 text-xs px-2 py-1 rounded">' + status + '</span></div></div>' +
+              '<p class="text-sm text-gray-500 mb-2">' + (r.description || '') + '</p>' +
               '<div class="flex gap-2">' +
               '<a href="/requerimientos" class="text-blue-600 text-sm hover:underline">Ver actividades</a>' +
               '<button onclick="deleteReq(' + r.id + ')" class="text-red-600 text-sm hover:underline">Eliminar</button>' +
@@ -231,15 +229,15 @@ const title = 'Detalle del Proyecto';
             return;
           }
           container.innerHTML = members.map(function(m) {
-            var roleColors = { 'developer': 'bg-blue-100 text-blue-700', 'leader': 'bg-purple-100 text-purple-700', 'qa': 'bg-green-100 text-green-700', 'designer': 'bg-pink-100 text-pink-700' };
-            var rc = roleColors[m.rol] || 'bg-gray-100 text-gray-700';
+            var roleColors = { 'developer': 'bg-blue-100 text-blue-700', 'tech_lead': 'bg-purple-100 text-purple-700', 'tester': 'bg-green-100 text-green-700', 'designer': 'bg-pink-100 text-pink-700' };
+            var rc = roleColors[m.role] || 'bg-gray-100 text-gray-700';
             return '<div class="bg-white dark:bg-gray-900 rounded-xl border p-4">' +
               '<div class="flex items-center gap-3">' +
-              '<div class="w-10 h-10 rounded-full bg-blue-600 text-white flex items-center justify-center font-bold">' + (m.nombre || '?').charAt(0).toUpperCase() + '</div>' +
-              '<div><h4 class="font-medium">' + (m.nombre || 'Sin nombre') + '</h4>' +
+              '<div class="w-10 h-10 rounded-full bg-blue-600 text-white flex items-center justify-center font-bold">' + (m.name || '?').charAt(0).toUpperCase() + '</div>' +
+              '<div><h4 class="font-medium">' + (m.name || 'Sin nombre') + '</h4>' +
               '<p class="text-sm text-gray-500">' + (m.email || '') + '</p></div></div>' +
               '<div class="mt-3 flex items-center justify-between">' +
-              '<span class="' + rc + ' text-xs px-2 py-1 rounded">' + (m.rol || '-') + '</span>' +
+              '<span class="' + rc + ' text-xs px-2 py-1 rounded">' + (m.role || '-') + '</span>' +
               '<button onclick="deleteMember(' + m.id + ')" class="text-red-600 text-sm hover:underline">Eliminar</button>' +
               '</div></div>';
           }).join('');
@@ -256,7 +254,6 @@ const title = 'Detalle del Proyecto';
       var formData = new FormData(this);
       var data = {};
       formData.forEach(function(v, k) { data[k] = v; });
-      data.project_id = PROJECT_ID;
       var errEl = document.getElementById('req-error');
       try {
         var res = await fetch(API + '/projects/' + PROJECT_ID + '/requirements', {

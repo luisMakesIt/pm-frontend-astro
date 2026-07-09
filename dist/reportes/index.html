@@ -28,7 +28,7 @@
         document.getElementById('sidebar-overlay')?.classList.add('hidden');
       " data-astro-cid-ssfzsv2f> <!-- X SVG --> <svg class="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" data-astro-cid-ssfzsv2f> <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" data-astro-cid-ssfzsv2f></path> </svg> </button> </div> <nav class="px-3 py-4 space-y-1" data-astro-cid-ssfzsv2f> <a href="/" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors" data-astro-cid-ssfzsv2f> <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" data-astro-cid-ssfzsv2f> <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" data-astro-cid-ssfzsv2f></path> </svg> Dashboard </a><a href="/projects" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors" data-astro-cid-ssfzsv2f> <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" data-astro-cid-ssfzsv2f> <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z" data-astro-cid-ssfzsv2f></path> </svg> Proyectos </a> </nav> </aside> <!-- Main content area --> <main class="flex-1 lg:ml-64 overflow-y-auto" data-astro-cid-ssfzsv2f> <!-- Top bar --> <header class="sticky top-0 z-20 bg-white/80 dark:bg-gray-900/80 backdrop-blur-md border-b border-gray-200 dark:border-gray-800" data-astro-cid-ssfzsv2f> <div class="flex items-center justify-between px-4 lg:px-8 py-4" data-astro-cid-ssfzsv2f> <div data-astro-cid-ssfzsv2f> <h1 class="text-xl lg:text-2xl font-bold text-gray-900 dark:text-white" data-astro-cid-ssfzsv2f>  </h1> </div> <div class="flex items-center gap-3" data-astro-cid-ssfzsv2f> <button onclick="window.__toggleTheme()" class="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors" data-astro-cid-ssfzsv2f> <!-- Sun SVG (shown in dark mode) --> <svg class="w-5 h-5 hidden dark:block" fill="none" stroke="currentColor" viewBox="0 0 24 24" data-astro-cid-ssfzsv2f> <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" data-astro-cid-ssfzsv2f></path> </svg> <!-- Moon SVG (shown in light mode) --> <svg class="w-5 h-5 block dark:hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24" data-astro-cid-ssfzsv2f> <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" data-astro-cid-ssfzsv2f></path> </svg> </button> <div class="w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center" data-astro-cid-ssfzsv2f> <span class="w-7 h-7 rounded-full bg-primary text-white flex items-center justify-center text-xs font-bold" data-astro-cid-ssfzsv2f>
 A
-</span> </div> </div> </div> </header> <div class="p-4 lg:p-8" data-astro-cid-ssfzsv2f>  <div class="p-6 space-y-6"> <div> <h1 class="text-2xl font-bold">Reportes</h1> <p class="text-gray-500 text-sm mt-1">Informes por proyecto, desarrollador y equipo</p> </div> <!-- Summary Cards --> <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4"> <div class="bg-white dark:bg-gray-900 rounded-xl border p-5"> <p class="text-gray-500 text-sm">Total Proyectos</p> <p class="text-3xl font-bold mt-2" id="rep-projects">-</p> </div> <div class="bg-white dark:bg-gray-900 rounded-xl border p-5"> <p class="text-gray-500 text-sm">Total Requerimientos</p> <p class="text-3xl font-bold mt-2" id="rep-reqs">-</p> </div> <div class="bg-white dark:bg-gray-900 rounded-xl border p-5"> <p class="text-gray-500 text-sm">Total Actividades</p> <p class="text-3xl font-bold mt-2" id="rep-acts">-</p> </div> <div class="bg-white dark:bg-gray-900 rounded-xl border p-5"> <p class="text-gray-500 text-sm">Proyectos Activos</p> <p class="text-3xl font-bold mt-2" id="rep-active">-</p> </div> </div> <!-- Project Report --> <div class="bg-white dark:bg-gray-900 rounded-xl border p-6"> <div class="flex items-center justify-between mb-4"> <h3 class="font-semibold">Reporte por Proyecto</h3> <div class="flex gap-2"> <select id="report-project" class="px-3 py-1.5 border rounded-lg text-sm"> <option value="">Seleccionar proyecto...</option> </select> <button onclick="loadProjectReport()" class="bg-blue-600 text-white px-3 py-1.5 rounded-lg text-sm hover:bg-blue-700">Generar</button> </div> </div> <div id="project-report" class="space-y-3"> <p class="text-gray-500 text-sm">Selecciona un proyecto y genera el reporte.</p> </div> </div> <!-- All Projects Summary --> <div class="bg-white dark:bg-gray-900 rounded-xl border p-6"> <h3 class="font-semibold mb-4">Resumen de Proyectos</h3> <div id="all-projects-report" class="overflow-x-auto"> <p class="text-gray-500 text-sm">Cargando...</p> </div> </div> </div> <script>
+</span> </div> </div> </div> </header> <div class="p-4 lg:p-8" data-astro-cid-ssfzsv2f>  <div class="p-6 space-y-6"> <div> <h1 class="text-2xl font-bold">Reportes</h1> <p class="text-gray-500 text-sm mt-1">Informes por proyecto, desarrollador y equipo</p> </div> <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4"> <div class="bg-white dark:bg-gray-900 rounded-xl border p-5"> <p class="text-gray-500 text-sm">Total Proyectos</p> <p class="text-3xl font-bold mt-2" id="rep-projects">-</p> </div> <div class="bg-white dark:bg-gray-900 rounded-xl border p-5"> <p class="text-gray-500 text-sm">Total Requerimientos</p> <p class="text-3xl font-bold mt-2" id="rep-reqs">-</p> </div> <div class="bg-white dark:bg-gray-900 rounded-xl border p-5"> <p class="text-gray-500 text-sm">Total Actividades</p> <p class="text-3xl font-bold mt-2" id="rep-acts">-</p> </div> <div class="bg-white dark:bg-gray-900 rounded-xl border p-5"> <p class="text-gray-500 text-sm">Proyectos Activos</p> <p class="text-3xl font-bold mt-2" id="rep-active">-</p> </div> </div> <div class="bg-white dark:bg-gray-900 rounded-xl border p-6"> <div class="flex items-center justify-between mb-4"> <h3 class="font-semibold">Reporte por Proyecto</h3> <div class="flex gap-2"> <select id="report-project" class="px-3 py-1.5 border rounded-lg text-sm"> <option value="">Seleccionar proyecto...</option> </select> <button onclick="loadProjectReport()" class="bg-blue-600 text-white px-3 py-1.5 rounded-lg text-sm hover:bg-blue-700">Generar</button> </div> </div> <div id="project-report" class="space-y-3"> <p class="text-gray-500 text-sm">Selecciona un proyecto y genera el reporte.</p> </div> </div> <div class="bg-white dark:bg-gray-900 rounded-xl border p-6"> <h3 class="font-semibold mb-4">Resumen de Proyectos</h3> <div id="all-projects-report" class="overflow-x-auto"> <p class="text-gray-500 text-sm">Cargando...</p> </div> </div> </div> <script>
     var API = 'http://zasm8vmm79eejamdbgx3zwda.144.217.163.180.sslip.io/api';
 
     function getToken() {
@@ -41,7 +41,7 @@ A
       var token = getToken();
       if (!token) return;
       try {
-        var res = await fetch(API + '/reports/summary', { headers: { 'Authorization': 'Bearer ' + token } });
+        var res = await fetch(API + '/dashboard/stats', { headers: { 'Authorization': 'Bearer ' + token } });
         var json = await res.json();
         if (json.success && json.data) {
           var d = json.data;
@@ -50,19 +50,7 @@ A
           document.getElementById('rep-acts').textContent = d.total_activities || 0;
           document.getElementById('rep-active').textContent = d.active_projects || 0;
         }
-      } catch(e) {
-        // Fallback to dashboard stats
-        try {
-          var res2 = await fetch(API + '/dashboard/stats', { headers: { 'Authorization': 'Bearer ' + token } });
-          var json2 = await res2.json();
-          if (json2.success && json2.data) {
-            document.getElementById('rep-projects').textContent = json2.data.total_projects || 0;
-            document.getElementById('rep-reqs').textContent = json2.data.total_requirements || 0;
-            document.getElementById('rep-acts').textContent = json2.data.total_activities || 0;
-            document.getElementById('rep-active').textContent = json2.data.active_projects || 0;
-          }
-        } catch(e2) {}
-      }
+      } catch(e) {}
     }
 
     async function loadProjectsDropdown() {
@@ -76,7 +64,7 @@ A
           json.data.forEach(function(p) {
             var opt = document.createElement('option');
             opt.value = p.id;
-            opt.textContent = p.nombre || 'Proyecto ' + p.id;
+            opt.textContent = p.name || 'Proyecto ' + p.id;
             sel.appendChild(opt);
           });
         }
@@ -94,25 +82,30 @@ A
       }
 
       try {
-        var res = await fetch(API + '/reports/projects/' + pid, { headers: { 'Authorization': 'Bearer ' + token } });
+        var res = await fetch(API + '/projects/' + pid, { headers: { 'Authorization': 'Bearer ' + token } });
         var json = await res.json();
         if (json.success && json.data) {
           var d = json.data;
+          var reqCount = (d.requirements || []).length;
+          var memberCount = (d.team_members || []).length;
+          var actCount = 0;
+          (d.requirements || []).forEach(function(r) { actCount += (r.activities || []).length; });
           var html = '<div class="space-y-4">';
           html += '<div class="grid grid-cols-2 md:grid-cols-4 gap-3">';
           html += '<div class="p-3 bg-gray-50 dark:bg-gray-800 rounded-lg"><p class="text-xs text-gray-400">Progreso</p><p class="font-bold">' + (d.progreso || 0) + '%</p></div>';
-          html += '<div class="p-3 bg-gray-50 dark:bg-gray-800 rounded-lg"><p class="text-xs text-gray-400">Requerimientos</p><p class="font-bold">' + (d.total_requirements || d.requirements_count || 0) + '</p></div>';
-          html += '<div class="p-3 bg-gray-50 dark:bg-gray-800 rounded-lg"><p class="text-xs text-gray-400">Actividades</p><p class="font-bold">' + (d.total_activities || d.activities_count || 0) + '</p></div>';
-          html += '<div class="p-3 bg-gray-50 dark:bg-gray-800 rounded-lg"><p class="text-xs text-gray-400">Miembros</p><p class="font-bold">' + (d.total_members || d.members_count || 0) + '</p></div>';
+          html += '<div class="p-3 bg-gray-50 dark:bg-gray-800 rounded-lg"><p class="text-xs text-gray-400">Requerimientos</p><p class="font-bold">' + reqCount + '</p></div>';
+          html += '<div class="p-3 bg-gray-50 dark:bg-gray-800 rounded-lg"><p class="text-xs text-gray-400">Actividades</p><p class="font-bold">' + actCount + '</p></div>';
+          html += '<div class="p-3 bg-gray-50 dark:bg-gray-800 rounded-lg"><p class="text-xs text-gray-400">Miembros</p><p class="font-bold">' + memberCount + '</p></div>';
           html += '</div>';
-          if (d.descripcion) html += '<p class="text-sm text-gray-500">' + d.descripcion + '</p>';
+          if (d.description) html += '<p class="text-sm text-gray-500">' + d.description + '</p>';
+          if (d.client_name) html += '<p class="text-sm text-gray-500">Cliente: ' + d.client_name + '</p>';
           html += '</div>';
           container.innerHTML = html;
         } else {
           container.innerHTML = '<p class="text-red-500 text-sm">No se pudo generar el reporte.</p>';
         }
       } catch(e) {
-        container.innerHTML = '<p class="text-red-500 text-sm">Error al cargar reporte: ' + e.message + '</p>';
+        container.innerHTML = '<p class="text-red-500 text-sm">Error al cargar reporte</p>';
       }
     }
 
@@ -126,13 +119,15 @@ A
         if (json.success && json.data) {
           var projects = json.data;
           var html = '<table class="w-full text-sm"><thead><tr class="border-b text-left">';
-          html += '<th class="py-2">Proyecto</th><th>Estado</th><th>Progreso</th><th class="pb-2">Inicio</th></tr></thead><tbody>';
+          html += '<th class="py-2">Proyecto</th><th>Estado</th><th>Progreso</th><th>Inicio</th><th class="pb-2">Reqs</th></tr></thead><tbody>';
           projects.forEach(function(p) {
+            var reqCount = (p.requirements || []).length;
             html += '<tr class="border-b border-gray-100 dark:border-gray-800">' +
-              '<td class="py-2 font-medium">' + (p.nombre || '-') + '</td>' +
-              '<td>' + (p.estado || '-') + '</td>' +
+              '<td class="py-2 font-medium">' + (p.name || '-') + '</td>' +
+              '<td>' + (p.status || '-') + '</td>' +
               '<td>' + (p.progreso || 0) + '%</td>' +
-              '<td class="pb-2">' + (p.fecha_inicio || '-') + '</td></tr>';
+              '<td>' + ((p.start_date || '-').split('T')[0]) + '</td>' +
+              '<td class="pb-2">' + reqCount + '</td></tr>';
           });
           html += '</tbody></table>';
           container.innerHTML = html;
