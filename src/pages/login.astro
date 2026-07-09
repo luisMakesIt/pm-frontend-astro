@@ -46,7 +46,7 @@ import Layout from '../layouts/Layout.astro';
       const password = document.getElementById('password')?.value;
       const errEl = document.getElementById('error-msg');
       try {
-        const res = await fetch('/api/auth/login', {
+        const res = await fetch('http://zasm8vmm79eejamdbgx3zwda.144.217.163.180.sslip.io/api/auth/login', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ email, password }),
