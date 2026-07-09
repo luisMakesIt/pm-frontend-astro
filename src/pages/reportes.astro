@@ -1,78 +1,176 @@
 ---
 import Layout from '../layouts/Layout.astro';
-
 const title = 'Reportes';
 ---
 
 <Layout title={title}>
   <div class="p-6 space-y-6">
-    <!-- Header -->
     <div>
-      <h1 class="text-2xl font-bold">Reportes y Exportaciones</h1>
-      <p class="text-gray-500 text-sm mt-1">Genera reportes detallados del sistema</p>
+      <h1 class="text-2xl font-bold">Reportes</h1>
+      <p class="text-gray-500 text-sm mt-1">Informes por proyecto, desarrollador y equipo</p>
     </div>
 
-    <!-- Export Buttons -->
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-      <!-- Project Report -->
-      <div class="bg-white dark:bg-gray-900 rounded-xl border p-6">
-        <div class="text-3xl mb-3">📊</div>
-        <h3 class="font-semibold text-lg">Reporte de Proyecto</h3>
-        <p class="text-sm text-gray-500 mt-2 mb-4">Incluye requerimientos, actividades, productos y dev logs de un proyecto específico.</p>
-        <div class="space-y-3">
-          <select class="w-full border rounded-lg px-3 py-2 text-sm">
-            <option>Seleccionar proyecto...</option>
-            <option>Sistema de Facturación</option>
-            <option>App Móvil - E-commerce</option>
-          </select>
-          <div class="flex gap-2">
-            <button class="flex-1 bg-red-50 text-red-700 border border-red-200 px-3 py-2 rounded-lg text-sm font-medium hover:bg-red-100 transition">PDF</button>
-            <button class="flex-1 bg-green-50 text-green-700 border border-green-200 px-3 py-2 rounded-lg text-sm font-medium hover:bg-green-100 transition">CSV</button>
-          </div>
-        </div>
+    <!-- Summary Cards -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div class="bg-white dark:bg-gray-900 rounded-xl border p-5">
+        <p class="text-gray-500 text-sm">Total Proyectos</p>
+        <p class="text-3xl font-bold mt-2" id="rep-projects">-</p>
       </div>
-
-      <!-- Developer Report -->
-      <div class="bg-white dark:bg-gray-900 rounded-xl border p-6">
-        <div class="text-3xl mb-3">👨‍💻</div>
-        <h3 class="font-semibold text-lg">Reporte de Desarrollador</h3>
-        <p class="text-sm text-gray-500 mt-2 mb-4">Historial de commits, fixes y actividades por desarrollador y proyecto.</p>
-        <div class="space-y-3">
-          <select class="w-full border rounded-lg px-3 py-2 text-sm">
-            <option>Seleccionar developer...</option>
-            <option>Ana García</option>
-            <option>Carlos López</option>
-            <option>María Torres</option>
-          </select>
-          <div class="flex gap-2">
-            <button class="flex-1 bg-red-50 text-red-700 border border-red-200 px-3 py-2 rounded-lg text-sm font-medium hover:bg-red-100 transition">PDF</button>
-            <button class="flex-1 bg-green-50 text-green-700 border border-green-200 px-3 py-2 rounded-lg text-sm font-medium hover:bg-green-100 transition">CSV</button>
-          </div>
-        </div>
+      <div class="bg-white dark:bg-gray-900 rounded-xl border p-5">
+        <p class="text-gray-500 text-sm">Total Requerimientos</p>
+        <p class="text-3xl font-bold mt-2" id="rep-reqs">-</p>
       </div>
-
-      <!-- Team Report -->
-      <div class="bg-white dark:bg-gray-900 rounded-xl border p-6">
-        <div class="text-3xl mb-3">👥</div>
-        <h3 class="font-semibold text-lg">Reporte de Equipo</h3>
-        <p class="text-sm text-gray-500 mt-2 mb-4">Agregado de stats del equipo completo: productividad, carga, tiempos.</p>
-        <select class="w-full border rounded-lg px-3 py-2 text-sm mb-3">
-          <option>Sistema de Facturación</option>
-        </select>
-        <div class="flex gap-2">
-          <button class="flex-1 bg-red-50 text-red-700 border border-red-200 px-3 py-2 rounded-lg text-sm font-medium hover:bg-red-100 transition">PDF</button>
-          <button class="flex-1 bg-green-50 text-green-700 border border-green-200 px-3 py-2 rounded-lg text-sm font-medium hover:bg-green-100 transition">CSV</button>
-        </div>
+      <div class="bg-white dark:bg-gray-900 rounded-xl border p-5">
+        <p class="text-gray-500 text-sm">Total Actividades</p>
+        <p class="text-3xl font-bold mt-2" id="rep-acts">-</p>
+      </div>
+      <div class="bg-white dark:bg-gray-900 rounded-xl border p-5">
+        <p class="text-gray-500 text-sm">Proyectos Activos</p>
+        <p class="text-3xl font-bold mt-2" id="rep-active">-</p>
       </div>
     </div>
 
-    <!-- Previews -->
+    <!-- Project Report -->
     <div class="bg-white dark:bg-gray-900 rounded-xl border p-6">
-      <h3 class="font-semibold mb-4">Vista Previa del Reporte</h3>
-      <div class="bg-gray-50 rounded-lg p-6 border-2 border-dashed border-gray-300 text-center py-12">
-        <p class="text-gray-400">Selecciona un proyecto y formato para generar la vista previa</p>
-        <p class="text-gray-300 text-sm mt-2">Formatos disponibles: PDF, CSV, Excel</p>
+      <div class="flex items-center justify-between mb-4">
+        <h3 class="font-semibold">Reporte por Proyecto</h3>
+        <div class="flex gap-2">
+          <select id="report-project" class="px-3 py-1.5 border rounded-lg text-sm">
+            <option value="">Seleccionar proyecto...</option>
+          </select>
+          <button onclick="loadProjectReport()" class="bg-blue-600 text-white px-3 py-1.5 rounded-lg text-sm hover:bg-blue-700">Generar</button>
+        </div>
+      </div>
+      <div id="project-report" class="space-y-3">
+        <p class="text-gray-500 text-sm">Selecciona un proyecto y genera el reporte.</p>
+      </div>
+    </div>
+
+    <!-- All Projects Summary -->
+    <div class="bg-white dark:bg-gray-900 rounded-xl border p-6">
+      <h3 class="font-semibold mb-4">Resumen de Proyectos</h3>
+      <div id="all-projects-report" class="overflow-x-auto">
+        <p class="text-gray-500 text-sm">Cargando...</p>
       </div>
     </div>
   </div>
+
+  <script is:inline>
+    var API = 'http://zasm8vmm79eejamdbgx3zwda.144.217.163.180.sslip.io/api';
+
+    function getToken() {
+      var t = localStorage.getItem('pm_token');
+      if (!t) { window.location.href = '/login'; return null; }
+      return t;
+    }
+
+    async function loadSummary() {
+      var token = getToken();
+      if (!token) return;
+      try {
+        var res = await fetch(API + '/reports/summary', { headers: { 'Authorization': 'Bearer ' + token } });
+        var json = await res.json();
+        if (json.success && json.data) {
+          var d = json.data;
+          document.getElementById('rep-projects').textContent = d.total_projects || 0;
+          document.getElementById('rep-reqs').textContent = d.total_requirements || 0;
+          document.getElementById('rep-acts').textContent = d.total_activities || 0;
+          document.getElementById('rep-active').textContent = d.active_projects || 0;
+        }
+      } catch(e) {
+        // Fallback to dashboard stats
+        try {
+          var res2 = await fetch(API + '/dashboard/stats', { headers: { 'Authorization': 'Bearer ' + token } });
+          var json2 = await res2.json();
+          if (json2.success && json2.data) {
+            document.getElementById('rep-projects').textContent = json2.data.total_projects || 0;
+            document.getElementById('rep-reqs').textContent = json2.data.total_requirements || 0;
+            document.getElementById('rep-acts').textContent = json2.data.total_activities || 0;
+            document.getElementById('rep-active').textContent = json2.data.active_projects || 0;
+          }
+        } catch(e2) {}
+      }
+    }
+
+    async function loadProjectsDropdown() {
+      var token = getToken();
+      if (!token) return;
+      try {
+        var res = await fetch(API + '/projects', { headers: { 'Authorization': 'Bearer ' + token } });
+        var json = await res.json();
+        if (json.success && json.data) {
+          var sel = document.getElementById('report-project');
+          json.data.forEach(function(p) {
+            var opt = document.createElement('option');
+            opt.value = p.id;
+            opt.textContent = p.nombre || 'Proyecto ' + p.id;
+            sel.appendChild(opt);
+          });
+        }
+      } catch(e) {}
+    }
+
+    async function loadProjectReport() {
+      var token = getToken();
+      if (!token) return;
+      var pid = document.getElementById('report-project').value;
+      var container = document.getElementById('project-report');
+      if (!pid) {
+        container.innerHTML = '<p class="text-gray-500 text-sm">Selecciona un proyecto primero.</p>';
+        return;
+      }
+
+      try {
+        var res = await fetch(API + '/reports/projects/' + pid, { headers: { 'Authorization': 'Bearer ' + token } });
+        var json = await res.json();
+        if (json.success && json.data) {
+          var d = json.data;
+          var html = '<div class="space-y-4">';
+          html += '<div class="grid grid-cols-2 md:grid-cols-4 gap-3">';
+          html += '<div class="p-3 bg-gray-50 dark:bg-gray-800 rounded-lg"><p class="text-xs text-gray-400">Progreso</p><p class="font-bold">' + (d.progreso || 0) + '%</p></div>';
+          html += '<div class="p-3 bg-gray-50 dark:bg-gray-800 rounded-lg"><p class="text-xs text-gray-400">Requerimientos</p><p class="font-bold">' + (d.total_requirements || d.requirements_count || 0) + '</p></div>';
+          html += '<div class="p-3 bg-gray-50 dark:bg-gray-800 rounded-lg"><p class="text-xs text-gray-400">Actividades</p><p class="font-bold">' + (d.total_activities || d.activities_count || 0) + '</p></div>';
+          html += '<div class="p-3 bg-gray-50 dark:bg-gray-800 rounded-lg"><p class="text-xs text-gray-400">Miembros</p><p class="font-bold">' + (d.total_members || d.members_count || 0) + '</p></div>';
+          html += '</div>';
+          if (d.descripcion) html += '<p class="text-sm text-gray-500">' + d.descripcion + '</p>';
+          html += '</div>';
+          container.innerHTML = html;
+        } else {
+          container.innerHTML = '<p class="text-red-500 text-sm">No se pudo generar el reporte.</p>';
+        }
+      } catch(e) {
+        container.innerHTML = '<p class="text-red-500 text-sm">Error al cargar reporte: ' + e.message + '</p>';
+      }
+    }
+
+    async function loadAllProjectsReport() {
+      var token = getToken();
+      if (!token) return;
+      var container = document.getElementById('all-projects-report');
+      try {
+        var res = await fetch(API + '/projects', { headers: { 'Authorization': 'Bearer ' + token } });
+        var json = await res.json();
+        if (json.success && json.data) {
+          var projects = json.data;
+          var html = '<table class="w-full text-sm"><thead><tr class="border-b text-left">';
+          html += '<th class="py-2">Proyecto</th><th>Estado</th><th>Progreso</th><th class="pb-2">Inicio</th></tr></thead><tbody>';
+          projects.forEach(function(p) {
+            html += '<tr class="border-b border-gray-100 dark:border-gray-800">' +
+              '<td class="py-2 font-medium">' + (p.nombre || '-') + '</td>' +
+              '<td>' + (p.estado || '-') + '</td>' +
+              '<td>' + (p.progreso || 0) + '%</td>' +
+              '<td class="pb-2">' + (p.fecha_inicio || '-') + '</td></tr>';
+          });
+          html += '</tbody></table>';
+          container.innerHTML = html;
+        }
+      } catch(e) {
+        container.innerHTML = '<p class="text-red-500 text-sm">Error al cargar</p>';
+      }
+    }
+
+    loadSummary();
+    loadProjectsDropdown();
+    loadAllProjectsReport();
+  </script>
 </Layout>

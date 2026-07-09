@@ -1,84 +1,91 @@
 ---
 import Layout from '../layouts/Layout.astro';
-
 const title = 'Productos';
 ---
 
 <Layout title={title}>
   <div class="p-6 space-y-6">
-    <div class="flex items-center justify-between">
-      <div>
-        <h1 class="text-2xl font-bold">Productos</h1>
-        <p class="text-gray-500 text-sm mt-1">Artefactos y entregables del desarrollo</p>
-      </div>
-      <button class="bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-blue-700 transition">+ Nuevo Producto</button>
+    <div>
+      <h1 class="text-2xl font-bold">Productos</h1>
+      <p class="text-gray-500 text-sm mt-1">Productos registrados por actividad</p>
     </div>
 
-    <!-- Product Types -->
-    <div class="flex gap-2 flex-wrap">
-      <button class="px-3 py-1.5 rounded-full bg-blue-100 text-blue-700 text-sm font-medium">Todos (5)</button>
-      <button class="px-3 py-1.5 rounded-full bg-gray-100 text-gray-600 text-sm hover:bg-gray-200">Código (3)</button>
-      <button class="px-3 py-1.5 rounded-full bg-gray-100 text-gray-600 text-sm hover:bg-gray-200">Documento (2)</button>
-    </div>
-
-    <!-- Products -->
-    <div class="space-y-3">
-      <!-- Product 1 -->
-      <div class="bg-white dark:bg-gray-900 rounded-xl border p-5">
-        <div class="flex items-start gap-3">
-          <div class="w-10 h-10 rounded-lg bg-purple-100 flex items-center justify-center text-purple-700 text-sm">📄</div>
-          <div class="flex-1">
-            <div class="flex items-center justify-between">
-              <h3 class="font-medium">Schema de base de datos</h3>
-              <span class="text-xs bg-gray-100 px-2 py-0.5 rounded text-gray-500">Documento v1.0</span>
-            </div>
-            <p class="text-sm text-gray-500 mt-0.5">Tablas y relaciones para el módulo de facturación</p>
-            <div class="flex gap-3 mt-2 text-xs text-gray-400">
-              <span>📋 Diseño de base de datos de facturas</span>
-              <span>•</span>
-              <span>por Ana García</span>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Product 2 -->
-      <div class="bg-white dark:bg-gray-900 rounded-xl border p-5">
-        <div class="flex items-start gap-3">
-          <div class="w-10 h-10 rounded-lg bg-green-100 flex items-center justify-center text-green-700 text-sm">📦</div>
-          <div class="flex-1">
-            <div class="flex items-center justify-between">
-              <h3 class="font-medium">Facturación API Module v1</h3>
-              <span class="text-xs bg-gray-100 px-2 py-0.5 rounded text-gray-500">Código v1.0.0</span>
-            </div>
-            <p class="text-sm text-gray-500 mt-0.5">Módulo completo de facturación con endpoints REST</p>
-            <div class="flex gap-3 mt-2 text-xs text-gray-400">
-              <span>📋 Implementación de API de facturación</span>
-              <span>•</span>
-              <span>por Carlos López</span>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Product 3 -->
-      <div class="bg-white dark:bg-gray-900 rounded-xl border p-5">
-        <div class="flex items-start gap-3">
-          <div class="w-10 h-10 rounded-lg bg-green-100 flex items-center justify-center text-green-700 text-sm">📦</div>
-          <div class="flex-1">
-            <div class="flex items-center justify-between">
-              <h3 class="font-medium">SAT Digital Signer</h3>
-              <span class="text-xs bg-gray-100 px-2 py-0.5 rounded text-gray-500">Código v1.2.0</span>
-            </div>
-            <p class="text-sm text-gray-500 mt-0.5">Librería de firma digital para documentos fiscales</p>
-            <div class="flex gap-3 mt-2 text-xs text-gray-400">
-              <span>📋 Implementación de firma digital</span>
-              <span>•</span>
-              <span>por Carlos López</span>
-            </div>
-          </div>
-        </div>
-      </div>
+    <div id="products-list" class="space-y-3">
+      <p class="text-gray-500 text-sm">Cargando productos...</p>
     </div>
   </div>
+
+  <script is:inline>
+    var API = 'http://zasm8vmm79eejamdbgx3zwda.144.217.163.180.sslip.io/api';
+
+    function getToken() {
+      var t = localStorage.getItem('pm_token');
+      if (!t) { window.location.href = '/login'; return null; }
+      return t;
+    }
+
+    async function loadProducts() {
+      var token = getToken();
+      if (!token) return;
+      var container = document.getElementById('products-list');
+
+      try {
+        var pres = await fetch(API + '/projects', { headers: { 'Authorization': 'Bearer ' + token } });
+        var pjson = await pres.json();
+        var projects = pjson.data || [];
+
+        var allProducts = [];
+
+        for (var pi = 0; pi < projects.length; pi++) {
+          var rres = await fetch(API + '/projects/' + projects[pi].id + '/requirements', {
+            headers: { 'Authorization': 'Bearer ' + token }
+          });
+          var rjson = await rres.json();
+          if (!rjson.success || !rjson.data) continue;
+          var reqs = Array.isArray(rjson.data) ? rjson.data : [rjson.data];
+
+          for (var ri = 0; ri < reqs.length; ri++) {
+            var ares = await fetch(API + '/requirements/' + reqs[ri].id + '/activities', {
+              headers: { 'Authorization': 'Bearer ' + token }
+            });
+            var ajson = await ares.json();
+            if (!ajson.success || !ajson.data) continue;
+            var acts = Array.isArray(ajson.data) ? ajson.data : [ajson.data];
+
+            for (var ai = 0; ai < acts.length; ai++) {
+              var prres = await fetch(API + '/activities/' + acts[ai].id + '/products', {
+                headers: { 'Authorization': 'Bearer ' + token }
+              });
+              var prjson = await prres.json();
+              if (prjson.success && prjson.data) {
+                var prods = Array.isArray(prjson.data) ? prjson.data : [prjson.data];
+                prods.forEach(function(pr) {
+                  pr.act_title = acts[ai].titulo || 'Actividad ' + acts[ai].id;
+                  pr.project_name = projects[pi].nombre || 'Proyecto ' + projects[pi].id;
+                });
+                allProducts = allProducts.concat(prods);
+              }
+            }
+          }
+        }
+
+        if (allProducts.length === 0) {
+          container.innerHTML = '<p class="text-gray-500 text-sm">No hay productos registrados.</p>';
+          return;
+        }
+
+        container.innerHTML = allProducts.map(function(p) {
+          return '<div class="bg-white dark:bg-gray-900 rounded-xl border p-4">' +
+            '<div class="flex items-start justify-between mb-2">' +
+            '<div><h4 class="font-medium">' + (p.nombre || p.titulo || 'Sin nombre') + '</h4>' +
+            '<p class="text-xs text-gray-400 mt-1">' + (p.project_name || '') + ' → ' + (p.act_title || '') + '</p></div></div>' +
+            '<p class="text-sm text-gray-500">' + (p.descripcion || '') + '</p></div>';
+        }).join('');
+      } catch(e) {
+        container.innerHTML = '<p class="text-red-500 text-sm">Error al cargar productos</p>';
+      }
+    }
+
+    loadProducts();
+  </script>
 </Layout>
