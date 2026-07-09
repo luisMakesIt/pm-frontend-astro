@@ -34,19 +34,20 @@ import Layout from '../layouts/Layout.astro';
           <button type="submit" class="w-full bg-blue-600 text-white py-2.5 rounded-lg font-medium hover:bg-blue-700 transition">Entrar</button>
         </form>
 
-        <p class="text-center text-sm text-gray-400 mt-8">Demo: <code class="bg-gray-100 px-2 py-0.5 rounded">admin@pmsystem.com</code> / <code class="bg-gray-100 px-2 py-0.5 rounded">admin123</code></p>
+        <p class="text-center text-sm text-gray-400 mt-8">&nbsp;</p>
       </div>
     </div>
   </div>
 
   <script is:inline>
+    var API_URL = 'http://zasm8vmm79eejamdbgx3zwda.144.217.163.180.sslip.io/api';
     document.getElementById('login-form')?.addEventListener('submit', async (e) => {
       e.preventDefault();
       const email = document.getElementById('email')?.value;
       const password = document.getElementById('password')?.value;
       const errEl = document.getElementById('error-msg');
       try {
-        const res = await fetch('http://zasm8vmm79eejamdbgx3zwda.144.217.163.180.sslip.io/api/auth/login', {
+        const res = await fetch(API_URL + '/auth/login', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ email, password }),
@@ -61,10 +62,8 @@ import Layout from '../layouts/Layout.astro';
           errEl.classList.remove('hidden');
         }
       } catch {
-        // If backend unreachable, try mock login
-        localStorage.setItem('pm_token', 'mock-token');
-        localStorage.setItem('pm_user', JSON.stringify({ id:'1', name:'Admin', email, role:'admin' }));
-        window.location.href = '/';
+        errEl.textContent = 'No se puede conectar al servidor';
+        errEl.classList.remove('hidden');
       }
     });
   </script>

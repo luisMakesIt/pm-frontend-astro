@@ -41,6 +41,7 @@ A
       if (!token) { window.location.href = '/login'; return; }
       var API = 'http://zasm8vmm79eejamdbgx3zwda.144.217.163.180.sslip.io/api';
 
+      function esc(s){var d=document.createElement('div');d.textContent=s==null?'':String(s);return d.innerHTML;}
       function el(id) { return document.getElementById(id); }
 
       try {
@@ -80,9 +81,9 @@ A
                 'bg-yellow-100 text-yellow-700';
               var progress = p.progreso || 0;
               return '<div class="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">' +
-                '<div><h4 class="font-medium">' + (p.name || 'Sin nombre') + '</h4>' +
-                '<p class="text-sm text-gray-500">' + status + ' · ' + progress + '% completado</p></div>' +
-                '<span class="' + statusColor + ' text-xs px-2 py-1 rounded">' + status + '</span></div>';
+                '<div><h4 class="font-medium">' + esc(p.name || 'Sin nombre') + '</h4>' +
+                '<p class="text-sm text-gray-500">' + esc(status) + ' &middot; ' + esc(progress) + '% completado</p></div>' +
+                '<span class="' + statusColor + ' text-xs px-2 py-1 rounded">' + esc(status) + '</span></div>';
             }).join('');
           }
         }

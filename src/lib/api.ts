@@ -4,7 +4,7 @@ import type {
   TeamMember, DashboardStats, LoginCredentials, AuthResponse,
 } from '../types';
 
-const API_URL = import.meta.env.PUBLIC_API_URL || 'http://zasm8vmm79eejamdbgx3zwda.144.217.163.180.sslip.io';
+const API_URL = import.meta.env.PUBLIC_API_URL || 'http://localhost:8080';
 
 const api = axios.create({
   baseURL: API_URL,

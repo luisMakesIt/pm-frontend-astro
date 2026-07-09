@@ -115,6 +115,7 @@ const title = 'Requerimientos';
     var API = 'http://zasm8vmm79eejamdbgx3zwda.144.217.163.180.sslip.io/api';
     var allProjects = [];
 
+    function esc(s){var d=document.createElement('div');d.textContent=s==null?'':String(s);return d.innerHTML;}
     function getToken() {
       var t = localStorage.getItem('pm_token');
       if (!t) { window.location.href = '/login'; return null; }
@@ -163,11 +164,11 @@ const title = 'Requerimientos';
           var sc = { completado: 'bg-green-100 text-green-700', en_progreso: 'bg-blue-100 text-blue-700', pendiente: 'bg-yellow-100 text-yellow-700', cancelado: 'bg-red-100 text-red-700' }[r.status] || 'bg-gray-100 text-gray-700';
           return '<div class="bg-white dark:bg-gray-900 rounded-xl border p-4 transition-shadow hover:shadow-md">' +
             '<div class="flex items-start justify-between mb-2">' +
-            '<div><h4 class="font-medium">' + (r.title||'') + '</h4>' +
-            '<p class="text-xs text-gray-400">Proyecto: ' + (r.project_name||'-') + '</p></div>' +
-            '<div class="flex gap-1"><span class="' + pc + ' text-xs px-2 py-1 rounded">' + (r.priority||'') + '</span>' +
-            '<span class="' + sc + ' text-xs px-2 py-1 rounded">' + (r.status||'') + '</span></div></div>' +
-            '<p class="text-sm text-gray-500 mb-2">' + (r.description||'') + '</p>' +
+            '<div><h4 class="font-medium">' + esc(r.title) + '</h4>' +
+            '<p class="text-xs text-gray-400">Proyecto: ' + esc(r.project_name) + '</p></div>' +
+            '<div class="flex gap-1"><span class="' + pc + ' text-xs px-2 py-1 rounded">' + esc(r.priority) + '</span>' +
+            '<span class="' + sc + ' text-xs px-2 py-1 rounded">' + esc(r.status) + '</span></div></div>' +
+            '<p class="text-sm text-gray-500 mb-2">' + esc(r.description) + '</p>' +
             '<div class="flex gap-2">' +
             '<a href="/actividades" class="text-blue-600 text-sm hover:underline">Ver actividades</a>' +
             '<button onclick="editReq(' + r.id + ',' + r.project_id + ')" class="text-gray-600 text-sm hover:underline">Editar</button>' +

@@ -38,6 +38,7 @@ A
 </span> </div> </div> </div> </header> <div class="p-4 lg:p-8" data-astro-cid-ssfzsv2f>  <div class="p-6 space-y-6"> <div> <h1 class="text-2xl font-bold">Reportes</h1> <p class="text-gray-500 text-sm mt-1">Informes por proyecto, desarrollador y equipo</p> </div> <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4"> <div class="bg-white dark:bg-gray-900 rounded-xl border p-5"> <p class="text-gray-500 text-sm">Total Proyectos</p> <p class="text-3xl font-bold mt-2" id="rep-projects">-</p> </div> <div class="bg-white dark:bg-gray-900 rounded-xl border p-5"> <p class="text-gray-500 text-sm">Total Requerimientos</p> <p class="text-3xl font-bold mt-2" id="rep-reqs">-</p> </div> <div class="bg-white dark:bg-gray-900 rounded-xl border p-5"> <p class="text-gray-500 text-sm">Total Actividades</p> <p class="text-3xl font-bold mt-2" id="rep-acts">-</p> </div> <div class="bg-white dark:bg-gray-900 rounded-xl border p-5"> <p class="text-gray-500 text-sm">Proyectos Activos</p> <p class="text-3xl font-bold mt-2" id="rep-active">-</p> </div> </div> <div class="bg-white dark:bg-gray-900 rounded-xl border p-6"> <div class="flex items-center justify-between mb-4"> <h3 class="font-semibold">Reporte por Proyecto</h3> <div class="flex gap-2"> <select id="report-project" class="px-3 py-1.5 border rounded-lg text-sm"> <option value="">Seleccionar proyecto...</option> </select> <button onclick="loadProjectReport()" class="bg-blue-600 text-white px-3 py-1.5 rounded-lg text-sm hover:bg-blue-700">Generar</button> </div> </div> <div id="project-report" class="space-y-3"> <p class="text-gray-500 text-sm">Selecciona un proyecto y genera el reporte.</p> </div> </div> <div class="bg-white dark:bg-gray-900 rounded-xl border p-6"> <h3 class="font-semibold mb-4">Resumen de Proyectos</h3> <div id="all-projects-report" class="overflow-x-auto"> <p class="text-gray-500 text-sm">Cargando...</p> </div> </div> </div> <script>
     var API = 'http://zasm8vmm79eejamdbgx3zwda.144.217.163.180.sslip.io/api';
 
+    function esc(s){var d=document.createElement('div');d.textContent=s==null?'':String(s);return d.innerHTML;}
     function getToken() {
       var t = localStorage.getItem('pm_token');
       if (!t) { window.location.href = '/login'; return null; }
@@ -104,8 +105,8 @@ A
           html += '<div class="p-3 bg-gray-50 dark:bg-gray-800 rounded-lg"><p class="text-xs text-gray-400">Actividades</p><p class="font-bold">' + actCount + '</p></div>';
           html += '<div class="p-3 bg-gray-50 dark:bg-gray-800 rounded-lg"><p class="text-xs text-gray-400">Miembros</p><p class="font-bold">' + memberCount + '</p></div>';
           html += '</div>';
-          if (d.description) html += '<p class="text-sm text-gray-500">' + d.description + '</p>';
-          if (d.client_name) html += '<p class="text-sm text-gray-500">Cliente: ' + d.client_name + '</p>';
+          if (d.description) html += '<p class="text-sm text-gray-500">' + esc(d.description) + '</p>';
+          if (d.client_name) html += '<p class="text-sm text-gray-500">Cliente: ' + esc(d.client_name) + '</p>';
           html += '</div>';
           container.innerHTML = html;
         } else {
@@ -130,10 +131,10 @@ A
           projects.forEach(function(p) {
             var reqCount = (p.requirements || []).length;
             html += '<tr class="border-b border-gray-100 dark:border-gray-800">' +
-              '<td class="py-2 font-medium">' + (p.name || '-') + '</td>' +
-              '<td>' + (p.status || '-') + '</td>' +
-              '<td>' + (p.progreso || 0) + '%</td>' +
-              '<td>' + ((p.start_date || '-').split('T')[0]) + '</td>' +
+              '<td class="py-2 font-medium">' + esc(p.name || '-') + '</td>' +
+              '<td>' + esc(p.status || '-') + '</td>' +
+              '<td>' + esc(p.progreso || 0) + '%</td>' +
+              '<td>' + esc((p.start_date || '-').split('T')[0]) + '</td>' +
               '<td class="pb-2">' + reqCount + '</td></tr>';
           });
           html += '</tbody></table>';

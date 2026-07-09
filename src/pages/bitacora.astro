@@ -94,6 +94,7 @@ const title = 'Bitácora de Desarrollo';
     var API = 'http://zasm8vmm79eejamdbgx3zwda.144.217.163.180.sslip.io/api';
     var allActs = [];
 
+    function esc(s){var d=document.createElement('div');d.textContent=s==null?'':String(s);return d.innerHTML;}
     function getToken() { var t = localStorage.getItem('pm_token'); if (!t) { window.location.href = '/login'; return null; } return t; }
 
     async function loadActsForDropdown() {
@@ -143,14 +144,14 @@ const title = 'Bitácora de Desarrollo';
         container.innerHTML = allLogs.map(function(l) {
           return '<div class="bg-white dark:bg-gray-900 rounded-xl border p-4 transition-shadow hover:shadow-md">' +
             '<div class="flex items-start justify-between mb-2">' +
-            '<div><h4 class="font-medium">' + (l.developer_name||'') + '</h4>' +
-            '<p class="text-xs text-gray-400">' + (l.project_name||'') + ' → ' + (l.act_title||'') + '</p></div>' +
-            '<span class="' + (tc[l.tipo_accion]||'bg-gray-100 text-gray-700') + ' text-xs px-2 py-1 rounded">' + (l.tipo_accion||'') + '</span></div>' +
-            '<p class="text-sm text-gray-500 mb-2">' + (l.descripcion||'') + '</p>' +
+            '<div><h4 class="font-medium">' + esc(l.developer_name) + '</h4>' +
+            '<p class="text-xs text-gray-400">' + esc(l.project_name) + ' &rarr; ' + esc(l.act_title) + '</p></div>' +
+            '<span class="' + (tc[l.tipo_accion]||'bg-gray-100 text-gray-700') + ' text-xs px-2 py-1 rounded">' + esc(l.tipo_accion) + '</span></div>' +
+            '<p class="text-sm text-gray-500 mb-2">' + esc(l.descripcion) + '</p>' +
             '<div class="flex gap-3 text-xs text-gray-400">' +
-            (l.tiempo_gastado_minutos ? '<span>⏱ ' + l.tiempo_gastado_minutos + ' min</span>' : '') +
-            (l.fecha_registro ? '<span>📅 ' + l.fecha_registro.split('T')[0] + '</span>' : '') +
-            (l.link_o_ref ? '<span>🔗 <a href="' + l.link_o_ref + '" class="text-blue-500 hover:underline" target="_blank">' + l.link_o_ref.substring(0,30) + '...</a></span>' : '') +
+            (l.tiempo_gastado_minutos ? '<span>&#9201; ' + esc(l.tiempo_gastado_minutos) + ' min</span>' : '') +
+            (l.fecha_registro ? '<span>&#128197; ' + esc((l.fecha_registro||'').split('T')[0]) + '</span>' : '') +
+            (l.link_o_ref ? '<span>&#128279; <a href="' + esc(l.link_o_ref) + '" class="text-blue-500 hover:underline" target="_blank">' + esc((l.link_o_ref||'').substring(0,30)) + '...</a></span>' : '') +
             '</div>' +
             '<div class="flex gap-2 mt-2">' +
             '<button onclick="editLog(' + l.id + ',' + l.act_id + ')" class="text-gray-600 text-sm hover:underline">Editar</button>' +

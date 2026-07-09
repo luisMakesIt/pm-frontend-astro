@@ -97,6 +97,7 @@ const title = 'Actas';
     var API = 'http://zasm8vmm79eejamdbgx3zwda.144.217.163.180.sslip.io/api';
     var allReqs = [];
 
+    function esc(s){var d=document.createElement('div');d.textContent=s==null?'':String(s);return d.innerHTML;}
     function getToken() { var t = localStorage.getItem('pm_token'); if (!t) { window.location.href = '/login'; return null; } return t; }
 
     async function loadReqsForDropdown() {
@@ -137,17 +138,17 @@ const title = 'Actas';
         if (allActas.length === 0) { container.innerHTML = '<p class="text-gray-500 text-sm">No hay actas.</p>'; return; }
         var sc = { firmado: 'bg-green-100 text-green-700', esperando_firma: 'bg-yellow-100 text-yellow-700', sin_firmar: 'bg-red-100 text-red-700', archivado: 'bg-gray-100 text-gray-700' };
         container.innerHTML = allActas.map(function(a) {
-          var parts = Array.isArray(a.participantes) ? a.participantes.join(', ') : (a.participantes || '');
+          var parts = Array.isArray(a.participantes) ? a.participantes.map(function(p){return esc(p);}).join(', ') : esc(a.participantes);
           return '<div class="bg-white dark:bg-gray-900 rounded-xl border p-4 transition-shadow hover:shadow-md">' +
             '<div class="flex items-start justify-between mb-2">' +
-            '<div><h4 class="font-medium">Acta #' + a.id + '</h4>' +
-            '<p class="text-xs text-gray-400">' + (a.project_name||'') + ' → ' + (a.req_title||'') + '</p></div>' +
-            '<span class="' + (sc[a.estado_firma]||'bg-gray-100 text-gray-700') + ' text-xs px-2 py-1 rounded">' + (a.estado_firma||'') + '</span></div>' +
+            '<div><h4 class="font-medium">Acta #' + esc(a.id) + '</h4>' +
+            '<p class="text-xs text-gray-400">' + esc(a.project_name) + ' &rarr; ' + esc(a.req_title) + '</p></div>' +
+            '<span class="' + (sc[a.estado_firma]||'bg-gray-100 text-gray-700') + ' text-xs px-2 py-1 rounded">' + esc(a.estado_firma) + '</span></div>' +
             '<div class="text-sm space-y-1">' +
-            (a.cliente_nombre ? '<p><strong>Cliente:</strong> ' + a.cliente_nombre + ' (' + (a.cliente_empresa||'') + ')</p>' : '') +
-            (a.fecha_sesion ? '<p><strong>Fecha:</strong> ' + a.fecha_sesion.split('T')[0] + '</p>' : '') +
+            (a.cliente_nombre ? '<p><strong>Cliente:</strong> ' + esc(a.cliente_nombre) + ' (' + esc(a.cliente_empresa) + ')</p>' : '') +
+            (a.fecha_sesion ? '<p><strong>Fecha:</strong> ' + esc((a.fecha_sesion||'').split('T')[0]) + '</p>' : '') +
             (parts ? '<p><strong>Participantes:</strong> ' + parts + '</p>' : '') +
-            (a.notas ? '<p><strong>Notas:</strong> ' + a.notas + '</p>' : '') +
+            (a.notas ? '<p><strong>Notas:</strong> ' + esc(a.notas) + '</p>' : '') +
             '</div>' +
             '<div class="flex gap-2 mt-2">' +
             '<button onclick="editActa(' + a.id + ',' + a.req_id + ')" class="text-gray-600 text-sm hover:underline">Editar</button>' +

@@ -118,6 +118,7 @@ const title = 'Actividades';
     var API = 'http://zasm8vmm79eejamdbgx3zwda.144.217.163.180.sslip.io/api';
     var allReqs = [];
 
+    function esc(s){var d=document.createElement('div');d.textContent=s==null?'':String(s);return d.innerHTML;}
     function getToken() { var t = localStorage.getItem('pm_token'); if (!t) { window.location.href = '/login'; return null; } return t; }
 
     async function loadReqsForDropdown() {
@@ -160,14 +161,14 @@ const title = 'Actividades';
           var sc = { completada: 'bg-green-100 text-green-700', en_progreso: 'bg-blue-100 text-blue-700', pendiente: 'bg-yellow-100 text-yellow-700', bloqueada: 'bg-red-100 text-red-700' }[a.status] || 'bg-gray-100 text-gray-700';
           return '<div class="bg-white dark:bg-gray-900 rounded-xl border p-4 transition-shadow hover:shadow-md">' +
             '<div class="flex items-start justify-between mb-2">' +
-            '<div><h4 class="font-medium">' + (a.title||'') + '</h4>' +
-            '<p class="text-xs text-gray-400">' + (a.project_name||'') + ' → ' + (a.req_title||'') + '</p></div>' +
-            '<span class="' + sc + ' text-xs px-2 py-1 rounded">' + (a.status||'') + '</span></div>' +
-            '<p class="text-sm text-gray-500 mb-2">' + (a.description||'') + '</p>' +
+            '<div><h4 class="font-medium">' + esc(a.title) + '</h4>' +
+            '<p class="text-xs text-gray-400">' + esc(a.project_name) + ' &rarr; ' + esc(a.req_title) + '</p></div>' +
+            '<span class="' + sc + ' text-xs px-2 py-1 rounded">' + esc(a.status) + '</span></div>' +
+            '<p class="text-sm text-gray-500 mb-2">' + esc(a.description) + '</p>' +
             '<div class="flex gap-3 text-xs text-gray-400">' +
-            (a.tiempo_estimado_horas ? '<span>Est: ' + a.tiempo_estimado_horas + 'h</span>' : '') +
-            (a.tiempo_real_horas ? '<span>Real: ' + a.tiempo_real_horas + 'h</span>' : '') +
-            (a.fecha_limite ? '<span>Límite: ' + a.fecha_limite.split('T')[0] + '</span>' : '') +
+            (a.tiempo_estimado_horas ? '<span>Est: ' + esc(a.tiempo_estimado_horas) + 'h</span>' : '') +
+            (a.tiempo_real_horas ? '<span>Real: ' + esc(a.tiempo_real_horas) + 'h</span>' : '') +
+            (a.fecha_limite ? '<span>L&iacute;mite: ' + esc((a.fecha_limite||'').split('T')[0]) + '</span>' : '') +
             '</div>' +
             '<div class="flex gap-2 mt-2">' +
             '<a href="/productos" class="text-blue-600 text-sm hover:underline">Ver productos</a>' +

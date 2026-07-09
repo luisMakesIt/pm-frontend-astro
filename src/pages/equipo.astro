@@ -108,6 +108,7 @@ const title = 'Equipo';
     var API = 'http://zasm8vmm79eejamdbgx3zwda.144.217.163.180.sslip.io/api';
     var allProjects = [];
 
+    function esc(s){var d=document.createElement('div');d.textContent=s==null?'':String(s);return d.innerHTML;}
     function getToken() { var t = localStorage.getItem('pm_token'); if (!t) { window.location.href = '/login'; return null; } return t; }
 
     async function loadProjectsDropdown() {
@@ -152,14 +153,14 @@ const title = 'Equipo';
         container.innerHTML = allMembers.map(function(m) {
           return '<div class="bg-white dark:bg-gray-900 rounded-xl border p-4 transition-shadow hover:shadow-md">' +
             '<div class="flex items-center gap-3">' +
-            '<div class="w-10 h-10 rounded-full bg-blue-600 text-white flex items-center justify-center font-bold">' + (m.name || '?').charAt(0).toUpperCase() + '</div>' +
-            '<div class="flex-1"><h4 class="font-medium">' + (m.name || '') + '</h4>' +
-            '<p class="text-sm text-gray-500">' + (m.email || '') + '</p></div></div>' +
+            '<div class="w-10 h-10 rounded-full bg-blue-600 text-white flex items-center justify-center font-bold">' + esc((m.name || '?').charAt(0).toUpperCase()) + '</div>' +
+            '<div class="flex-1"><h4 class="font-medium">' + esc(m.name) + '</h4>' +
+            '<p class="text-sm text-gray-500">' + esc(m.email) + '</p></div></div>' +
             '<div class="mt-2 flex flex-wrap gap-1">' +
-            '<span class="' + (rc[m.role]||'bg-gray-100 text-gray-700') + ' text-xs px-2 py-1 rounded">' + (m.role||'-') + '</span>' +
-            (m.nivel_experiencia ? '<span class="bg-gray-100 text-gray-700 text-xs px-2 py-1 rounded">' + m.nivel_experiencia + '</span>' : '') +
-            '<span class="' + (sc[m.estado]||'bg-gray-100 text-gray-700') + ' text-xs px-2 py-1 rounded">' + (m.estado||'') + '</span></div>' +
-            '<p class="text-xs text-gray-400 mt-2">Proyecto: ' + (m.project_name||'-') + '</p>' +
+            '<span class="' + (rc[m.role]||'bg-gray-100 text-gray-700') + ' text-xs px-2 py-1 rounded">' + esc(m.role) + '</span>' +
+            (m.nivel_experiencia ? '<span class="bg-gray-100 text-gray-700 text-xs px-2 py-1 rounded">' + esc(m.nivel_experiencia) + '</span>' : '') +
+            '<span class="' + (sc[m.estado]||'bg-gray-100 text-gray-700') + ' text-xs px-2 py-1 rounded">' + esc(m.estado) + '</span></div>' +
+            '<p class="text-xs text-gray-400 mt-2">Proyecto: ' + esc(m.project_name) + '</p>' +
             '<div class="flex gap-2 mt-2">' +
             '<button onclick="editMember(' + m.id + ',' + m.project_id + ')" class="text-gray-600 text-sm hover:underline">Editar</button>' +
             '<button onclick="deleteMember(' + m.id + ',' + m.project_id + ')" class="text-red-600 text-sm hover:underline">Eliminar</button>' +

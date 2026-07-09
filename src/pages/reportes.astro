@@ -55,6 +55,7 @@ const title = 'Reportes';
   <script is:inline>
     var API = 'http://zasm8vmm79eejamdbgx3zwda.144.217.163.180.sslip.io/api';
 
+    function esc(s){var d=document.createElement('div');d.textContent=s==null?'':String(s);return d.innerHTML;}
     function getToken() {
       var t = localStorage.getItem('pm_token');
       if (!t) { window.location.href = '/login'; return null; }
@@ -121,8 +122,8 @@ const title = 'Reportes';
           html += '<div class="p-3 bg-gray-50 dark:bg-gray-800 rounded-lg"><p class="text-xs text-gray-400">Actividades</p><p class="font-bold">' + actCount + '</p></div>';
           html += '<div class="p-3 bg-gray-50 dark:bg-gray-800 rounded-lg"><p class="text-xs text-gray-400">Miembros</p><p class="font-bold">' + memberCount + '</p></div>';
           html += '</div>';
-          if (d.description) html += '<p class="text-sm text-gray-500">' + d.description + '</p>';
-          if (d.client_name) html += '<p class="text-sm text-gray-500">Cliente: ' + d.client_name + '</p>';
+          if (d.description) html += '<p class="text-sm text-gray-500">' + esc(d.description) + '</p>';
+          if (d.client_name) html += '<p class="text-sm text-gray-500">Cliente: ' + esc(d.client_name) + '</p>';
           html += '</div>';
           container.innerHTML = html;
         } else {
@@ -147,10 +148,10 @@ const title = 'Reportes';
           projects.forEach(function(p) {
             var reqCount = (p.requirements || []).length;
             html += '<tr class="border-b border-gray-100 dark:border-gray-800">' +
-              '<td class="py-2 font-medium">' + (p.name || '-') + '</td>' +
-              '<td>' + (p.status || '-') + '</td>' +
-              '<td>' + (p.progreso || 0) + '%</td>' +
-              '<td>' + ((p.start_date || '-').split('T')[0]) + '</td>' +
+              '<td class="py-2 font-medium">' + esc(p.name || '-') + '</td>' +
+              '<td>' + esc(p.status || '-') + '</td>' +
+              '<td>' + esc(p.progreso || 0) + '%</td>' +
+              '<td>' + esc((p.start_date || '-').split('T')[0]) + '</td>' +
               '<td class="pb-2">' + reqCount + '</td></tr>';
           });
           html += '</tbody></table>';
