@@ -1,0 +1,79 @@
+---
+import Layout from '../../layouts/Layout.astro';
+const API_BASE = import.meta.env.PUBLIC_API_URL || 'http://localhost:8080';
+const title = 'Mi Perfil';
+---
+
+<Layout title={title}>
+  <div class="p-6 space-y-6 max-w-2xl">
+    <div>
+      <h1 class="text-2xl font-bold">Mi Perfil</h1>
+      <p class="text-gray-500 text-sm mt-1">Información de tu cuenta</p>
+    </div>
+
+    <div class="bg-white dark:bg-gray-900 rounded-xl border p-6 space-y-4">
+      <div class="flex items-center gap-4">
+        <div class="w-16 h-16 rounded-full bg-primary text-white flex items-center justify-center text-2xl font-bold" id="profile-initial">?</div>
+        <div>
+          <h2 class="text-lg font-bold" id="profile-name">Cargando...</h2>
+          <p class="text-sm text-gray-500" id="profile-email">-</p>
+        </div>
+      </div>
+      <div class="border-t border-gray-200 dark:border-gray-800 pt-4 space-y-3">
+        <div>
+          <label class="block text-sm font-medium text-gray-500">ID</label>
+          <p class="text-sm mt-1" id="profile-id">-</p>
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-500">Nombre</label>
+          <p class="text-sm mt-1" id="profile-name-val">-</p>
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-500">Email</label>
+          <p class="text-sm mt-1" id="profile-email-val">-</p>
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-500">Rol</label>
+          <p class="text-sm mt-1" id="profile-role">-</p>
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-500">Fecha de creación</label>
+          <p class="text-sm mt-1" id="profile-created">-</p>
+        </div>
+      </div>
+      <div class="flex gap-3 pt-4">
+        <a href="/perfil/editar/" class="bg-blue-600 text-white px-4 py-2 rounded-lg font-medium hover:bg-blue-700 transition-colors">Actualizar Datos</a>
+        <a href="/perfil/password/" class="border px-4 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">Cambiar Contraseña</a>
+        <a href="/" class="border px-4 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">Volver</a>
+      </div>
+    </div>
+  </div>
+
+  <script is:inline define:vars={{ API_BASE }}>
+    var API = API_BASE + '/api';
+    function esc(s){var d=document.createElement('div');d.textContent=s==null?'':String(s);return d.innerHTML;}
+    function getToken() { var t = localStorage.getItem('pm_token'); if (!t) { window.location.href = '/login'; return null; } return t; }
+
+    async function loadProfile() {
+      var token = getToken(); if (!token) return;
+      try {
+        var res = await fetch(API + '/auth/profile', { headers: { 'Accept': 'application/json', 'Authorization': 'Bearer ' + token } });
+        var json = await res.json();
+        if (json.success && json.data) {
+          var u = json.data;
+          document.getElementById('profile-initial').textContent = (u.name || '?').charAt(0).toUpperCase();
+          document.getElementById('profile-name').textContent = u.name || '-';
+          document.getElementById('profile-email').textContent = u.email || '-';
+          document.getElementById('profile-id').textContent = u.id || '-';
+          document.getElementById('profile-name-val').textContent = u.name || '-';
+          document.getElementById('profile-email-val').textContent = u.email || '-';
+          document.getElementById('profile-role').textContent = u.role || '-';
+          document.getElementById('profile-created').textContent = u.created_at ? esc(u.created_at.split('T')[0]) : '-';
+        }
+      } catch(e) {
+        document.getElementById('profile-name').textContent = 'Error al cargar';
+      }
+    }
+    loadProfile();
+  </script>
+</Layout>

@@ -1,0 +1,87 @@
+---
+import Layout from '../../../layouts/Layout.astro';
+const API_BASE = import.meta.env.PUBLIC_API_URL || 'http://localhost:8080';
+const title = 'Cambiar Contraseña';
+---
+
+<Layout title={title}>
+  <div class="p-6 space-y-6 max-w-2xl">
+    <div>
+      <a href="/perfil/" class="text-blue-600 text-sm hover:underline mb-2 inline-block">← Volver al perfil</a>
+      <h1 class="text-2xl font-bold">Cambiar Contraseña</h1>
+      <p class="text-gray-500 text-sm mt-1">Actualiza tu contraseña de acceso</p>
+    </div>
+
+    <div class="bg-white dark:bg-gray-900 rounded-xl border p-6">
+      <form id="password-form" class="space-y-4">
+        <div>
+          <label class="block text-sm font-medium mb-1">Contraseña Actual</label>
+          <input type="password" id="current_password" required class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none">
+        </div>
+        <div>
+          <label class="block text-sm font-medium mb-1">Nueva Contraseña</label>
+          <input type="password" id="new_password" required minlength="8" class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none">
+          <p class="text-xs text-gray-400 mt-1">Mínimo 8 caracteres</p>
+        </div>
+        <div>
+          <label class="block text-sm font-medium mb-1">Confirmar Nueva Contraseña</label>
+          <input type="password" id="confirm_password" required class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none">
+        </div>
+        <div id="error-msg" class="hidden text-red-600 text-sm p-3 bg-red-50 rounded-lg"></div>
+        <div id="success-msg" class="hidden text-green-600 text-sm p-3 bg-green-50 rounded-lg"></div>
+        <div class="flex gap-3">
+          <button type="submit" class="bg-blue-600 text-white px-6 py-2 rounded-lg font-medium hover:bg-blue-700 transition-colors">Cambiar Contraseña</button>
+          <a href="/perfil/" class="border px-4 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">Cancelar</a>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script is:inline define:vars={{ API_BASE }}>
+    var API = API_BASE + '/api';
+    function getToken() { var t = localStorage.getItem('pm_token'); if (!t) { window.location.href = '/login'; return null; } return t; }
+
+    document.getElementById('password-form').addEventListener('submit', async function(e) {
+      e.preventDefault();
+      var token = getToken(); if (!token) return;
+      var currentPass = document.getElementById('current_password').value;
+      var newPass = document.getElementById('new_password').value;
+      var confirmPass = document.getElementById('confirm_password').value;
+      var errEl = document.getElementById('error-msg');
+      var succEl = document.getElementById('success-msg');
+      errEl.classList.add('hidden');
+      succEl.classList.add('hidden');
+
+      if (newPass !== confirmPass) {
+        errEl.textContent = 'Las contraseñas no coinciden.';
+        errEl.classList.remove('hidden');
+        return;
+      }
+      if (newPass.length < 8) {
+        errEl.textContent = 'La nueva contraseña debe tener al menos 8 caracteres.';
+        errEl.classList.remove('hidden');
+        return;
+      }
+
+      try {
+        var res = await fetch(API + '/auth/password?_method=PUT', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'Accept': 'application/json', 'Authorization': 'Bearer ' + token },
+          body: JSON.stringify({ current_password: currentPass, new_password: newPass })
+        });
+        var json = await res.json();
+        if (json.success) {
+          succEl.textContent = json.message || 'Contraseña actualizada correctamente.';
+          succEl.classList.remove('hidden');
+          document.getElementById('password-form').reset();
+        } else {
+          errEl.textContent = json.message || 'Error al cambiar la contraseña.';
+          errEl.classList.remove('hidden');
+        }
+      } catch(err) {
+        errEl.textContent = 'Error de conexión: ' + err.message;
+        errEl.classList.remove('hidden');
+      }
+    });
+  </script>
+</Layout>

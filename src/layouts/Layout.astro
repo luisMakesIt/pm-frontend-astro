@@ -45,6 +45,31 @@ const { title = 'PM System', sidebar = true } = Astro.props;
           html.className = isDark ? 'light' : 'dark';
           localStorage.setItem('theme', isDark ? 'light' : 'dark');
         };
+        // Populate user dropdown
+        (function() {
+          try {
+            var userJson = localStorage.getItem('pm_user');
+            if (userJson) {
+              var user = JSON.parse(userJson);
+              var name = user.name || 'Usuario';
+              var email = user.email || '-';
+              var initialEl = document.getElementById('user-initial');
+              var nameEl = document.getElementById('dd-user-name');
+              var emailEl = document.getElementById('dd-user-email');
+              if (initialEl) initialEl.textContent = name.charAt(0).toUpperCase();
+              if (nameEl) nameEl.textContent = name;
+              if (emailEl) emailEl.textContent = email;
+            }
+          } catch(e) {}
+        })();
+        // Close dropdown on outside click
+        document.addEventListener('click', function(e) {
+          var wrapper = document.getElementById('user-dropdown-wrapper');
+          var menu = document.getElementById('user-dropdown-menu');
+          if (wrapper && menu && !wrapper.contains(e.target)) {
+            menu.classList.add('hidden');
+          }
+        });
       }
     </script>
   </body>

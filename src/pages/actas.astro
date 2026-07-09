@@ -1,5 +1,6 @@
 ---
 import Layout from '../layouts/Layout.astro';
+const API_BASE = import.meta.env.PUBLIC_API_URL || 'http://localhost:8080';
 const title = 'Actas';
 ---
 
@@ -19,7 +20,7 @@ const title = 'Actas';
   </div>
 
   <!-- Create Modal -->
-  <div id="modal-create" class="hidden fixed inset-0 z-50 bg-black/50 flex items-center justify-center p-4 transition-opacity duration-200">
+  <div id="modal-create" class="hidden fixed inset-0 z-50 bg-black/50 flex items-center justify-center p-4 transition-opacity duration-200" onclick="if(event.target===this)this.classList.add('hidden')">
     <div class="bg-white dark:bg-gray-900 rounded-xl border p-6 w-full max-w-md max-h-[90vh] overflow-y-auto">
       <h3 class="text-lg font-bold mb-4">Nueva Acta</h3>
       <form id="form-create" class="space-y-4">
@@ -74,7 +75,7 @@ const title = 'Actas';
   </div>
 
   <!-- Edit Modal -->
-  <div id="modal-edit" class="hidden fixed inset-0 z-50 bg-black/50 flex items-center justify-center p-4 transition-opacity duration-200">
+  <div id="modal-edit" class="hidden fixed inset-0 z-50 bg-black/50 flex items-center justify-center p-4 transition-opacity duration-200" onclick="if(event.target===this)this.classList.add('hidden')">
     <div class="bg-white dark:bg-gray-900 rounded-xl border p-6 w-full max-w-md max-h-[90vh] overflow-y-auto">
       <h3 class="text-lg font-bold mb-4">Editar Acta</h3>
       <form id="form-edit" class="space-y-4">
@@ -93,8 +94,8 @@ const title = 'Actas';
     </div>
   </div>
 
-  <script is:inline>
-    var API = 'http://zasm8vmm79eejamdbgx3zwda.144.217.163.180.sslip.io/api';
+  <script is:inline define:vars={{ API_BASE }}>
+    var API = API_BASE + '/api';
     var allReqs = [];
 
     function esc(s){var d=document.createElement('div');d.textContent=s==null?'':String(s);return d.innerHTML;}
@@ -152,6 +153,8 @@ const title = 'Actas';
             '</div>' +
             '<div class="flex gap-2 mt-2">' +
             '<button onclick="editActa(' + a.id + ',' + a.req_id + ')" class="text-gray-600 text-sm hover:underline">Editar</button>' +
+            '<a href="/actas/preview/?id=' + a.id + '&req_id=' + a.req_id + '" class="text-blue-600 text-sm hover:underline">Previsualizar</a>' +
+            '<button onclick="downloadPdf(' + a.id + ',' + a.req_id + ')" class="text-green-600 text-sm hover:underline">Descargar PDF</button>' +
             '<button onclick="deleteActa(' + a.id + ',' + a.req_id + ')" class="text-red-600 text-sm hover:underline">Eliminar</button>' +
             '</div></div>';
         }).join('');
@@ -212,6 +215,10 @@ const title = 'Actas';
       var token = getToken(); if (!token) return;
       await fetch(API + '/requirements/' + rid + '/actas/' + id, { method: 'DELETE', headers: { 'Accept': 'application/json', 'Authorization': 'Bearer ' + token } });
       loadActas();
+    }
+
+    function downloadPdf(id, rid) {
+      window.open('/actas/preview/?id=' + id + '&req_id=' + rid + '&print=true', '_blank');
     }
 
     loadReqsForDropdown().then(loadActas);

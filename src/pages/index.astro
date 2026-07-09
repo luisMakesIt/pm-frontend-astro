@@ -1,5 +1,6 @@
 ---
 import Layout from '../layouts/Layout.astro';
+const API_BASE = import.meta.env.PUBLIC_API_URL || 'http://localhost:8080';
 
 const title = 'Dashboard';
 ---
@@ -47,11 +48,11 @@ const title = 'Dashboard';
     </div>
   </div>
 
-  <script is:inline>
+  <script is:inline define:vars={{ API_BASE }}>
     (async function() {
       var token = localStorage.getItem('pm_token');
       if (!token) { window.location.href = '/login'; return; }
-      var API = 'http://zasm8vmm79eejamdbgx3zwda.144.217.163.180.sslip.io/api';
+      var API = API_BASE + '/api';
 
       function esc(s){var d=document.createElement('div');d.textContent=s==null?'':String(s);return d.innerHTML;}
       function el(id) { return document.getElementById(id); }

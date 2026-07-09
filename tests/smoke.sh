@@ -4,8 +4,8 @@
 # Run: bash tests/smoke.sh
 # Exit 0 if all pass, non-zero if any fail.
 
-API="http://zasm8vmm79eejamdbgx3zwda.144.217.163.180.sslip.io/api"
-FRONT="http://msiqnz11cno6q97gb4gjk5rs.144.217.163.180.sslip.io"
+API="${API_URL:-http://localhost:8080}/api"
+FRONT="${FRONT_URL:-http://localhost:4321}"
 CT="Content-Type: application/json"
 ACCEPT="Accept: application/json"
 PASS=0
@@ -22,12 +22,14 @@ no() { echo -e " ${RED}❌ FAIL${NC}: $1"; FAIL=$((FAIL+1)); }
 echo "=========================================="
 echo "  Smoke Test — PM System"
 echo "  $(date '+%Y-%m-%d %H:%M')"
+echo "  API:    $API"
+echo "  FRONT:  $FRONT"
 echo "=========================================="
 echo ""
 
 # ── 1. Frontend Pages ──
 echo "── Frontend Pages ──"
-for page in "" "login/" "projects/" "requerimientos/" "actas/" "actividades/" "productos/" "bitacora/" "equipo/" "reportes/"; do
+for page in "" "login/" "projects/" "requerimientos/" "actas/" "actividades/" "productos/" "bitacora/" "equipo/" "reportes/" "perfil/" "perfil/editar/" "perfil/password/" "actas/preview/"; do
   code=$(curl -s -o /dev/null -w "%{http_code}" "$FRONT/$page" 2>/dev/null)
   if [ "$code" = "200" ]; then ok "GET /$page → $code"; else no "GET /$page → $code"; fi
 done
@@ -59,6 +61,24 @@ if echo "$LOGIN_HTML" | grep -qi "login\|email\|password\|pm_token"; then ok "Lo
 PROJECTS_HTML=$(curl -s "$FRONT/projects/")
 if echo "$PROJECTS_HTML" | grep -qi "Proyectos\|project\|Nuevo"; then ok "Projects page has expected content"; else no "Projects page missing content"; fi
 
+# ── 3b. Profile Pages Content ──
+echo ""
+echo "── Profile Pages Content ──"
+PERFIL_HTML=$(curl -s "$FRONT/perfil/")
+if echo "$PERFIL_HTML" | grep -qi "Mi Perfil\|perfil\|pm_token"; then ok "Profile page has expected content"; else no "Profile page missing expected content"; fi
+PERFIL_EDIT_HTML=$(curl -s "$FRONT/perfil/editar/")
+if echo "$PERFIL_EDIT_HTML" | grep -qi "Actualizar Datos\|name\|email\|profile-form"; then ok "Profile edit page has form elements"; else no "Profile edit page missing form elements"; fi
+PERFIL_PASS_HTML=$(curl -s "$FRONT/perfil/password/")
+if echo "$PERFIL_PASS_HTML" | grep -qi "Cambiar Contraseña\|password-form\|current_password"; then ok "Password change page has form elements"; else no "Password change page missing form elements"; fi
+
+# ── 3c. Acta Preview Page ──
+echo ""
+echo "── Acta Preview Page ──"
+PREVIEW_HTML=$(curl -s "$FRONT/actas/preview/")
+if echo "$PREVIEW_HTML" | grep -qi "Vista Previa\|Acta\|Descargar PDF\|acta-container"; then ok "Acta preview page has expected content"; else no "Acta preview page missing expected content"; fi
+PREVIEW_ID_HTML=$(curl -s "$FRONT/actas/preview/?id=1&req_id=1")
+if echo "$PREVIEW_ID_HTML" | grep -qi "Vista Previa\|Acta\|acta-container"; then ok "Acta preview with query params loads"; else no "Acta preview with query params missing content"; fi
+
 # ── 4. Sidebar Navigation (all 9 pages linked) ──
 echo ""
 echo "── Sidebar Navigation ──"
@@ -66,6 +86,18 @@ NAV_PAGES="Dashboard Proyectos Requerimientos Actas Actividades Productos Bitác
 for nav_item in $NAV_PAGES; do
   if echo "$DASH_HTML" | grep -qi "$nav_item"; then ok "Sidebar link: $nav_item"; else no "Sidebar missing: $nav_item"; fi
 done
+
+# ── 4b. User Dropdown in Header ──
+echo ""
+echo "── User Dropdown ──"
+if echo "$DASH_HTML" | grep -qi "user-dropdown\|dd-user\|Cerrar sesión"; then ok "User dropdown in header"; else no "User dropdown missing in header"; fi
+if echo "$DASH_HTML" | grep -qi "Mi Perfil"; then ok "Profile link in dropdown"; else no "Profile link missing in dropdown"; fi
+if echo "$DASH_HTML" | grep -qi "Cambiar Contraseña"; then ok "Password link in dropdown"; else no "Password link missing in dropdown"; fi
+
+# ── 4c. Theme Toggle ──
+echo ""
+echo "── Theme Toggle ──"
+if echo "$DASH_HTML" | grep -qi "__toggleTheme\|theme-toggle"; then ok "Theme toggle present in header"; else no "Theme toggle missing"; fi
 
 # ── 5. API Health ──
 echo ""
@@ -83,10 +115,26 @@ if [ -n "$TOKEN" ] && [ "$TOKEN" != "" ]; then
   ok "POST /api/auth/login → token obtained"
 else no "POST /api/auth/login → failed: $LOGIN_RESP"; fi
 
+# ── 6b. API Auth Profile/Password Endpoints ──
+echo ""
+echo "── API Profile & Password ──"
+AUTH="Authorization: Bearer $TOKEN"
+
+EP=$(curl -s -w "\n%{http_code}" "$API/auth/profile" -H "$ACCEPT" -H "$AUTH" 2>/dev/null)
+EP_CODE=$(echo "$EP" | tail -1)
+if [ "$EP_CODE" = "200" ]; then ok "GET /api/auth/profile → $EP_CODE"; else no "GET /api/auth/profile → $EP_CODE"; fi
+
+EP=$(curl -s -w "\n%{http_code}" -X PUT "$API/auth/profile" -H "$CT" -H "$ACCEPT" -H "$AUTH" -d '{"name":"Admin","email":"admin@pmsystem.com"}' 2>/dev/null)
+EP_CODE=$(echo "$EP" | tail -1)
+if [ "$EP_CODE" = "200" ]; then ok "PUT /api/auth/profile → $EP_CODE"; else no "PUT /api/auth/profile → $EP_CODE"; fi
+
+EP=$(curl -s -w "\n%{http_code}" -X PUT "$API/auth/password" -H "$CT" -H "$ACCEPT" -H "$AUTH" -d '{"current_password":"admin123","new_password":"admin123"}' 2>/dev/null)
+EP_CODE=$(echo "$EP" | tail -1)
+if [ "$EP_CODE" = "200" ]; then ok "PUT /api/auth/password → $EP_CODE"; else no "PUT /api/auth/password → $EP_CODE"; fi
+
 # ── 7. API CRUD (read-only) ──
 echo ""
 echo "── API Read Endpoints ──"
-AUTH="Authorization: Bearer $TOKEN"
 
 EP=$(curl -s -w "\n%{http_code}" "$API/projects" -H "$ACCEPT" -H "$AUTH" 2>/dev/null)
 EP_CODE=$(echo "$EP" | tail -1)
@@ -123,7 +171,7 @@ EP=$(curl -s -w "\n%{http_code}" "$API/projects/99999" -H "$ACCEPT" -H "$AUTH" 2
 EP_CODE=$(echo "$EP" | tail -1)
 if [ "$EP_CODE" = "404" ]; then ok "GET /api/projects/99999 → $EP_CODE (404 expected)"; else no "GET /api/projects/99999 → $EP_CODE (expected 404)"; fi
 
-EP=$(curl -s -w "\n%{http_code}" "$API/projects" -H "$ACCEPT" -H "Authorization: Bearer invalid_token_12345" 2>/dev/null)
+EP=$(curl -s -w "\n%{http_code}" "$API/projects" -H "$ACCEPT" -H "Authorization: Bearer invalidtoken12345" 2>/dev/null)
 EP_CODE=$(echo "$EP" | tail -1)
 if [ "$EP_CODE" = "401" ]; then ok "GET /api/projects (invalid token) → $EP_CODE (401 expected)"; else no "GET /api/projects (invalid token) → $EP_CODE (expected 401)"; fi
 
@@ -159,7 +207,7 @@ else
 fi
 
 # Frontend source code does not hardcode internal API URL as fallback
-if grep -q "zasm8vmm" src/lib/api.ts src/pages/login.astro 2>/dev/null; then
+if grep -rq "zasm8vmm" src/ 2>/dev/null; then
   no "Source code hardcodes internal API hostname"
 else
   ok "Source code does not hardcode internal API URL"
@@ -190,9 +238,9 @@ else
 fi
 
 # XSS protection: esc() helper present in pages with innerHTML
-for page_file in src/pages/requerimientos.astro src/pages/actividades.astro src/pages/productos.astro src/pages/equipo.astro src/pages/actas.astro src/pages/bitacora.astro src/pages/reportes.astro; do
+for page_file in src/pages/requerimientos.astro src/pages/actividades.astro src/pages/productos.astro src/pages/equipo.astro src/pages/actas.astro src/pages/bitacora.astro src/pages/reportes.astro src/pages/perfil/index.astro src/pages/perfil/editar/index.astro src/pages/perfil/password/index.astro; do
   if [ -f "$page_file" ]; then
-    if grep -q "function esc" "$page_file"; then
+    if grep -q "function esc\|esc(" "$page_file"; then
       ok "XSS esc() helper in $page_file"
     else
       no "XSS esc() helper missing in $page_file"

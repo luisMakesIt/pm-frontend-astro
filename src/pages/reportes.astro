@@ -1,5 +1,6 @@
 ---
 import Layout from '../layouts/Layout.astro';
+const API_BASE = import.meta.env.PUBLIC_API_URL || 'http://localhost:8080';
 const title = 'Reportes';
 ---
 
@@ -52,8 +53,8 @@ const title = 'Reportes';
     </div>
   </div>
 
-  <script is:inline>
-    var API = 'http://zasm8vmm79eejamdbgx3zwda.144.217.163.180.sslip.io/api';
+  <script is:inline define:vars={{ API_BASE }}>
+    var API = API_BASE + '/api';
 
     function esc(s){var d=document.createElement('div');d.textContent=s==null?'':String(s);return d.innerHTML;}
     function getToken() {

@@ -1,0 +1,52 @@
+---
+import Layout from '../../../layouts/Layout.astro';
+import ActaPreview from '../../../components/ActaPreview.tsx';
+const API_BASE = import.meta.env.PUBLIC_API_URL || 'http://localhost:8080';
+const title = 'Vista Previa de Acta';
+---
+
+<Layout title={title}>
+  <div class="p-4 lg:p-8 space-y-4">
+    <div class="flex items-center justify-between no-print">
+      <div class="flex items-center gap-3">
+        <a href="/actas" class="border px-4 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors text-sm">← Volver</a>
+        <button id="btn-pdf" class="bg-blue-600 text-white px-4 py-2 rounded-lg font-medium hover:bg-blue-700 transition-colors text-sm">Descargar PDF</button>
+      </div>
+    </div>
+
+    <div id="acta-container">
+      <ActaPreview client:load apiBase={API_BASE} />
+    </div>
+  </div>
+
+  <script is:inline>
+    document.getElementById('btn-pdf').addEventListener('click', function() {
+      window.print();
+    });
+
+    // Auto-print if ?print=true (opened from "Descargar PDF" button)
+    var params = new URLSearchParams(window.location.search);
+    if (params.get('print') === 'true') {
+      // Wait for React to render, then print
+      var printAttempts = 0;
+      var printInterval = setInterval(function() {
+        printAttempts++;
+        var container = document.getElementById('acta-container');
+        if (container && container.children.length > 0 && container.textContent.length > 50) {
+          clearInterval(printInterval);
+          setTimeout(function() { window.print(); }, 500);
+        } else if (printAttempts > 20) {
+          clearInterval(printInterval);
+          setTimeout(function() { window.print(); }, 500);
+        }
+      }, 300);
+    }
+  </script>
+
+  <style>
+    @media print {
+      .no-print { display: none !important; }
+      body { background: white !important; }
+    }
+  </style>
+</Layout>

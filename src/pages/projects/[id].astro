@@ -1,5 +1,6 @@
 ---
 import Layout from '../../layouts/Layout.astro';
+const API_BASE = import.meta.env.PUBLIC_API_URL || 'http://localhost:8080';
 
 export function getStaticPaths() {
   return [{ params: { id: '1' } }];
@@ -63,7 +64,7 @@ const title = 'Detalle del Proyecto';
   </div>
 
   <!-- Create Requirement Modal -->
-  <div id="modal-req" class="hidden fixed inset-0 z-50 bg-black/50 flex items-center justify-center p-4 transition-opacity duration-200">
+  <div id="modal-req" class="hidden fixed inset-0 z-50 bg-black/50 flex items-center justify-center p-4 transition-opacity duration-200" onclick="if(event.target===this)this.classList.add('hidden')">
     <div class="bg-white dark:bg-gray-900 rounded-xl border p-6 w-full max-w-md transition-transform duration-200">
       <h3 class="text-lg font-bold mb-4">Nuevo Requerimiento</h3>
       <form id="form-req" class="space-y-4">
@@ -93,7 +94,7 @@ const title = 'Detalle del Proyecto';
   </div>
 
   <!-- Add Member Modal -->
-  <div id="modal-member" class="hidden fixed inset-0 z-50 bg-black/50 flex items-center justify-center p-4 transition-opacity duration-200">
+  <div id="modal-member" class="hidden fixed inset-0 z-50 bg-black/50 flex items-center justify-center p-4 transition-opacity duration-200" onclick="if(event.target===this)this.classList.add('hidden')">
     <div class="bg-white dark:bg-gray-900 rounded-xl border p-6 w-full max-w-md transition-transform duration-200">
       <h3 class="text-lg font-bold mb-4">Agregar Miembro al Equipo</h3>
       <form id="form-member" class="space-y-4">
@@ -123,8 +124,8 @@ const title = 'Detalle del Proyecto';
     </div>
   </div>
 
-  <script is:inline>
-    var API = 'http://zasm8vmm79eejamdbgx3zwda.144.217.163.180.sslip.io/api';
+  <script is:inline define:vars={{ API_BASE }}>
+    var API = API_BASE + '/api';
     var PROJECT_ID = window.location.pathname.split('/').filter(Boolean).pop() || '1';
 
     function esc(s){var d=document.createElement('div');d.textContent=s==null?'':String(s);return d.innerHTML;}

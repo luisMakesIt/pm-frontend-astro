@@ -1,5 +1,6 @@
 ---
 import Layout from '../../layouts/Layout.astro';
+const API_BASE = import.meta.env.PUBLIC_API_URL || 'http://localhost:8080';
 
 const title = 'Proyectos';
 ---
@@ -22,7 +23,7 @@ const title = 'Proyectos';
   </div>
 
   <!-- Create Modal -->
-  <div id="modal-create" class="hidden fixed inset-0 z-50 bg-black/50 flex items-center justify-center p-4 transition-opacity duration-200">
+  <div id="modal-create" class="hidden fixed inset-0 z-50 bg-black/50 flex items-center justify-center p-4 transition-opacity duration-200" onclick="if(event.target===this)this.classList.add('hidden')">
     <div class="bg-white dark:bg-gray-900 rounded-xl border p-6 w-full max-w-md transition-transform duration-200">
       <h3 class="text-lg font-bold mb-4">Crear Proyecto</h3>
       <form id="form-create" class="space-y-4">
@@ -66,7 +67,7 @@ const title = 'Proyectos';
   </div>
 
   <!-- Edit Modal -->
-  <div id="modal-edit" class="hidden fixed inset-0 z-50 bg-black/50 flex items-center justify-center p-4 transition-opacity duration-200">
+  <div id="modal-edit" class="hidden fixed inset-0 z-50 bg-black/50 flex items-center justify-center p-4 transition-opacity duration-200" onclick="if(event.target===this)this.classList.add('hidden')">
     <div class="bg-white dark:bg-gray-900 rounded-xl border p-6 w-full max-w-md transition-transform duration-200">
       <h3 class="text-lg font-bold mb-4">Editar Proyecto</h3>
       <form id="form-edit" class="space-y-4">
@@ -110,8 +111,8 @@ const title = 'Proyectos';
     </div>
   </div>
 
-  <script is:inline>
-    var API = 'http://zasm8vmm79eejamdbgx3zwda.144.217.163.180.sslip.io/api';
+  <script is:inline define:vars={{ API_BASE }}>
+    var API = API_BASE + '/api';
 
     function esc(s){var d=document.createElement('div');d.textContent=s==null?'':String(s);return d.innerHTML;}
     function getToken() {
