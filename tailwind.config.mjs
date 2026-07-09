@@ -2,7 +2,7 @@ const config = {
   content: [
     './src/**/*.{astro,html,js,ts,jsx,tsx}',
   ],
-  darkMode: 'media',
+  darkMode: 'class',
   theme: {
     extend: {
       colors: {
