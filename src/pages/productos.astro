@@ -5,87 +5,218 @@ const title = 'Productos';
 
 <Layout title={title}>
   <div class="p-6 space-y-6">
-    <div>
-      <h1 class="text-2xl font-bold">Productos</h1>
-      <p class="text-gray-500 text-sm mt-1">Productos registrados por actividad</p>
+    <div class="flex items-center justify-between">
+      <div>
+        <h1 class="text-2xl font-bold">Productos</h1>
+        <p class="text-gray-500 text-sm mt-1">Productos registrados por actividad</p>
+      </div>
+      <button onclick="document.getElementById('modal-create').classList.remove('hidden')" class="bg-blue-600 text-white px-4 py-2 rounded-lg font-medium hover:bg-blue-700">+ Nuevo Producto</button>
     </div>
 
     <div id="products-list" class="space-y-3">
-      <p class="text-gray-500 text-sm">Cargando productos...</p>
+      <p class="text-gray-500 text-sm">Cargando...</p>
+    </div>
+  </div>
+
+  <!-- Create Modal -->
+  <div id="modal-create" class="hidden fixed inset-0 z-50 bg-black/50 flex items-center justify-center p-4">
+    <div class="bg-white dark:bg-gray-900 rounded-xl border p-6 w-full max-w-md">
+      <h3 class="text-lg font-bold mb-4">Nuevo Producto</h3>
+      <form id="form-create" class="space-y-4">
+        <div>
+          <label class="block text-sm font-medium mb-1">Actividad</label>
+          <select name="activity_id" id="create-act" required class="w-full px-4 py-2 border rounded-lg"></select>
+        </div>
+        <div>
+          <label class="block text-sm font-medium mb-1">Nombre</label>
+          <input type="text" name="name" required class="w-full px-4 py-2 border rounded-lg">
+        </div>
+        <div>
+          <label class="block text-sm font-medium mb-1">Tipo</label>
+          <select name="type" class="w-full px-4 py-2 border rounded-lg">
+            <option value="documento">Documento</option>
+            <option value="codigo">Código</option>
+            <option value="diseno">Diseño</option>
+            <option value="testcase">Test Case</option>
+            <option value="configuracion">Configuración</option>
+          </select>
+        </div>
+        <div>
+          <label class="block text-sm font-medium mb-1">Descripción</label>
+          <textarea name="description" rows="3" class="w-full px-4 py-2 border rounded-lg"></textarea>
+        </div>
+        <div>
+          <label class="block text-sm font-medium mb-1">URL o Path</label>
+          <input type="text" name="url_or_path" class="w-full px-4 py-2 border rounded-lg">
+        </div>
+        <div>
+          <label class="block text-sm font-medium mb-1">Versión</label>
+          <input type="text" name="version" class="w-full px-4 py-2 border rounded-lg">
+        </div>
+        <div id="create-error" class="hidden text-red-600 text-sm p-3 bg-red-50 rounded-lg"></div>
+        <div class="flex gap-3">
+          <button type="submit" class="flex-1 bg-blue-600 text-white py-2 rounded-lg font-medium hover:bg-blue-700">Crear</button>
+          <button type="button" onclick="document.getElementById('modal-create').classList.add('hidden')" class="px-4 py-2 border rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800">Cancelar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Edit Modal -->
+  <div id="modal-edit" class="hidden fixed inset-0 z-50 bg-black/50 flex items-center justify-center p-4">
+    <div class="bg-white dark:bg-gray-900 rounded-xl border p-6 w-full max-w-md">
+      <h3 class="text-lg font-bold mb-4">Editar Producto</h3>
+      <form id="form-edit" class="space-y-4">
+        <input type="hidden" name="id" id="edit-id">
+        <input type="hidden" name="activity_id" id="edit-act-id">
+        <div>
+          <label class="block text-sm font-medium mb-1">Nombre</label>
+          <input type="text" name="name" id="edit-name" required class="w-full px-4 py-2 border rounded-lg">
+        </div>
+        <div>
+          <label class="block text-sm font-medium mb-1">Tipo</label>
+          <select name="type" id="edit-type" class="w-full px-4 py-2 border rounded-lg">
+            <option value="documento">Documento</option>
+            <option value="codigo">Código</option>
+            <option value="diseno">Diseño</option>
+            <option value="testcase">Test Case</option>
+            <option value="configuracion">Configuración</option>
+          </select>
+        </div>
+        <div>
+          <label class="block text-sm font-medium mb-1">Descripción</label>
+          <textarea name="description" id="edit-description" rows="3" class="w-full px-4 py-2 border rounded-lg"></textarea>
+        </div>
+        <div>
+          <label class="block text-sm font-medium mb-1">URL o Path</label>
+          <input type="text" name="url_or_path" id="edit-url" class="w-full px-4 py-2 border rounded-lg">
+        </div>
+        <div>
+          <label class="block text-sm font-medium mb-1">Versión</label>
+          <input type="text" name="version" id="edit-version" class="w-full px-4 py-2 border rounded-lg">
+        </div>
+        <div id="edit-error" class="hidden text-red-600 text-sm p-3 bg-red-50 rounded-lg"></div>
+        <div class="flex gap-3">
+          <button type="submit" class="flex-1 bg-blue-600 text-white py-2 rounded-lg font-medium hover:bg-blue-700">Guardar</button>
+          <button type="button" onclick="document.getElementById('modal-edit').classList.add('hidden')" class="px-4 py-2 border rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800">Cancelar</button>
+        </div>
+      </form>
     </div>
   </div>
 
   <script is:inline>
     var API = 'http://zasm8vmm79eejamdbgx3zwda.144.217.163.180.sslip.io/api';
+    var allActs = [];
 
-    function getToken() {
-      var t = localStorage.getItem('pm_token');
-      if (!t) { window.location.href = '/login'; return null; }
-      return t;
-    }
+    function getToken() { var t = localStorage.getItem('pm_token'); if (!t) { window.location.href = '/login'; return null; } return t; }
 
-    async function loadProducts() {
-      var token = getToken();
-      if (!token) return;
-      var container = document.getElementById('products-list');
-
+    async function loadActsForDropdown() {
+      var token = getToken(); if (!token) return;
       try {
         var pres = await fetch(API + '/projects', { headers: { 'Authorization': 'Bearer ' + token } });
         var pjson = await pres.json();
         var projects = pjson.data || [];
-
-        var allProducts = [];
-
         for (var pi = 0; pi < projects.length; pi++) {
-          var rres = await fetch(API + '/projects/' + projects[pi].id + '/requirements', {
-            headers: { 'Authorization': 'Bearer ' + token }
-          });
+          var rres = await fetch(API + '/projects/' + projects[pi].id + '/requirements', { headers: { 'Authorization': 'Bearer ' + token } });
           var rjson = await rres.json();
           if (!rjson.success || !rjson.data) continue;
           var reqs = Array.isArray(rjson.data) ? rjson.data : [rjson.data];
-
           for (var ri = 0; ri < reqs.length; ri++) {
-            var ares = await fetch(API + '/requirements/' + reqs[ri].id + '/activities', {
-              headers: { 'Authorization': 'Bearer ' + token }
-            });
+            var ares = await fetch(API + '/requirements/' + reqs[ri].id + '/activities', { headers: { 'Authorization': 'Bearer ' + token } });
             var ajson = await ares.json();
-            if (!ajson.success || !ajson.data) continue;
-            var acts = Array.isArray(ajson.data) ? ajson.data : [ajson.data];
-
-            for (var ai = 0; ai < acts.length; ai++) {
-              var prres = await fetch(API + '/activities/' + acts[ai].id + '/products', {
-                headers: { 'Authorization': 'Bearer ' + token }
-              });
-              var prjson = await prres.json();
-              if (prjson.success && prjson.data) {
-                var prods = Array.isArray(prjson.data) ? prjson.data : [prjson.data];
-                prods.forEach(function(pr) {
-                  pr.act_title = acts[ai].title || 'Actividad ' + acts[ai].id;
-                  pr.project_name = projects[pi].name || 'Proyecto ' + projects[pi].id;
-                });
-                allProducts = allProducts.concat(prods);
-              }
+            if (ajson.success && ajson.data) {
+              var acts = Array.isArray(ajson.data) ? ajson.data : [ajson.data];
+              acts.forEach(function(a) { a.project_name = projects[pi].name; a.req_title = reqs[ri].title; });
+              allActs = allActs.concat(acts);
             }
           }
         }
+        var sel = document.getElementById('create-act');
+        allActs.forEach(function(a) { var o = document.createElement('option'); o.value = a.id; o.textContent = a.title + ' (' + a.project_name + ')'; sel.appendChild(o); });
+      } catch(e) {}
+    }
 
-        if (allProducts.length === 0) {
-          container.innerHTML = '<p class="text-gray-500 text-sm">No hay productos registrados.</p>';
-          return;
+    async function loadProducts() {
+      var token = getToken(); if (!token) return;
+      var container = document.getElementById('products-list');
+      container.innerHTML = '<p class="text-gray-500 text-sm">Cargando...</p>';
+      try {
+        var allProducts = [];
+        for (var i = 0; i < allActs.length; i++) {
+          var res = await fetch(API + '/activities/' + allActs[i].id + '/products', { headers: { 'Authorization': 'Bearer ' + token } });
+          var json = await res.json();
+          if (json.success && json.data) {
+            var prods = Array.isArray(json.data) ? json.data : [json.data];
+            prods.forEach(function(p) { p.act_title = allActs[i].title; p.act_id = allActs[i].id; p.project_name = allActs[i].project_name; });
+            allProducts = allProducts.concat(prods);
+          }
         }
-
+        if (allProducts.length === 0) { container.innerHTML = '<p class="text-gray-500 text-sm">No hay productos.</p>'; return; }
+        var tc = { documento: 'bg-blue-100 text-blue-700', codigo: 'bg-green-100 text-green-700', diseno: 'bg-purple-100 text-purple-700', testcase: 'bg-yellow-100 text-yellow-700', configuracion: 'bg-gray-100 text-gray-700' };
         container.innerHTML = allProducts.map(function(p) {
           return '<div class="bg-white dark:bg-gray-900 rounded-xl border p-4">' +
             '<div class="flex items-start justify-between mb-2">' +
-            '<div><h4 class="font-medium">' + (p.name || p.title || 'Sin nombre') + '</h4>' +
-            '<p class="text-xs text-gray-400 mt-1">' + (p.project_name || '') + ' → ' + (p.act_title || '') + '</p></div></div>' +
-            '<p class="text-sm text-gray-500">' + (p.description || '') + '</p></div>';
+            '<div><h4 class="font-medium">' + (p.name||'') + '</h4>' +
+            '<p class="text-xs text-gray-400">' + (p.project_name||'') + ' → ' + (p.act_title||'') + '</p></div>' +
+            '<span class="' + (tc[p.type]||'bg-gray-100 text-gray-700') + ' text-xs px-2 py-1 rounded">' + (p.type||'') + '</span></div>' +
+            '<p class="text-sm text-gray-500 mb-2">' + (p.description||'') + '</p>' +
+            (p.version ? '<p class="text-xs text-gray-400">Versión: ' + p.version + '</p>' : '') +
+            '<div class="flex gap-2 mt-2">' +
+            '<button onclick="editProduct(' + p.id + ',' + p.act_id + ')" class="text-gray-600 text-sm hover:underline">Editar</button>' +
+            '<button onclick="deleteProduct(' + p.id + ',' + p.act_id + ')" class="text-red-600 text-sm hover:underline">Eliminar</button>' +
+            '</div></div>';
         }).join('');
-      } catch(e) {
-        container.innerHTML = '<p class="text-red-500 text-sm">Error al cargar productos</p>';
+      } catch(e) { container.innerHTML = '<p class="text-red-500 text-sm">Error</p>'; }
+    }
+
+    document.getElementById('form-create').addEventListener('submit', async function(e) {
+      e.preventDefault(); var token = getToken(); if (!token) return;
+      var d = {}; new FormData(this).forEach(function(v,k){ d[k]=v; });
+      var errEl = document.getElementById('create-error');
+      var res = await fetch(API + '/activities/' + d.activity_id + '/products', {
+        method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token }, body: JSON.stringify(d)
+      });
+      var json = await res.json();
+      if (json.success) { document.getElementById('modal-create').classList.add('hidden'); this.reset(); loadProducts(); }
+      else { errEl.textContent = json.message || 'Error'; errEl.classList.remove('hidden'); }
+    });
+
+    async function editProduct(id, actId) {
+      var token = getToken(); if (!token) return;
+      var res = await fetch(API + '/activities/' + actId + '/products/' + id, { headers: { 'Authorization': 'Bearer ' + token } });
+      var json = await res.json();
+      if (json.success && json.data) {
+        var p = json.data;
+        document.getElementById('edit-id').value = p.id;
+        document.getElementById('edit-act-id').value = actId;
+        document.getElementById('edit-name').value = p.name || '';
+        document.getElementById('edit-type').value = p.type || 'documento';
+        document.getElementById('edit-description').value = p.description || '';
+        document.getElementById('edit-url').value = p.url_or_path || '';
+        document.getElementById('edit-version').value = p.version || '';
+        document.getElementById('modal-edit').classList.remove('hidden');
       }
     }
 
-    loadProducts();
+    document.getElementById('form-edit').addEventListener('submit', async function(e) {
+      e.preventDefault(); var token = getToken(); if (!token) return;
+      var id = document.getElementById('edit-id').value; var actId = document.getElementById('edit-act-id').value;
+      var d = {}; new FormData(this).forEach(function(v,k){ if(k!=='id'&&k!=='activity_id') d[k]=v; });
+      var res = await fetch(API + '/activities/' + actId + '/products/' + id + '?_method=PUT', {
+        method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token }, body: JSON.stringify(d)
+      });
+      var json = await res.json();
+      if (json.success) { document.getElementById('modal-edit').classList.add('hidden'); loadProducts(); }
+      else { document.getElementById('edit-error').textContent = json.message || 'Error'; document.getElementById('edit-error').classList.remove('hidden'); }
+    });
+
+    async function deleteProduct(id, actId) {
+      if (!confirm('¿Eliminar producto?')) return;
+      var token = getToken(); if (!token) return;
+      await fetch(API + '/activities/' + actId + '/products/' + id, { method: 'DELETE', headers: { 'Authorization': 'Bearer ' + token } });
+      loadProducts();
+    }
+
+    loadActsForDropdown().then(loadProducts);
   </script>
 </Layout>

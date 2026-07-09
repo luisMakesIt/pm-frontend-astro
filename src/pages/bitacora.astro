@@ -1,0 +1,215 @@
+---
+import Layout from '../layouts/Layout.astro';
+const title = 'Bitácora de Desarrollo';
+---
+
+<Layout title={title}>
+  <div class="p-6 space-y-6">
+    <div class="flex items-center justify-between">
+      <div>
+        <h1 class="text-2xl font-bold">Bitácora de Desarrollo</h1>
+        <p class="text-gray-500 text-sm mt-1">Registros de desarrollo por actividad</p>
+      </div>
+      <button onclick="document.getElementById('modal-create').classList.remove('hidden')" class="bg-blue-600 text-white px-4 py-2 rounded-lg font-medium hover:bg-blue-700">+ Nuevo Registro</button>
+    </div>
+
+    <div id="logs-list" class="space-y-3">
+      <p class="text-gray-500 text-sm">Cargando...</p>
+    </div>
+  </div>
+
+  <!-- Create Modal -->
+  <div id="modal-create" class="hidden fixed inset-0 z-50 bg-black/50 flex items-center justify-center p-4">
+    <div class="bg-white dark:bg-gray-900 rounded-xl border p-6 w-full max-w-md max-h-[90vh] overflow-y-auto">
+      <h3 class="text-lg font-bold mb-4">Nuevo Registro de Desarrollo</h3>
+      <form id="form-create" class="space-y-4">
+        <div>
+          <label class="block text-sm font-medium mb-1">Actividad</label>
+          <select name="activity_id" id="create-act" required class="w-full px-4 py-2 border rounded-lg"></select>
+        </div>
+        <div>
+          <label class="block text-sm font-medium mb-1">Nombre del Desarrollador</label>
+          <input type="text" name="developer_name" required class="w-full px-4 py-2 border rounded-lg">
+        </div>
+        <div>
+          <label class="block text-sm font-medium mb-1">Email del Desarrollador</label>
+          <input type="email" name="developer_email" required class="w-full px-4 py-2 border rounded-lg">
+        </div>
+        <div>
+          <label class="block text-sm font-medium mb-1">Tipo de Acción</label>
+          <select name="tipo_accion" class="w-full px-4 py-2 border rounded-lg">
+            <option value="commit">Commit</option>
+            <option value="fix">Fix</option>
+            <option value="feature">Feature</option>
+            <option value="review">Review</option>
+            <option value="deploy">Deploy</option>
+          </select>
+        </div>
+        <div>
+          <label class="block text-sm font-medium mb-1">Descripción</label>
+          <textarea name="descripcion" rows="3" required class="w-full px-4 py-2 border rounded-lg"></textarea>
+        </div>
+        <div>
+          <label class="block text-sm font-medium mb-1">Tiempo Gastado (minutos)</label>
+          <input type="number" name="tiempo_gastado_minutos" required min="0" step="1" class="w-full px-4 py-2 border rounded-lg">
+        </div>
+        <div>
+          <label class="block text-sm font-medium mb-1">Fecha de Registro</label>
+          <input type="date" name="fecha_registro" class="w-full px-4 py-2 border rounded-lg">
+        </div>
+        <div>
+          <label class="block text-sm font-medium mb-1">Link o Referencia</label>
+          <input type="text" name="link_o_ref" placeholder="URL del PR, commit hash, etc." class="w-full px-4 py-2 border rounded-lg">
+        </div>
+        <div id="create-error" class="hidden text-red-600 text-sm p-3 bg-red-50 rounded-lg"></div>
+        <div class="flex gap-3">
+          <button type="submit" class="flex-1 bg-blue-600 text-white py-2 rounded-lg font-medium hover:bg-blue-700">Crear</button>
+          <button type="button" onclick="document.getElementById('modal-create').classList.add('hidden')" class="px-4 py-2 border rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800">Cancelar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Edit Modal -->
+  <div id="modal-edit" class="hidden fixed inset-0 z-50 bg-black/50 flex items-center justify-center p-4">
+    <div class="bg-white dark:bg-gray-900 rounded-xl border p-6 w-full max-w-md max-h-[90vh] overflow-y-auto">
+      <h3 class="text-lg font-bold mb-4">Editar Registro</h3>
+      <form id="form-edit" class="space-y-4">
+        <input type="hidden" name="id" id="edit-id">
+        <input type="hidden" name="activity_id" id="edit-act-id">
+        <div><label class="block text-sm font-medium mb-1">Desarrollador</label><input type="text" name="developer_name" id="edit-name" required class="w-full px-4 py-2 border rounded-lg"></div>
+        <div><label class="block text-sm font-medium mb-1">Email</label><input type="email" name="developer_email" id="edit-email" required class="w-full px-4 py-2 border rounded-lg"></div>
+        <div><label class="block text-sm font-medium mb-1">Tipo</label><select name="tipo_accion" id="edit-tipo" class="w-full px-4 py-2 border rounded-lg"><option value="commit">Commit</option><option value="fix">Fix</option><option value="feature">Feature</option><option value="review">Review</option><option value="deploy">Deploy</option></select></div>
+        <div><label class="block text-sm font-medium mb-1">Descripción</label><textarea name="descripcion" id="edit-desc" rows="3" required class="w-full px-4 py-2 border rounded-lg"></textarea></div>
+        <div><label class="block text-sm font-medium mb-1">Tiempo (min)</label><input type="number" name="tiempo_gastado_minutos" id="edit-tiempo" required min="0" step="1" class="w-full px-4 py-2 border rounded-lg"></div>
+        <div><label class="block text-sm font-medium mb-1">Fecha</label><input type="date" name="fecha_registro" id="edit-fecha" class="w-full px-4 py-2 border rounded-lg"></div>
+        <div><label class="block text-sm font-medium mb-1">Link/Ref</label><input type="text" name="link_o_ref" id="edit-link" class="w-full px-4 py-2 border rounded-lg"></div>
+        <div id="edit-error" class="hidden text-red-600 text-sm p-3 bg-red-50 rounded-lg"></div>
+        <div class="flex gap-3"><button type="submit" class="flex-1 bg-blue-600 text-white py-2 rounded-lg font-medium hover:bg-blue-700">Guardar</button><button type="button" onclick="document.getElementById('modal-edit').classList.add('hidden')" class="px-4 py-2 border rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800">Cancelar</button></div>
+      </form>
+    </div>
+  </div>
+
+  <script is:inline>
+    var API = 'http://zasm8vmm79eejamdbgx3zwda.144.217.163.180.sslip.io/api';
+    var allActs = [];
+
+    function getToken() { var t = localStorage.getItem('pm_token'); if (!t) { window.location.href = '/login'; return null; } return t; }
+
+    async function loadActsForDropdown() {
+      var token = getToken(); if (!token) return;
+      try {
+        var pres = await fetch(API + '/projects', { headers: { 'Authorization': 'Bearer ' + token } });
+        var pjson = await pres.json();
+        var projects = pjson.data || [];
+        for (var pi = 0; pi < projects.length; pi++) {
+          var rres = await fetch(API + '/projects/' + projects[pi].id + '/requirements', { headers: { 'Authorization': 'Bearer ' + token } });
+          var rjson = await rres.json();
+          if (!rjson.success || !rjson.data) continue;
+          var reqs = Array.isArray(rjson.data) ? rjson.data : [rjson.data];
+          for (var ri = 0; ri < reqs.length; ri++) {
+            var ares = await fetch(API + '/requirements/' + reqs[ri].id + '/activities', { headers: { 'Authorization': 'Bearer ' + token } });
+            var ajson = await ares.json();
+            if (ajson.success && ajson.data) {
+              var acts = Array.isArray(ajson.data) ? ajson.data : [ajson.data];
+              acts.forEach(function(a) { a.project_name = projects[pi].name; a.req_title = reqs[ri].title; });
+              allActs = allActs.concat(acts);
+            }
+          }
+        }
+        var sel = document.getElementById('create-act');
+        allActs.forEach(function(a) { var o = document.createElement('option'); o.value = a.id; o.textContent = a.title + ' (' + a.project_name + ')'; sel.appendChild(o); });
+      } catch(e) {}
+    }
+
+    async function loadLogs() {
+      var token = getToken(); if (!token) return;
+      var container = document.getElementById('logs-list');
+      container.innerHTML = '<p class="text-gray-500 text-sm">Cargando...</p>';
+      try {
+        var allLogs = [];
+        for (var i = 0; i < allActs.length; i++) {
+          var res = await fetch(API + '/activities/' + allActs[i].id + '/development-logs', { headers: { 'Authorization': 'Bearer ' + token } });
+          var json = await res.json();
+          if (json.success && json.data) {
+            var logs = Array.isArray(json.data) ? json.data : [json.data];
+            logs.forEach(function(l) { l.act_title = allActs[i].title; l.act_id = allActs[i].id; l.project_name = allActs[i].project_name; });
+            allLogs = allLogs.concat(logs);
+          }
+        }
+        if (allLogs.length === 0) { container.innerHTML = '<p class="text-gray-500 text-sm">No hay registros de desarrollo.</p>'; return; }
+        var tc = { commit: 'bg-green-100 text-green-700', fix: 'bg-red-100 text-red-700', feature: 'bg-blue-100 text-blue-700', review: 'bg-purple-100 text-purple-700', deploy: 'bg-orange-100 text-orange-700' };
+        allLogs.sort(function(a,b) { return (b.fecha_registro||'').localeCompare(a.fecha_registro||''); });
+        container.innerHTML = allLogs.map(function(l) {
+          return '<div class="bg-white dark:bg-gray-900 rounded-xl border p-4">' +
+            '<div class="flex items-start justify-between mb-2">' +
+            '<div><h4 class="font-medium">' + (l.developer_name||'') + '</h4>' +
+            '<p class="text-xs text-gray-400">' + (l.project_name||'') + ' → ' + (l.act_title||'') + '</p></div>' +
+            '<span class="' + (tc[l.tipo_accion]||'bg-gray-100 text-gray-700') + ' text-xs px-2 py-1 rounded">' + (l.tipo_accion||'') + '</span></div>' +
+            '<p class="text-sm text-gray-500 mb-2">' + (l.descripcion||'') + '</p>' +
+            '<div class="flex gap-3 text-xs text-gray-400">' +
+            (l.tiempo_gastado_minutos ? '<span>⏱ ' + l.tiempo_gastado_minutos + ' min</span>' : '') +
+            (l.fecha_registro ? '<span>📅 ' + l.fecha_registro.split('T')[0] + '</span>' : '') +
+            (l.link_o_ref ? '<span>🔗 <a href="' + l.link_o_ref + '" class="text-blue-500 hover:underline" target="_blank">' + l.link_o_ref.substring(0,30) + '...</a></span>' : '') +
+            '</div>' +
+            '<div class="flex gap-2 mt-2">' +
+            '<button onclick="editLog(' + l.id + ',' + l.act_id + ')" class="text-gray-600 text-sm hover:underline">Editar</button>' +
+            '<button onclick="deleteLog(' + l.id + ',' + l.act_id + ')" class="text-red-600 text-sm hover:underline">Eliminar</button>' +
+            '</div></div>';
+        }).join('');
+      } catch(e) { container.innerHTML = '<p class="text-red-500 text-sm">Error</p>'; }
+    }
+
+    document.getElementById('form-create').addEventListener('submit', async function(e) {
+      e.preventDefault(); var token = getToken(); if (!token) return;
+      var d = {}; new FormData(this).forEach(function(v,k){ d[k]=v; });
+      var errEl = document.getElementById('create-error');
+      var res = await fetch(API + '/activities/' + d.activity_id + '/development-logs', {
+        method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token }, body: JSON.stringify(d)
+      });
+      var json = await res.json();
+      if (json.success) { document.getElementById('modal-create').classList.add('hidden'); this.reset(); loadLogs(); }
+      else { errEl.textContent = json.message || 'Error'; errEl.classList.remove('hidden'); }
+    });
+
+    async function editLog(id, actId) {
+      var token = getToken(); if (!token) return;
+      var res = await fetch(API + '/activities/' + actId + '/development-logs/' + id, { headers: { 'Authorization': 'Bearer ' + token } });
+      var json = await res.json();
+      if (json.success && json.data) {
+        var l = json.data;
+        document.getElementById('edit-id').value = l.id;
+        document.getElementById('edit-act-id').value = actId;
+        document.getElementById('edit-name').value = l.developer_name || '';
+        document.getElementById('edit-email').value = l.developer_email || '';
+        document.getElementById('edit-tipo').value = l.tipo_accion || 'commit';
+        document.getElementById('edit-desc').value = l.descripcion || '';
+        document.getElementById('edit-tiempo').value = l.tiempo_gastado_minutos || '';
+        document.getElementById('edit-fecha').value = (l.fecha_registro || '').split('T')[0];
+        document.getElementById('edit-link').value = l.link_o_ref || '';
+        document.getElementById('modal-edit').classList.remove('hidden');
+      }
+    }
+
+    document.getElementById('form-edit').addEventListener('submit', async function(e) {
+      e.preventDefault(); var token = getToken(); if (!token) return;
+      var id = document.getElementById('edit-id').value; var actId = document.getElementById('edit-act-id').value;
+      var d = {}; new FormData(this).forEach(function(v,k){ if(k!=='id'&&k!=='activity_id') d[k]=v; });
+      var res = await fetch(API + '/activities/' + actId + '/development-logs/' + id + '?_method=PUT', {
+        method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token }, body: JSON.stringify(d)
+      });
+      var json = await res.json();
+      if (json.success) { document.getElementById('modal-edit').classList.add('hidden'); loadLogs(); }
+      else { document.getElementById('edit-error').textContent = json.message || 'Error'; document.getElementById('edit-error').classList.remove('hidden'); }
+    });
+
+    async function deleteLog(id, actId) {
+      if (!confirm('¿Eliminar registro?')) return;
+      var token = getToken(); if (!token) return;
+      await fetch(API + '/activities/' + actId + '/development-logs/' + id, { method: 'DELETE', headers: { 'Authorization': 'Bearer ' + token } });
+      loadLogs();
+    }
+
+    loadActsForDropdown().then(loadLogs);
+  </script>
+</Layout>

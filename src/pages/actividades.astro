@@ -5,82 +5,229 @@ const title = 'Actividades';
 
 <Layout title={title}>
   <div class="p-6 space-y-6">
-    <div>
-      <h1 class="text-2xl font-bold">Actividades</h1>
-      <p class="text-gray-500 text-sm mt-1">Listado general de actividades por requerimiento</p>
+    <div class="flex items-center justify-between">
+      <div>
+        <h1 class="text-2xl font-bold">Actividades</h1>
+        <p class="text-gray-500 text-sm mt-1">Gestiona actividades por requerimiento</p>
+      </div>
+      <button onclick="document.getElementById('modal-create').classList.remove('hidden')" class="bg-blue-600 text-white px-4 py-2 rounded-lg font-medium hover:bg-blue-700">+ Nueva Actividad</button>
     </div>
 
     <div id="acts-list" class="space-y-3">
-      <p class="text-gray-500 text-sm">Cargando actividades...</p>
+      <p class="text-gray-500 text-sm">Cargando...</p>
+    </div>
+  </div>
+
+  <!-- Create Modal -->
+  <div id="modal-create" class="hidden fixed inset-0 z-50 bg-black/50 flex items-center justify-center p-4">
+    <div class="bg-white dark:bg-gray-900 rounded-xl border p-6 w-full max-w-md max-h-[90vh] overflow-y-auto">
+      <h3 class="text-lg font-bold mb-4">Nueva Actividad</h3>
+      <form id="form-create" class="space-y-4">
+        <div>
+          <label class="block text-sm font-medium mb-1">Requerimiento</label>
+          <select name="requirement_id" id="create-req" required class="w-full px-4 py-2 border rounded-lg"></select>
+        </div>
+        <div>
+          <label class="block text-sm font-medium mb-1">Título</label>
+          <input type="text" name="title" required class="w-full px-4 py-2 border rounded-lg">
+        </div>
+        <div>
+          <label class="block text-sm font-medium mb-1">Descripción</label>
+          <textarea name="description" rows="3" class="w-full px-4 py-2 border rounded-lg"></textarea>
+        </div>
+        <div>
+          <label class="block text-sm font-medium mb-1">Estado</label>
+          <select name="status" class="w-full px-4 py-2 border rounded-lg">
+            <option value="pendiente" selected>Pendiente</option>
+            <option value="en_progreso">En Progreso</option>
+            <option value="completada">Completada</option>
+            <option value="bloqueada">Bloqueada</option>
+          </select>
+        </div>
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-sm font-medium mb-1">Inicio Planificado</label>
+            <input type="date" name="fecha_inicio_planificada" class="w-full px-4 py-2 border rounded-lg">
+          </div>
+          <div>
+            <label class="block text-sm font-medium mb-1">Fecha Límite</label>
+            <input type="date" name="fecha_limite" class="w-full px-4 py-2 border rounded-lg">
+          </div>
+        </div>
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-sm font-medium mb-1">Horas Estimadas</label>
+            <input type="number" name="tiempo_estimado_horas" step="0.5" min="0" class="w-full px-4 py-2 border rounded-lg">
+          </div>
+          <div>
+            <label class="block text-sm font-medium mb-1">Horas Reales</label>
+            <input type="number" name="tiempo_real_horas" step="0.5" min="0" class="w-full px-4 py-2 border rounded-lg">
+          </div>
+        </div>
+        <div id="create-error" class="hidden text-red-600 text-sm p-3 bg-red-50 rounded-lg"></div>
+        <div class="flex gap-3">
+          <button type="submit" class="flex-1 bg-blue-600 text-white py-2 rounded-lg font-medium hover:bg-blue-700">Crear</button>
+          <button type="button" onclick="document.getElementById('modal-create').classList.add('hidden')" class="px-4 py-2 border rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800">Cancelar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Edit Modal -->
+  <div id="modal-edit" class="hidden fixed inset-0 z-50 bg-black/50 flex items-center justify-center p-4">
+    <div class="bg-white dark:bg-gray-900 rounded-xl border p-6 w-full max-w-md max-h-[90vh] overflow-y-auto">
+      <h3 class="text-lg font-bold mb-4">Editar Actividad</h3>
+      <form id="form-edit" class="space-y-4">
+        <input type="hidden" name="id" id="edit-id">
+        <input type="hidden" name="requirement_id" id="edit-req-id">
+        <div>
+          <label class="block text-sm font-medium mb-1">Título</label>
+          <input type="text" name="title" id="edit-title" required class="w-full px-4 py-2 border rounded-lg">
+        </div>
+        <div>
+          <label class="block text-sm font-medium mb-1">Descripción</label>
+          <textarea name="description" id="edit-description" rows="3" class="w-full px-4 py-2 border rounded-lg"></textarea>
+        </div>
+        <div>
+          <label class="block text-sm font-medium mb-1">Estado</label>
+          <select name="status" id="edit-status" class="w-full px-4 py-2 border rounded-lg">
+            <option value="pendiente">Pendiente</option>
+            <option value="en_progreso">En Progreso</option>
+            <option value="completada">Completada</option>
+            <option value="bloqueada">Bloqueada</option>
+          </select>
+        </div>
+        <div class="grid grid-cols-2 gap-3">
+          <div><label class="block text-sm font-medium mb-1">Inicio Plan.</label><input type="date" name="fecha_inicio_planificada" id="edit-inicio" class="w-full px-4 py-2 border rounded-lg"></div>
+          <div><label class="block text-sm font-medium mb-1">Fecha Límite</label><input type="date" name="fecha_limite" id="edit-limite" class="w-full px-4 py-2 border rounded-lg"></div>
+        </div>
+        <div class="grid grid-cols-2 gap-3">
+          <div><label class="block text-sm font-medium mb-1">Hrs Estimadas</label><input type="number" name="tiempo_estimado_horas" id="edit-est" step="0.5" min="0" class="w-full px-4 py-2 border rounded-lg"></div>
+          <div><label class="block text-sm font-medium mb-1">Hrs Reales</label><input type="number" name="tiempo_real_horas" id="edit-real" step="0.5" min="0" class="w-full px-4 py-2 border rounded-lg"></div>
+        </div>
+        <div id="edit-error" class="hidden text-red-600 text-sm p-3 bg-red-50 rounded-lg"></div>
+        <div class="flex gap-3">
+          <button type="submit" class="flex-1 bg-blue-600 text-white py-2 rounded-lg font-medium hover:bg-blue-700">Guardar</button>
+          <button type="button" onclick="document.getElementById('modal-edit').classList.add('hidden')" class="px-4 py-2 border rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800">Cancelar</button>
+        </div>
+      </form>
     </div>
   </div>
 
   <script is:inline>
     var API = 'http://zasm8vmm79eejamdbgx3zwda.144.217.163.180.sslip.io/api';
+    var allReqs = [];
 
-    function getToken() {
-      var t = localStorage.getItem('pm_token');
-      if (!t) { window.location.href = '/login'; return null; }
-      return t;
-    }
+    function getToken() { var t = localStorage.getItem('pm_token'); if (!t) { window.location.href = '/login'; return null; } return t; }
 
-    async function loadActivities() {
-      var token = getToken();
-      if (!token) return;
-      var container = document.getElementById('acts-list');
-
+    async function loadReqsForDropdown() {
+      var token = getToken(); if (!token) return;
       try {
         var pres = await fetch(API + '/projects', { headers: { 'Authorization': 'Bearer ' + token } });
         var pjson = await pres.json();
         var projects = pjson.data || [];
-
-        var allActs = [];
-
-        for (var pi = 0; pi < projects.length; pi++) {
-          var rres = await fetch(API + '/projects/' + projects[pi].id + '/requirements', {
-            headers: { 'Authorization': 'Bearer ' + token }
-          });
-          var rjson = await rres.json();
-          if (!rjson.success || !rjson.data) continue;
-          var reqs = Array.isArray(rjson.data) ? rjson.data : [rjson.data];
-
-          for (var ri = 0; ri < reqs.length; ri++) {
-            var ares = await fetch(API + '/requirements/' + reqs[ri].id + '/activities', {
-              headers: { 'Authorization': 'Bearer ' + token }
-            });
-            var ajson = await ares.json();
-            if (ajson.success && ajson.data) {
-              var acts = Array.isArray(ajson.data) ? ajson.data : [ajson.data];
-              acts.forEach(function(a) {
-                a.req_title = reqs[ri].title || 'Req ' + reqs[ri].id;
-                a.project_name = projects[pi].name || 'Proyecto ' + projects[pi].id;
-              });
-              allActs = allActs.concat(acts);
-            }
+        for (var i = 0; i < projects.length; i++) {
+          var res = await fetch(API + '/projects/' + projects[i].id + '/requirements', { headers: { 'Authorization': 'Bearer ' + token } });
+          var json = await res.json();
+          if (json.success && json.data) {
+            var reqs = Array.isArray(json.data) ? json.data : [json.data];
+            reqs.forEach(function(r) { r.project_name = projects[i].name; });
+            allReqs = allReqs.concat(reqs);
           }
         }
+        var sel = document.getElementById('create-req');
+        allReqs.forEach(function(r) { var o = document.createElement('option'); o.value = r.id; o.textContent = r.title + ' (' + r.project_name + ')'; sel.appendChild(o); });
+      } catch(e) {}
+    }
 
-        if (allActs.length === 0) {
-          container.innerHTML = '<p class="text-gray-500 text-sm">No hay actividades registradas.</p>';
-          return;
+    async function loadActs() {
+      var token = getToken(); if (!token) return;
+      var container = document.getElementById('acts-list');
+      container.innerHTML = '<p class="text-gray-500 text-sm">Cargando...</p>';
+      try {
+        var allActs = [];
+        for (var i = 0; i < allReqs.length; i++) {
+          var res = await fetch(API + '/requirements/' + allReqs[i].id + '/activities', { headers: { 'Authorization': 'Bearer ' + token } });
+          var json = await res.json();
+          if (json.success && json.data) {
+            var acts = Array.isArray(json.data) ? json.data : [json.data];
+            acts.forEach(function(a) { a.req_title = allReqs[i].title; a.req_id = allReqs[i].id; a.project_name = allReqs[i].project_name; });
+            allActs = allActs.concat(acts);
+          }
         }
-
+        if (allActs.length === 0) { container.innerHTML = '<p class="text-gray-500 text-sm">No hay actividades.</p>'; return; }
         container.innerHTML = allActs.map(function(a) {
-          var status = a.status || 'pendiente';
-          var sc = status === 'completada' ? 'bg-green-100 text-green-700' : status === 'en_progreso' ? 'bg-blue-100 text-blue-700' : 'bg-yellow-100 text-yellow-700';
+          var sc = { completada: 'bg-green-100 text-green-700', en_progreso: 'bg-blue-100 text-blue-700', pendiente: 'bg-yellow-100 text-yellow-700', bloqueada: 'bg-red-100 text-red-700' }[a.status] || 'bg-gray-100 text-gray-700';
           return '<div class="bg-white dark:bg-gray-900 rounded-xl border p-4">' +
             '<div class="flex items-start justify-between mb-2">' +
-            '<div><h4 class="font-medium">' + (a.title || 'Sin título') + '</h4>' +
-            '<p class="text-xs text-gray-400 mt-1">' + (a.project_name || '') + ' → ' + (a.req_title || '') + '</p></div>' +
-            '<span class="' + sc + ' text-xs px-2 py-1 rounded">' + status + '</span></div>' +
-            '<p class="text-sm text-gray-500 mb-2">' + (a.description || '') + '</p>' +
-            '<a href="/productos" class="text-blue-600 text-sm hover:underline">Ver productos →</a></div>';
+            '<div><h4 class="font-medium">' + (a.title||'') + '</h4>' +
+            '<p class="text-xs text-gray-400">' + (a.project_name||'') + ' → ' + (a.req_title||'') + '</p></div>' +
+            '<span class="' + sc + ' text-xs px-2 py-1 rounded">' + (a.status||'') + '</span></div>' +
+            '<p class="text-sm text-gray-500 mb-2">' + (a.description||'') + '</p>' +
+            '<div class="flex gap-3 text-xs text-gray-400">' +
+            (a.tiempo_estimado_horas ? '<span>Est: ' + a.tiempo_estimado_horas + 'h</span>' : '') +
+            (a.tiempo_real_horas ? '<span>Real: ' + a.tiempo_real_horas + 'h</span>' : '') +
+            (a.fecha_limite ? '<span>Límite: ' + a.fecha_limite.split('T')[0] + '</span>' : '') +
+            '</div>' +
+            '<div class="flex gap-2 mt-2">' +
+            '<a href="/productos" class="text-blue-600 text-sm hover:underline">Ver productos</a>' +
+            '<button onclick="editAct(' + a.id + ',' + a.req_id + ')" class="text-gray-600 text-sm hover:underline">Editar</button>' +
+            '<button onclick="deleteAct(' + a.id + ',' + a.req_id + ')" class="text-red-600 text-sm hover:underline">Eliminar</button>' +
+            '</div></div>';
         }).join('');
-      } catch(e) {
-        container.innerHTML = '<p class="text-red-500 text-sm">Error al cargar actividades</p>';
+      } catch(e) { container.innerHTML = '<p class="text-red-500 text-sm">Error</p>'; }
+    }
+
+    document.getElementById('form-create').addEventListener('submit', async function(e) {
+      e.preventDefault(); var token = getToken(); if (!token) return;
+      var d = {}; new FormData(this).forEach(function(v,k){ d[k]=v; });
+      var errEl = document.getElementById('create-error');
+      var res = await fetch(API + '/requirements/' + d.requirement_id + '/activities', {
+        method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token }, body: JSON.stringify(d)
+      });
+      var json = await res.json();
+      if (json.success) { document.getElementById('modal-create').classList.add('hidden'); this.reset(); loadActs(); }
+      else { errEl.textContent = json.message || 'Error'; errEl.classList.remove('hidden'); }
+    });
+
+    async function editAct(id, rid) {
+      var token = getToken(); if (!token) return;
+      var res = await fetch(API + '/requirements/' + rid + '/activities/' + id, { headers: { 'Authorization': 'Bearer ' + token } });
+      var json = await res.json();
+      if (json.success && json.data) {
+        var a = json.data;
+        document.getElementById('edit-id').value = a.id;
+        document.getElementById('edit-req-id').value = rid;
+        document.getElementById('edit-title').value = a.title || '';
+        document.getElementById('edit-description').value = a.description || '';
+        document.getElementById('edit-status').value = a.status || 'pendiente';
+        document.getElementById('edit-inicio').value = (a.fecha_inicio_planificada || '').split('T')[0];
+        document.getElementById('edit-limite').value = (a.fecha_limite || '').split('T')[0];
+        document.getElementById('edit-est').value = a.tiempo_estimado_horas || '';
+        document.getElementById('edit-real').value = a.tiempo_real_horas || '';
+        document.getElementById('modal-edit').classList.remove('hidden');
       }
     }
 
-    loadActivities();
+    document.getElementById('form-edit').addEventListener('submit', async function(e) {
+      e.preventDefault(); var token = getToken(); if (!token) return;
+      var id = document.getElementById('edit-id').value; var rid = document.getElementById('edit-req-id').value;
+      var d = {}; new FormData(this).forEach(function(v,k){ if(k!=='id'&&k!=='requirement_id') d[k]=v; });
+      var res = await fetch(API + '/requirements/' + rid + '/activities/' + id + '?_method=PUT', {
+        method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token }, body: JSON.stringify(d)
+      });
+      var json = await res.json();
+      if (json.success) { document.getElementById('modal-edit').classList.add('hidden'); loadActs(); }
+      else { document.getElementById('edit-error').textContent = json.message || 'Error'; document.getElementById('edit-error').classList.remove('hidden'); }
+    });
+
+    async function deleteAct(id, rid) {
+      if (!confirm('¿Eliminar actividad?')) return;
+      var token = getToken(); if (!token) return;
+      await fetch(API + '/requirements/' + rid + '/activities/' + id, { method: 'DELETE', headers: { 'Authorization': 'Bearer ' + token } });
+      loadActs();
+    }
+
+    loadReqsForDropdown().then(loadActs);
   </script>
 </Layout>
