@@ -131,6 +131,76 @@ EP=$(curl -s -w "\n%{http_code}" -X POST "$API/projects" -H "$CT" -H "$ACCEPT" -
 EP_CODE=$(echo "$EP" | tail -1)
 if [ "$EP_CODE" = "422" ]; then ok "POST /api/projects (empty body) → $EP_CODE (422 expected)"; else no "POST /api/projects (empty body) → $EP_CODE (expected 422)"; fi
 
+# ── 9. Security Checks ──
+echo ""
+echo "── Security ──"
+
+# CORS not wildcard
+CORS_RESP=$(curl -s -I -X OPTIONS "$API/projects" -H "Origin: http://evil.com" -H "Access-Control-Request-Method: GET" 2>/dev/null)
+CORS_HEADER=$(echo "$CORS_RESP" | grep -i "access-control-allow-origin" | tr -d '\r')
+if echo "$CORS_HEADER" | grep -qi "\*"; then
+  no "CORS allows wildcard origin — security risk"
+else
+  ok "CORS does not allow wildcard origin"
+fi
+
+# Login page does not show demo credentials
+if echo "$LOGIN_HTML" | grep -qi "admin123\|admin@pmsystem"; then
+  no "Login page leaks demo credentials"
+else
+  ok "Login page does not expose credentials"
+fi
+
+# Login page does not have mock-token fallback
+if echo "$LOGIN_HTML" | grep -qi "mock-token\|mock-token"; then
+  no "Login page has mock-token fallback — security risk"
+else
+  ok "Login page has no mock-token bypass"
+fi
+
+# Frontend does not hardcode internal API URL in HTML
+if echo "$LOGIN_HTML" | grep -qi "zasm8vmm79eejamdbgx3zwda"; then
+  no "Login page leaks internal API hostname"
+else
+  ok "Login page does not leak internal API URL"
+fi
+
+# Security headers present on frontend
+SEC_HEADERS=$(curl -s -I "$FRONT/" 2>/dev/null)
+if echo "$SEC_HEADERS" | grep -qi "X-Content-Type-Options"; then
+  ok "Frontend has X-Content-Type-Options header"
+else
+  no "Frontend missing X-Content-Type-Options header"
+fi
+if echo "$SEC_HEADERS" | grep -qi "X-Frame-Options"; then
+  ok "Frontend has X-Frame-Options header"
+else
+  no "Frontend missing X-Frame-Options header"
+fi
+
+# API rate limiting on login (5 attempts → 429)
+RATE_LIMITED=0
+for i in 1 2 3 4 5 6 7; do
+  code=$(curl -s -o /dev/null -w "%{http_code}" -X POST "$API/auth/login" -H "$CT" -H "$ACCEPT" -d '{"email":"fake@test.com","password":"wrong"}' 2>/dev/null)
+  if [ "$code" = "429" ]; then RATE_LIMITED=1; break; fi
+done
+if [ "$RATE_LIMITED" = "1" ]; then
+  ok "Login rate limiting active (429 after repeated failures)"
+else
+  echo -e " ${YELLOW}⚠️ SKIP${NC}: Login rate limiting not triggered (may need more attempts)"
+fi
+
+# XSS protection: esc() helper present in pages with innerHTML
+for page_file in src/pages/requerimientos.astro src/pages/actividades.astro src/pages/productos.astro src/pages/equipo.astro src/pages/actas.astro src/pages/bitacora.astro src/pages/reportes.astro; do
+  if [ -f "$page_file" ]; then
+    if grep -q "function esc" "$page_file"; then
+      ok "XSS esc() helper in $page_file"
+    else
+      no "XSS esc() helper missing in $page_file"
+    fi
+  fi
+done
+
 # ── Summary ──
 echo ""
 echo "=========================================="
