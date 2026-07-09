@@ -22,8 +22,8 @@ const title = 'Proyectos';
   </div>
 
   <!-- Create Modal -->
-  <div id="modal-create" class="hidden fixed inset-0 z-50 bg-black/50 flex items-center justify-center p-4">
-    <div class="bg-white dark:bg-gray-900 rounded-xl border p-6 w-full max-w-md">
+  <div id="modal-create" class="hidden fixed inset-0 z-50 bg-black/50 flex items-center justify-center p-4 transition-opacity duration-200">
+    <div class="bg-white dark:bg-gray-900 rounded-xl border p-6 w-full max-w-md transition-transform duration-200">
       <h3 class="text-lg font-bold mb-4">Crear Proyecto</h3>
       <form id="form-create" class="space-y-4">
         <div>
@@ -59,15 +59,15 @@ const title = 'Proyectos';
         <div id="create-error" class="hidden text-red-600 text-sm p-3 bg-red-50 rounded-lg"></div>
         <div class="flex gap-3">
           <button type="submit" class="flex-1 bg-blue-600 text-white py-2 rounded-lg font-medium hover:bg-blue-700 transition">Crear</button>
-          <button type="button" onclick="document.getElementById('modal-create').classList.add('hidden')" class="px-4 py-2 border rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800">Cancelar</button>
+          <button type="button" onclick="document.getElementById('modal-create').classList.add('hidden')" class="px-4 py-2 border rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors duration-200">Cancelar</button>
         </div>
       </form>
     </div>
   </div>
 
   <!-- Edit Modal -->
-  <div id="modal-edit" class="hidden fixed inset-0 z-50 bg-black/50 flex items-center justify-center p-4">
-    <div class="bg-white dark:bg-gray-900 rounded-xl border p-6 w-full max-w-md">
+  <div id="modal-edit" class="hidden fixed inset-0 z-50 bg-black/50 flex items-center justify-center p-4 transition-opacity duration-200">
+    <div class="bg-white dark:bg-gray-900 rounded-xl border p-6 w-full max-w-md transition-transform duration-200">
       <h3 class="text-lg font-bold mb-4">Editar Proyecto</h3>
       <form id="form-edit" class="space-y-4">
         <input type="hidden" name="id" id="edit-id">
@@ -104,7 +104,7 @@ const title = 'Proyectos';
         <div id="edit-error" class="hidden text-red-600 text-sm p-3 bg-red-50 rounded-lg"></div>
         <div class="flex gap-3">
           <button type="submit" class="flex-1 bg-blue-600 text-white py-2 rounded-lg font-medium hover:bg-blue-700 transition">Guardar</button>
-          <button type="button" onclick="document.getElementById('modal-edit').classList.add('hidden')" class="px-4 py-2 border rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800">Cancelar</button>
+          <button type="button" onclick="document.getElementById('modal-edit').classList.add('hidden')" class="px-4 py-2 border rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors duration-200">Cancelar</button>
         </div>
       </form>
     </div>
@@ -124,7 +124,7 @@ const title = 'Proyectos';
       if (!token) return;
       try {
         var res = await fetch(API + '/projects', {
-          headers: { 'Authorization': 'Bearer ' + token }
+          headers: { 'Accept': 'application/json', 'Authorization': 'Bearer ' + token }
         });
         var json = await res.json();
         var container = document.getElementById('projects-list');
@@ -174,7 +174,7 @@ const title = 'Proyectos';
       try {
         var res = await fetch(API + '/projects', {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token },
+          headers: { 'Content-Type': 'application/json', 'Accept': 'application/json', 'Authorization': 'Bearer ' + token },
           body: JSON.stringify(data)
         });
         var json = await res.json();
@@ -197,7 +197,7 @@ const title = 'Proyectos';
       if (!token) return;
       try {
         var res = await fetch(API + '/projects/' + id, {
-          headers: { 'Authorization': 'Bearer ' + token }
+          headers: { 'Accept': 'application/json', 'Authorization': 'Bearer ' + token }
         });
         var json = await res.json();
         if (json.success && json.data) {
@@ -228,7 +228,7 @@ const title = 'Proyectos';
       try {
         var res = await fetch(API + '/projects/' + id + '?_method=PUT', {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token },
+          headers: { 'Content-Type': 'application/json', 'Accept': 'application/json', 'Authorization': 'Bearer ' + token },
           body: JSON.stringify(data)
         });
         var json = await res.json();
@@ -252,7 +252,7 @@ const title = 'Proyectos';
       try {
         var res = await fetch(API + '/projects/' + id, {
           method: 'DELETE',
-          headers: { 'Authorization': 'Bearer ' + token }
+          headers: { 'Accept': 'application/json', 'Authorization': 'Bearer ' + token }
         });
         if (res.ok) {
           loadProjects();

@@ -10,7 +10,7 @@ const title = 'Bitácora de Desarrollo';
         <h1 class="text-2xl font-bold">Bitácora de Desarrollo</h1>
         <p class="text-gray-500 text-sm mt-1">Registros de desarrollo por actividad</p>
       </div>
-      <button onclick="document.getElementById('modal-create').classList.remove('hidden')" class="bg-blue-600 text-white px-4 py-2 rounded-lg font-medium hover:bg-blue-700">+ Nuevo Registro</button>
+      <button onclick="document.getElementById('modal-create').classList.remove('hidden')" class="bg-blue-600 text-white px-4 py-2 rounded-lg font-medium hover:bg-blue-700 transition-colors duration-200">+ Nuevo Registro</button>
     </div>
 
     <div id="logs-list" class="space-y-3">
@@ -19,7 +19,7 @@ const title = 'Bitácora de Desarrollo';
   </div>
 
   <!-- Create Modal -->
-  <div id="modal-create" class="hidden fixed inset-0 z-50 bg-black/50 flex items-center justify-center p-4">
+  <div id="modal-create" class="hidden fixed inset-0 z-50 bg-black/50 flex items-center justify-center p-4 transition-opacity duration-200">
     <div class="bg-white dark:bg-gray-900 rounded-xl border p-6 w-full max-w-md max-h-[90vh] overflow-y-auto">
       <h3 class="text-lg font-bold mb-4">Nuevo Registro de Desarrollo</h3>
       <form id="form-create" class="space-y-4">
@@ -64,14 +64,14 @@ const title = 'Bitácora de Desarrollo';
         <div id="create-error" class="hidden text-red-600 text-sm p-3 bg-red-50 rounded-lg"></div>
         <div class="flex gap-3">
           <button type="submit" class="flex-1 bg-blue-600 text-white py-2 rounded-lg font-medium hover:bg-blue-700">Crear</button>
-          <button type="button" onclick="document.getElementById('modal-create').classList.add('hidden')" class="px-4 py-2 border rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800">Cancelar</button>
+          <button type="button" onclick="document.getElementById('modal-create').classList.add('hidden')" class="px-4 py-2 border rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors duration-200">Cancelar</button>
         </div>
       </form>
     </div>
   </div>
 
   <!-- Edit Modal -->
-  <div id="modal-edit" class="hidden fixed inset-0 z-50 bg-black/50 flex items-center justify-center p-4">
+  <div id="modal-edit" class="hidden fixed inset-0 z-50 bg-black/50 flex items-center justify-center p-4 transition-opacity duration-200">
     <div class="bg-white dark:bg-gray-900 rounded-xl border p-6 w-full max-w-md max-h-[90vh] overflow-y-auto">
       <h3 class="text-lg font-bold mb-4">Editar Registro</h3>
       <form id="form-edit" class="space-y-4">
@@ -85,7 +85,7 @@ const title = 'Bitácora de Desarrollo';
         <div><label class="block text-sm font-medium mb-1">Fecha</label><input type="date" name="fecha_registro" id="edit-fecha" class="w-full px-4 py-2 border rounded-lg"></div>
         <div><label class="block text-sm font-medium mb-1">Link/Ref</label><input type="text" name="link_o_ref" id="edit-link" class="w-full px-4 py-2 border rounded-lg"></div>
         <div id="edit-error" class="hidden text-red-600 text-sm p-3 bg-red-50 rounded-lg"></div>
-        <div class="flex gap-3"><button type="submit" class="flex-1 bg-blue-600 text-white py-2 rounded-lg font-medium hover:bg-blue-700">Guardar</button><button type="button" onclick="document.getElementById('modal-edit').classList.add('hidden')" class="px-4 py-2 border rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800">Cancelar</button></div>
+        <div class="flex gap-3"><button type="submit" class="flex-1 bg-blue-600 text-white py-2 rounded-lg font-medium hover:bg-blue-700">Guardar</button><button type="button" onclick="document.getElementById('modal-edit').classList.add('hidden')" class="px-4 py-2 border rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors duration-200">Cancelar</button></div>
       </form>
     </div>
   </div>
@@ -99,16 +99,16 @@ const title = 'Bitácora de Desarrollo';
     async function loadActsForDropdown() {
       var token = getToken(); if (!token) return;
       try {
-        var pres = await fetch(API + '/projects', { headers: { 'Authorization': 'Bearer ' + token } });
+        var pres = await fetch(API + '/projects', { headers: { 'Accept': 'application/json', 'Authorization': 'Bearer ' + token } });
         var pjson = await pres.json();
         var projects = pjson.data || [];
         for (var pi = 0; pi < projects.length; pi++) {
-          var rres = await fetch(API + '/projects/' + projects[pi].id + '/requirements', { headers: { 'Authorization': 'Bearer ' + token } });
+          var rres = await fetch(API + '/projects/' + projects[pi].id + '/requirements', { headers: { 'Accept': 'application/json', 'Authorization': 'Bearer ' + token } });
           var rjson = await rres.json();
           if (!rjson.success || !rjson.data) continue;
           var reqs = Array.isArray(rjson.data) ? rjson.data : [rjson.data];
           for (var ri = 0; ri < reqs.length; ri++) {
-            var ares = await fetch(API + '/requirements/' + reqs[ri].id + '/activities', { headers: { 'Authorization': 'Bearer ' + token } });
+            var ares = await fetch(API + '/requirements/' + reqs[ri].id + '/activities', { headers: { 'Accept': 'application/json', 'Authorization': 'Bearer ' + token } });
             var ajson = await ares.json();
             if (ajson.success && ajson.data) {
               var acts = Array.isArray(ajson.data) ? ajson.data : [ajson.data];
@@ -129,7 +129,7 @@ const title = 'Bitácora de Desarrollo';
       try {
         var allLogs = [];
         for (var i = 0; i < allActs.length; i++) {
-          var res = await fetch(API + '/activities/' + allActs[i].id + '/development-logs', { headers: { 'Authorization': 'Bearer ' + token } });
+          var res = await fetch(API + '/activities/' + allActs[i].id + '/development-logs', { headers: { 'Accept': 'application/json', 'Authorization': 'Bearer ' + token } });
           var json = await res.json();
           if (json.success && json.data) {
             var logs = Array.isArray(json.data) ? json.data : [json.data];
@@ -141,7 +141,7 @@ const title = 'Bitácora de Desarrollo';
         var tc = { commit: 'bg-green-100 text-green-700', fix: 'bg-red-100 text-red-700', feature: 'bg-blue-100 text-blue-700', review: 'bg-purple-100 text-purple-700', deploy: 'bg-orange-100 text-orange-700' };
         allLogs.sort(function(a,b) { return (b.fecha_registro||'').localeCompare(a.fecha_registro||''); });
         container.innerHTML = allLogs.map(function(l) {
-          return '<div class="bg-white dark:bg-gray-900 rounded-xl border p-4">' +
+          return '<div class="bg-white dark:bg-gray-900 rounded-xl border p-4 transition-shadow hover:shadow-md">' +
             '<div class="flex items-start justify-between mb-2">' +
             '<div><h4 class="font-medium">' + (l.developer_name||'') + '</h4>' +
             '<p class="text-xs text-gray-400">' + (l.project_name||'') + ' → ' + (l.act_title||'') + '</p></div>' +
@@ -165,7 +165,7 @@ const title = 'Bitácora de Desarrollo';
       var d = {}; new FormData(this).forEach(function(v,k){ d[k]=v; });
       var errEl = document.getElementById('create-error');
       var res = await fetch(API + '/activities/' + d.activity_id + '/development-logs', {
-        method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token }, body: JSON.stringify(d)
+        method: 'POST', headers: { 'Content-Type': 'application/json', 'Accept': 'application/json', 'Authorization': 'Bearer ' + token }, body: JSON.stringify(d)
       });
       var json = await res.json();
       if (json.success) { document.getElementById('modal-create').classList.add('hidden'); this.reset(); loadLogs(); }
@@ -174,7 +174,7 @@ const title = 'Bitácora de Desarrollo';
 
     async function editLog(id, actId) {
       var token = getToken(); if (!token) return;
-      var res = await fetch(API + '/activities/' + actId + '/development-logs/' + id, { headers: { 'Authorization': 'Bearer ' + token } });
+      var res = await fetch(API + '/activities/' + actId + '/development-logs/' + id, { headers: { 'Accept': 'application/json', 'Authorization': 'Bearer ' + token } });
       var json = await res.json();
       if (json.success && json.data) {
         var l = json.data;
@@ -196,7 +196,7 @@ const title = 'Bitácora de Desarrollo';
       var id = document.getElementById('edit-id').value; var actId = document.getElementById('edit-act-id').value;
       var d = {}; new FormData(this).forEach(function(v,k){ if(k!=='id'&&k!=='activity_id') d[k]=v; });
       var res = await fetch(API + '/activities/' + actId + '/development-logs/' + id + '?_method=PUT', {
-        method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token }, body: JSON.stringify(d)
+        method: 'POST', headers: { 'Content-Type': 'application/json', 'Accept': 'application/json', 'Authorization': 'Bearer ' + token }, body: JSON.stringify(d)
       });
       var json = await res.json();
       if (json.success) { document.getElementById('modal-edit').classList.add('hidden'); loadLogs(); }
@@ -206,7 +206,7 @@ const title = 'Bitácora de Desarrollo';
     async function deleteLog(id, actId) {
       if (!confirm('¿Eliminar registro?')) return;
       var token = getToken(); if (!token) return;
-      await fetch(API + '/activities/' + actId + '/development-logs/' + id, { method: 'DELETE', headers: { 'Authorization': 'Bearer ' + token } });
+      await fetch(API + '/activities/' + actId + '/development-logs/' + id, { method: 'DELETE', headers: { 'Accept': 'application/json', 'Authorization': 'Bearer ' + token } });
       loadLogs();
     }
 

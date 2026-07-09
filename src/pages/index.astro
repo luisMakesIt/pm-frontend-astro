@@ -57,7 +57,7 @@ const title = 'Dashboard';
 
       try {
         var res = await fetch(API + '/dashboard/stats', {
-          headers: { 'Authorization': 'Bearer ' + token }
+          headers: { 'Accept': 'application/json', 'Authorization': 'Bearer ' + token }
         });
         var json = await res.json();
         if (json.success && json.data) {
@@ -76,7 +76,7 @@ const title = 'Dashboard';
 
       try {
         var res2 = await fetch(API + '/projects', {
-          headers: { 'Authorization': 'Bearer ' + token }
+          headers: { 'Accept': 'application/json', 'Authorization': 'Bearer ' + token }
         });
         var json2 = await res2.json();
         if (json2.success && json2.data) {

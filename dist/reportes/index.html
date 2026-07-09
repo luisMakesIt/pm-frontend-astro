@@ -10,7 +10,7 @@
           }
         }
       })();
-    </script><link rel="stylesheet" href="/_astro/actas.B04Aind9.css"></head> <body class="min-h-screen bg-gray-50 dark:bg-gray-950 text-gray-900 dark:text-gray-100"> <div class="flex" data-astro-cid-ssfzsv2f> <!-- Mobile overlay --> <div class="fixed inset-0 z-40 bg-black/50 lg:hidden hidden" id="sidebar-overlay" onclick="document.getElementById('sidebar-mobile')?.classList.add('hidden')" data-astro-cid-ssfzsv2f></div> <!-- Sidebar toggle (mobile) --> <button class="lg:hidden fixed top-4 left-4 z-50 p-2 rounded-md bg-white dark:bg-gray-800 shadow-md" onclick="
+    </script><link rel="stylesheet" href="/_astro/actas.BVmIKXBh.css"></head> <body class="min-h-screen bg-gray-50 dark:bg-gray-950 text-gray-900 dark:text-gray-100"> <div class="flex" data-astro-cid-ssfzsv2f> <!-- Mobile overlay --> <div class="fixed inset-0 z-40 bg-black/50 lg:hidden hidden" id="sidebar-overlay" onclick="document.getElementById('sidebar-mobile')?.classList.add('hidden')" data-astro-cid-ssfzsv2f></div> <!-- Sidebar toggle (mobile) --> <button class="lg:hidden fixed top-4 left-4 z-50 p-2 rounded-md bg-white dark:bg-gray-800 shadow-md" onclick="
       const sb = document.getElementById('sidebar-mobile');
       const ov = document.getElementById('sidebar-overlay');
       sb?.classList.toggle('hidden');
@@ -48,7 +48,7 @@ A
       var token = getToken();
       if (!token) return;
       try {
-        var res = await fetch(API + '/dashboard/stats', { headers: { 'Authorization': 'Bearer ' + token } });
+        var res = await fetch(API + '/dashboard/stats', { headers: { 'Accept': 'application/json', 'Authorization': 'Bearer ' + token } });
         var json = await res.json();
         if (json.success && json.data) {
           var d = json.data;
@@ -64,7 +64,7 @@ A
       var token = getToken();
       if (!token) return;
       try {
-        var res = await fetch(API + '/projects', { headers: { 'Authorization': 'Bearer ' + token } });
+        var res = await fetch(API + '/projects', { headers: { 'Accept': 'application/json', 'Authorization': 'Bearer ' + token } });
         var json = await res.json();
         if (json.success && json.data) {
           var sel = document.getElementById('report-project');
@@ -89,7 +89,7 @@ A
       }
 
       try {
-        var res = await fetch(API + '/projects/' + pid, { headers: { 'Authorization': 'Bearer ' + token } });
+        var res = await fetch(API + '/projects/' + pid, { headers: { 'Accept': 'application/json', 'Authorization': 'Bearer ' + token } });
         var json = await res.json();
         if (json.success && json.data) {
           var d = json.data;
@@ -121,7 +121,7 @@ A
       if (!token) return;
       var container = document.getElementById('all-projects-report');
       try {
-        var res = await fetch(API + '/projects', { headers: { 'Authorization': 'Bearer ' + token } });
+        var res = await fetch(API + '/projects', { headers: { 'Accept': 'application/json', 'Authorization': 'Bearer ' + token } });
         var json = await res.json();
         if (json.success && json.data) {
           var projects = json.data;

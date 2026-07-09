@@ -10,7 +10,7 @@ const title = 'Requerimientos';
         <h1 class="text-2xl font-bold">Requerimientos</h1>
         <p class="text-gray-500 text-sm mt-1">Gestiona requerimientos por proyecto</p>
       </div>
-      <button onclick="document.getElementById('modal-create').classList.remove('hidden')" class="bg-blue-600 text-white px-4 py-2 rounded-lg font-medium hover:bg-blue-700">+ Nuevo Requerimiento</button>
+      <button onclick="document.getElementById('modal-create').classList.remove('hidden')" class="bg-blue-600 text-white px-4 py-2 rounded-lg font-medium hover:bg-blue-700 transition-colors duration-200">+ Nuevo Requerimiento</button>
     </div>
 
     <div class="flex gap-3 items-end">
@@ -28,8 +28,8 @@ const title = 'Requerimientos';
   </div>
 
   <!-- Create Modal -->
-  <div id="modal-create" class="hidden fixed inset-0 z-50 bg-black/50 flex items-center justify-center p-4">
-    <div class="bg-white dark:bg-gray-900 rounded-xl border p-6 w-full max-w-md">
+  <div id="modal-create" class="hidden fixed inset-0 z-50 bg-black/50 flex items-center justify-center p-4 transition-opacity duration-200">
+    <div class="bg-white dark:bg-gray-900 rounded-xl border p-6 w-full max-w-md transition-transform duration-200">
       <h3 class="text-lg font-bold mb-4">Nuevo Requerimiento</h3>
       <form id="form-create" class="space-y-4">
         <div>
@@ -64,15 +64,15 @@ const title = 'Requerimientos';
         <div id="create-error" class="hidden text-red-600 text-sm p-3 bg-red-50 rounded-lg"></div>
         <div class="flex gap-3">
           <button type="submit" class="flex-1 bg-blue-600 text-white py-2 rounded-lg font-medium hover:bg-blue-700">Crear</button>
-          <button type="button" onclick="document.getElementById('modal-create').classList.add('hidden')" class="px-4 py-2 border rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800">Cancelar</button>
+          <button type="button" onclick="document.getElementById('modal-create').classList.add('hidden')" class="px-4 py-2 border rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors duration-200">Cancelar</button>
         </div>
       </form>
     </div>
   </div>
 
   <!-- Edit Modal -->
-  <div id="modal-edit" class="hidden fixed inset-0 z-50 bg-black/50 flex items-center justify-center p-4">
-    <div class="bg-white dark:bg-gray-900 rounded-xl border p-6 w-full max-w-md">
+  <div id="modal-edit" class="hidden fixed inset-0 z-50 bg-black/50 flex items-center justify-center p-4 transition-opacity duration-200">
+    <div class="bg-white dark:bg-gray-900 rounded-xl border p-6 w-full max-w-md transition-transform duration-200">
       <h3 class="text-lg font-bold mb-4">Editar Requerimiento</h3>
       <form id="form-edit" class="space-y-4">
         <input type="hidden" name="id" id="edit-id">
@@ -105,7 +105,7 @@ const title = 'Requerimientos';
         <div id="edit-error" class="hidden text-red-600 text-sm p-3 bg-red-50 rounded-lg"></div>
         <div class="flex gap-3">
           <button type="submit" class="flex-1 bg-blue-600 text-white py-2 rounded-lg font-medium hover:bg-blue-700">Guardar</button>
-          <button type="button" onclick="document.getElementById('modal-edit').classList.add('hidden')" class="px-4 py-2 border rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800">Cancelar</button>
+          <button type="button" onclick="document.getElementById('modal-edit').classList.add('hidden')" class="px-4 py-2 border rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors duration-200">Cancelar</button>
         </div>
       </form>
     </div>
@@ -124,7 +124,7 @@ const title = 'Requerimientos';
     async function loadProjectsDropdown() {
       var token = getToken(); if (!token) return;
       try {
-        var res = await fetch(API + '/projects', { headers: { 'Authorization': 'Bearer ' + token } });
+        var res = await fetch(API + '/projects', { headers: { 'Accept': 'application/json', 'Authorization': 'Bearer ' + token } });
         var json = await res.json();
         if (json.success && json.data) {
           allProjects = json.data;
@@ -148,7 +148,7 @@ const title = 'Requerimientos';
         var allReqs = [];
         for (var i = 0; i < projects.length; i++) {
           var res = await fetch(API + '/projects/' + projects[i].id + '/requirements', {
-            headers: { 'Authorization': 'Bearer ' + token }
+            headers: { 'Accept': 'application/json', 'Authorization': 'Bearer ' + token }
           });
           var json = await res.json();
           if (json.success && json.data) {
@@ -161,7 +161,7 @@ const title = 'Requerimientos';
         container.innerHTML = allReqs.map(function(r) {
           var pc = { alta: 'bg-red-100 text-red-700', media: 'bg-yellow-100 text-yellow-700', baja: 'bg-green-100 text-green-700' }[r.priority] || 'bg-gray-100 text-gray-700';
           var sc = { completado: 'bg-green-100 text-green-700', en_progreso: 'bg-blue-100 text-blue-700', pendiente: 'bg-yellow-100 text-yellow-700', cancelado: 'bg-red-100 text-red-700' }[r.status] || 'bg-gray-100 text-gray-700';
-          return '<div class="bg-white dark:bg-gray-900 rounded-xl border p-4">' +
+          return '<div class="bg-white dark:bg-gray-900 rounded-xl border p-4 transition-shadow hover:shadow-md">' +
             '<div class="flex items-start justify-between mb-2">' +
             '<div><h4 class="font-medium">' + (r.title||'') + '</h4>' +
             '<p class="text-xs text-gray-400">Proyecto: ' + (r.project_name||'-') + '</p></div>' +
@@ -184,7 +184,7 @@ const title = 'Requerimientos';
       var errEl = document.getElementById('create-error');
       try {
         var res = await fetch(API + '/projects/' + d.project_id + '/requirements', {
-          method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token }, body: JSON.stringify(d)
+          method: 'POST', headers: { 'Content-Type': 'application/json', 'Accept': 'application/json', 'Authorization': 'Bearer ' + token }, body: JSON.stringify(d)
         });
         var json = await res.json();
         if (json.success) { document.getElementById('modal-create').classList.add('hidden'); this.reset(); loadReqs(); }
@@ -195,7 +195,7 @@ const title = 'Requerimientos';
     async function editReq(id, pid) {
       var token = getToken(); if (!token) return;
       try {
-        var res = await fetch(API + '/projects/' + pid + '/requirements/' + id, { headers: { 'Authorization': 'Bearer ' + token } });
+        var res = await fetch(API + '/projects/' + pid + '/requirements/' + id, { headers: { 'Accept': 'application/json', 'Authorization': 'Bearer ' + token } });
         var json = await res.json();
         if (json.success && json.data) {
           var r = json.data;
@@ -219,7 +219,7 @@ const title = 'Requerimientos';
       var errEl = document.getElementById('edit-error');
       try {
         var res = await fetch(API + '/requirements/' + id + '?_method=PUT', {
-          method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token }, body: JSON.stringify(d)
+          method: 'POST', headers: { 'Content-Type': 'application/json', 'Accept': 'application/json', 'Authorization': 'Bearer ' + token }, body: JSON.stringify(d)
         });
         var json = await res.json();
         if (json.success) { document.getElementById('modal-edit').classList.add('hidden'); loadReqs(); }
@@ -230,7 +230,7 @@ const title = 'Requerimientos';
     async function deleteReq(id, pid) {
       if (!confirm('¿Eliminar requerimiento?')) return;
       var token = getToken(); if (!token) return;
-      try { await fetch(API + '/projects/' + pid + '/requirements/' + id, { method: 'DELETE', headers: { 'Authorization': 'Bearer ' + token } }); loadReqs(); }
+      try { await fetch(API + '/projects/' + pid + '/requirements/' + id, { method: 'DELETE', headers: { 'Accept': 'application/json', 'Authorization': 'Bearer ' + token } }); loadReqs(); }
       catch(e) { alert('Error'); }
     }
 

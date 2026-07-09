@@ -24,19 +24,19 @@ const title = 'Detalle del Proyecto';
     </div>
 
     <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
-      <div class="bg-white dark:bg-gray-900 rounded-xl border p-4">
+      <div class="bg-white dark:bg-gray-900 rounded-xl border p-4 transition-shadow hover:shadow-md">
         <p class="text-gray-500 text-xs">Estado</p>
         <p class="font-medium mt-1" id="project-status">-</p>
       </div>
-      <div class="bg-white dark:bg-gray-900 rounded-xl border p-4">
+      <div class="bg-white dark:bg-gray-900 rounded-xl border p-4 transition-shadow hover:shadow-md">
         <p class="text-gray-500 text-xs">Progreso</p>
         <p class="font-medium mt-1" id="project-progress">-</p>
       </div>
-      <div class="bg-white dark:bg-gray-900 rounded-xl border p-4">
+      <div class="bg-white dark:bg-gray-900 rounded-xl border p-4 transition-shadow hover:shadow-md">
         <p class="text-gray-500 text-xs">Fecha Inicio</p>
         <p class="font-medium mt-1" id="project-start">-</p>
       </div>
-      <div class="bg-white dark:bg-gray-900 rounded-xl border p-4">
+      <div class="bg-white dark:bg-gray-900 rounded-xl border p-4 transition-shadow hover:shadow-md">
         <p class="text-gray-500 text-xs">Fecha Fin</p>
         <p class="font-medium mt-1" id="project-end">-</p>
       </div>
@@ -63,8 +63,8 @@ const title = 'Detalle del Proyecto';
   </div>
 
   <!-- Create Requirement Modal -->
-  <div id="modal-req" class="hidden fixed inset-0 z-50 bg-black/50 flex items-center justify-center p-4">
-    <div class="bg-white dark:bg-gray-900 rounded-xl border p-6 w-full max-w-md">
+  <div id="modal-req" class="hidden fixed inset-0 z-50 bg-black/50 flex items-center justify-center p-4 transition-opacity duration-200">
+    <div class="bg-white dark:bg-gray-900 rounded-xl border p-6 w-full max-w-md transition-transform duration-200">
       <h3 class="text-lg font-bold mb-4">Nuevo Requerimiento</h3>
       <form id="form-req" class="space-y-4">
         <div>
@@ -86,15 +86,15 @@ const title = 'Detalle del Proyecto';
         <div id="req-error" class="hidden text-red-600 text-sm p-3 bg-red-50 rounded-lg"></div>
         <div class="flex gap-3">
           <button type="submit" class="flex-1 bg-blue-600 text-white py-2 rounded-lg font-medium hover:bg-blue-700 transition">Crear</button>
-          <button type="button" onclick="document.getElementById('modal-req').classList.add('hidden')" class="px-4 py-2 border rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800">Cancelar</button>
+          <button type="button" onclick="document.getElementById('modal-req').classList.add('hidden')" class="px-4 py-2 border rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors duration-200">Cancelar</button>
         </div>
       </form>
     </div>
   </div>
 
   <!-- Add Member Modal -->
-  <div id="modal-member" class="hidden fixed inset-0 z-50 bg-black/50 flex items-center justify-center p-4">
-    <div class="bg-white dark:bg-gray-900 rounded-xl border p-6 w-full max-w-md">
+  <div id="modal-member" class="hidden fixed inset-0 z-50 bg-black/50 flex items-center justify-center p-4 transition-opacity duration-200">
+    <div class="bg-white dark:bg-gray-900 rounded-xl border p-6 w-full max-w-md transition-transform duration-200">
       <h3 class="text-lg font-bold mb-4">Agregar Miembro al Equipo</h3>
       <form id="form-member" class="space-y-4">
         <div>
@@ -117,7 +117,7 @@ const title = 'Detalle del Proyecto';
         <div id="member-error" class="hidden text-red-600 text-sm p-3 bg-red-50 rounded-lg"></div>
         <div class="flex gap-3">
           <button type="submit" class="flex-1 bg-blue-600 text-white py-2 rounded-lg font-medium hover:bg-blue-700 transition">Agregar</button>
-          <button type="button" onclick="document.getElementById('modal-member').classList.add('hidden')" class="px-4 py-2 border rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800">Cancelar</button>
+          <button type="button" onclick="document.getElementById('modal-member').classList.add('hidden')" class="px-4 py-2 border rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors duration-200">Cancelar</button>
         </div>
       </form>
     </div>
@@ -160,7 +160,7 @@ const title = 'Detalle del Proyecto';
       if (!token) return;
       try {
         var res = await fetch(API + '/projects/' + PROJECT_ID, {
-          headers: { 'Authorization': 'Bearer ' + token }
+          headers: { 'Accept': 'application/json', 'Authorization': 'Bearer ' + token }
         });
         var json = await res.json();
         if (json.success && json.data) {
@@ -182,7 +182,7 @@ const title = 'Detalle del Proyecto';
       if (!token) return;
       try {
         var res = await fetch(API + '/projects/' + PROJECT_ID + '/requirements', {
-          headers: { 'Authorization': 'Bearer ' + token }
+          headers: { 'Accept': 'application/json', 'Authorization': 'Bearer ' + token }
         });
         var json = await res.json();
         var container = document.getElementById('reqs-list');
@@ -196,7 +196,7 @@ const title = 'Detalle del Proyecto';
             var prioColors = { 'alta': 'bg-red-100 text-red-700', 'media': 'bg-yellow-100 text-yellow-700', 'baja': 'bg-green-100 text-green-700' };
             var pc = prioColors[r.priority] || 'bg-gray-100 text-gray-700';
             var status = r.status || 'pendiente';
-            return '<div class="bg-white dark:bg-gray-900 rounded-xl border p-4">' +
+            return '<div class="bg-white dark:bg-gray-900 rounded-xl border p-4 transition-shadow hover:shadow-md">' +
               '<div class="flex items-start justify-between mb-2">' +
               '<h4 class="font-medium">' + (r.title || 'Sin título') + '</h4>' +
               '<div class="flex gap-1"><span class="' + pc + ' text-xs px-2 py-1 rounded">' + (r.priority || 'media') + '</span>' +
@@ -218,7 +218,7 @@ const title = 'Detalle del Proyecto';
       if (!token) return;
       try {
         var res = await fetch(API + '/projects/' + PROJECT_ID + '/team-members', {
-          headers: { 'Authorization': 'Bearer ' + token }
+          headers: { 'Accept': 'application/json', 'Authorization': 'Bearer ' + token }
         });
         var json = await res.json();
         var container = document.getElementById('members-list');
@@ -231,7 +231,7 @@ const title = 'Detalle del Proyecto';
           container.innerHTML = members.map(function(m) {
             var roleColors = { 'developer': 'bg-blue-100 text-blue-700', 'tech_lead': 'bg-purple-100 text-purple-700', 'tester': 'bg-green-100 text-green-700', 'designer': 'bg-pink-100 text-pink-700' };
             var rc = roleColors[m.role] || 'bg-gray-100 text-gray-700';
-            return '<div class="bg-white dark:bg-gray-900 rounded-xl border p-4">' +
+            return '<div class="bg-white dark:bg-gray-900 rounded-xl border p-4 transition-shadow hover:shadow-md">' +
               '<div class="flex items-center gap-3">' +
               '<div class="w-10 h-10 rounded-full bg-blue-600 text-white flex items-center justify-center font-bold">' + (m.name || '?').charAt(0).toUpperCase() + '</div>' +
               '<div><h4 class="font-medium">' + (m.name || 'Sin nombre') + '</h4>' +
@@ -258,7 +258,7 @@ const title = 'Detalle del Proyecto';
       try {
         var res = await fetch(API + '/projects/' + PROJECT_ID + '/requirements', {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token },
+          headers: { 'Content-Type': 'application/json', 'Accept': 'application/json', 'Authorization': 'Bearer ' + token },
           body: JSON.stringify(data)
         });
         var json = await res.json();
@@ -287,7 +287,7 @@ const title = 'Detalle del Proyecto';
       try {
         var res = await fetch(API + '/projects/' + PROJECT_ID + '/team-members', {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token },
+          headers: { 'Content-Type': 'application/json', 'Accept': 'application/json', 'Authorization': 'Bearer ' + token },
           body: JSON.stringify(data)
         });
         var json = await res.json();
@@ -312,7 +312,7 @@ const title = 'Detalle del Proyecto';
       try {
         await fetch(API + '/projects/' + PROJECT_ID + '/requirements/' + id, {
           method: 'DELETE',
-          headers: { 'Authorization': 'Bearer ' + token }
+          headers: { 'Accept': 'application/json', 'Authorization': 'Bearer ' + token }
         });
         loadRequirements();
       } catch(e) { alert('Error al eliminar'); }
@@ -325,7 +325,7 @@ const title = 'Detalle del Proyecto';
       try {
         await fetch(API + '/projects/' + PROJECT_ID + '/team-members/' + id, {
           method: 'DELETE',
-          headers: { 'Authorization': 'Bearer ' + token }
+          headers: { 'Accept': 'application/json', 'Authorization': 'Bearer ' + token }
         });
         loadMembers();
       } catch(e) { alert('Error al eliminar'); }

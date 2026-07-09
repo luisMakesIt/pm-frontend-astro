@@ -65,7 +65,7 @@ const title = 'Reportes';
       var token = getToken();
       if (!token) return;
       try {
-        var res = await fetch(API + '/dashboard/stats', { headers: { 'Authorization': 'Bearer ' + token } });
+        var res = await fetch(API + '/dashboard/stats', { headers: { 'Accept': 'application/json', 'Authorization': 'Bearer ' + token } });
         var json = await res.json();
         if (json.success && json.data) {
           var d = json.data;
@@ -81,7 +81,7 @@ const title = 'Reportes';
       var token = getToken();
       if (!token) return;
       try {
-        var res = await fetch(API + '/projects', { headers: { 'Authorization': 'Bearer ' + token } });
+        var res = await fetch(API + '/projects', { headers: { 'Accept': 'application/json', 'Authorization': 'Bearer ' + token } });
         var json = await res.json();
         if (json.success && json.data) {
           var sel = document.getElementById('report-project');
@@ -106,7 +106,7 @@ const title = 'Reportes';
       }
 
       try {
-        var res = await fetch(API + '/projects/' + pid, { headers: { 'Authorization': 'Bearer ' + token } });
+        var res = await fetch(API + '/projects/' + pid, { headers: { 'Accept': 'application/json', 'Authorization': 'Bearer ' + token } });
         var json = await res.json();
         if (json.success && json.data) {
           var d = json.data;
@@ -138,7 +138,7 @@ const title = 'Reportes';
       if (!token) return;
       var container = document.getElementById('all-projects-report');
       try {
-        var res = await fetch(API + '/projects', { headers: { 'Authorization': 'Bearer ' + token } });
+        var res = await fetch(API + '/projects', { headers: { 'Accept': 'application/json', 'Authorization': 'Bearer ' + token } });
         var json = await res.json();
         if (json.success && json.data) {
           var projects = json.data;

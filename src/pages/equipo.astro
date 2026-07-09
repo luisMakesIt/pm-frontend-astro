@@ -10,7 +10,7 @@ const title = 'Equipo';
         <h1 class="text-2xl font-bold">Equipo</h1>
         <p class="text-gray-500 text-sm mt-1">Miembros del equipo por proyecto</p>
       </div>
-      <button onclick="document.getElementById('modal-create').classList.remove('hidden')" class="bg-blue-600 text-white px-4 py-2 rounded-lg font-medium hover:bg-blue-700">+ Nuevo Miembro</button>
+      <button onclick="document.getElementById('modal-create').classList.remove('hidden')" class="bg-blue-600 text-white px-4 py-2 rounded-lg font-medium hover:bg-blue-700 transition-colors duration-200">+ Nuevo Miembro</button>
     </div>
 
     <div class="flex gap-3 items-end">
@@ -28,7 +28,7 @@ const title = 'Equipo';
   </div>
 
   <!-- Create Modal -->
-  <div id="modal-create" class="hidden fixed inset-0 z-50 bg-black/50 flex items-center justify-center p-4">
+  <div id="modal-create" class="hidden fixed inset-0 z-50 bg-black/50 flex items-center justify-center p-4 transition-opacity duration-200">
     <div class="bg-white dark:bg-gray-900 rounded-xl border p-6 w-full max-w-md max-h-[90vh] overflow-y-auto">
       <h3 class="text-lg font-bold mb-4">Nuevo Miembro del Equipo</h3>
       <form id="form-create" class="space-y-4">
@@ -79,14 +79,14 @@ const title = 'Equipo';
         <div id="create-error" class="hidden text-red-600 text-sm p-3 bg-red-50 rounded-lg"></div>
         <div class="flex gap-3">
           <button type="submit" class="flex-1 bg-blue-600 text-white py-2 rounded-lg font-medium hover:bg-blue-700">Crear</button>
-          <button type="button" onclick="document.getElementById('modal-create').classList.add('hidden')" class="px-4 py-2 border rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800">Cancelar</button>
+          <button type="button" onclick="document.getElementById('modal-create').classList.add('hidden')" class="px-4 py-2 border rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors duration-200">Cancelar</button>
         </div>
       </form>
     </div>
   </div>
 
   <!-- Edit Modal -->
-  <div id="modal-edit" class="hidden fixed inset-0 z-50 bg-black/50 flex items-center justify-center p-4">
+  <div id="modal-edit" class="hidden fixed inset-0 z-50 bg-black/50 flex items-center justify-center p-4 transition-opacity duration-200">
     <div class="bg-white dark:bg-gray-900 rounded-xl border p-6 w-full max-w-md max-h-[90vh] overflow-y-auto">
       <h3 class="text-lg font-bold mb-4">Editar Miembro</h3>
       <form id="form-edit" class="space-y-4">
@@ -99,7 +99,7 @@ const title = 'Equipo';
         <div><label class="block text-sm font-medium mb-1">Estado</label><select name="estado" id="edit-estado" class="w-full px-4 py-2 border rounded-lg"><option value="disponible">Disponible</option><option value="en_tarea">En Tarea</option><option value="ocupado">Ocupado</option><option value="fuera">Fuera</option></select></div>
         <div><label class="block text-sm font-medium mb-1">Git Username</label><input type="text" name="git_username" id="edit-git" class="w-full px-4 py-2 border rounded-lg"></div>
         <div id="edit-error" class="hidden text-red-600 text-sm p-3 bg-red-50 rounded-lg"></div>
-        <div class="flex gap-3"><button type="submit" class="flex-1 bg-blue-600 text-white py-2 rounded-lg font-medium hover:bg-blue-700">Guardar</button><button type="button" onclick="document.getElementById('modal-edit').classList.add('hidden')" class="px-4 py-2 border rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800">Cancelar</button></div>
+        <div class="flex gap-3"><button type="submit" class="flex-1 bg-blue-600 text-white py-2 rounded-lg font-medium hover:bg-blue-700">Guardar</button><button type="button" onclick="document.getElementById('modal-edit').classList.add('hidden')" class="px-4 py-2 border rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors duration-200">Cancelar</button></div>
       </form>
     </div>
   </div>
@@ -113,7 +113,7 @@ const title = 'Equipo';
     async function loadProjectsDropdown() {
       var token = getToken(); if (!token) return;
       try {
-        var res = await fetch(API + '/projects', { headers: { 'Authorization': 'Bearer ' + token } });
+        var res = await fetch(API + '/projects', { headers: { 'Accept': 'application/json', 'Authorization': 'Bearer ' + token } });
         var json = await res.json();
         if (json.success && json.data) {
           allProjects = json.data;
@@ -137,7 +137,7 @@ const title = 'Equipo';
       try {
         for (var i = 0; i < projects.length; i++) {
           var res = await fetch(API + '/projects/' + projects[i].id + '/team-members', {
-            headers: { 'Authorization': 'Bearer ' + token }
+            headers: { 'Accept': 'application/json', 'Authorization': 'Bearer ' + token }
           });
           var json = await res.json();
           if (json.success && json.data) {
@@ -150,7 +150,7 @@ const title = 'Equipo';
         var rc = { developer: 'bg-blue-100 text-blue-700', tech_lead: 'bg-purple-100 text-purple-700', tester: 'bg-green-100 text-green-700', designer: 'bg-pink-100 text-pink-700' };
         var sc = { disponible: 'bg-green-100 text-green-700', en_tarea: 'bg-blue-100 text-blue-700', ocupado: 'bg-yellow-100 text-yellow-700', fuera: 'bg-red-100 text-red-700' };
         container.innerHTML = allMembers.map(function(m) {
-          return '<div class="bg-white dark:bg-gray-900 rounded-xl border p-4">' +
+          return '<div class="bg-white dark:bg-gray-900 rounded-xl border p-4 transition-shadow hover:shadow-md">' +
             '<div class="flex items-center gap-3">' +
             '<div class="w-10 h-10 rounded-full bg-blue-600 text-white flex items-center justify-center font-bold">' + (m.name || '?').charAt(0).toUpperCase() + '</div>' +
             '<div class="flex-1"><h4 class="font-medium">' + (m.name || '') + '</h4>' +
@@ -173,7 +173,7 @@ const title = 'Equipo';
       var d = {}; new FormData(this).forEach(function(v,k){ if(v) d[k]=v; });
       var errEl = document.getElementById('create-error');
       var res = await fetch(API + '/projects/' + d.project_id + '/team-members', {
-        method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token }, body: JSON.stringify(d)
+        method: 'POST', headers: { 'Content-Type': 'application/json', 'Accept': 'application/json', 'Authorization': 'Bearer ' + token }, body: JSON.stringify(d)
       });
       var json = await res.json();
       if (json.success) { document.getElementById('modal-create').classList.add('hidden'); this.reset(); loadMembers(); }
@@ -182,7 +182,7 @@ const title = 'Equipo';
 
     async function editMember(id, pid) {
       var token = getToken(); if (!token) return;
-      var res = await fetch(API + '/projects/' + pid + '/team-members/' + id, { headers: { 'Authorization': 'Bearer ' + token } });
+      var res = await fetch(API + '/projects/' + pid + '/team-members/' + id, { headers: { 'Accept': 'application/json', 'Authorization': 'Bearer ' + token } });
       var json = await res.json();
       if (json.success && json.data) {
         var m = json.data;
@@ -203,7 +203,7 @@ const title = 'Equipo';
       var id = document.getElementById('edit-id').value; var pid = document.getElementById('edit-project-id').value;
       var d = {}; new FormData(this).forEach(function(v,k){ if(k!=='id'&&k!=='project_id'&&v) d[k]=v; });
       var res = await fetch(API + '/projects/' + pid + '/team-members/' + id + '?_method=PUT', {
-        method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token }, body: JSON.stringify(d)
+        method: 'POST', headers: { 'Content-Type': 'application/json', 'Accept': 'application/json', 'Authorization': 'Bearer ' + token }, body: JSON.stringify(d)
       });
       var json = await res.json();
       if (json.success) { document.getElementById('modal-edit').classList.add('hidden'); loadMembers(); }
@@ -213,7 +213,7 @@ const title = 'Equipo';
     async function deleteMember(id, pid) {
       if (!confirm('¿Eliminar miembro del equipo?')) return;
       var token = getToken(); if (!token) return;
-      await fetch(API + '/projects/' + pid + '/team-members/' + id, { method: 'DELETE', headers: { 'Authorization': 'Bearer ' + token } });
+      await fetch(API + '/projects/' + pid + '/team-members/' + id, { method: 'DELETE', headers: { 'Accept': 'application/json', 'Authorization': 'Bearer ' + token } });
       loadMembers();
     }
 

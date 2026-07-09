@@ -10,7 +10,7 @@ const title = 'Actas';
         <h1 class="text-2xl font-bold">Actas de Requerimientos</h1>
         <p class="text-gray-500 text-sm mt-1">Actas de toma de requerimientos</p>
       </div>
-      <button onclick="document.getElementById('modal-create').classList.remove('hidden')" class="bg-blue-600 text-white px-4 py-2 rounded-lg font-medium hover:bg-blue-700">+ Nueva Acta</button>
+      <button onclick="document.getElementById('modal-create').classList.remove('hidden')" class="bg-blue-600 text-white px-4 py-2 rounded-lg font-medium hover:bg-blue-700 transition-colors duration-200">+ Nueva Acta</button>
     </div>
 
     <div id="actas-list" class="space-y-3">
@@ -19,7 +19,7 @@ const title = 'Actas';
   </div>
 
   <!-- Create Modal -->
-  <div id="modal-create" class="hidden fixed inset-0 z-50 bg-black/50 flex items-center justify-center p-4">
+  <div id="modal-create" class="hidden fixed inset-0 z-50 bg-black/50 flex items-center justify-center p-4 transition-opacity duration-200">
     <div class="bg-white dark:bg-gray-900 rounded-xl border p-6 w-full max-w-md max-h-[90vh] overflow-y-auto">
       <h3 class="text-lg font-bold mb-4">Nueva Acta</h3>
       <form id="form-create" class="space-y-4">
@@ -67,14 +67,14 @@ const title = 'Actas';
         <div id="create-error" class="hidden text-red-600 text-sm p-3 bg-red-50 rounded-lg"></div>
         <div class="flex gap-3">
           <button type="submit" class="flex-1 bg-blue-600 text-white py-2 rounded-lg font-medium hover:bg-blue-700">Crear</button>
-          <button type="button" onclick="document.getElementById('modal-create').classList.add('hidden')" class="px-4 py-2 border rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800">Cancelar</button>
+          <button type="button" onclick="document.getElementById('modal-create').classList.add('hidden')" class="px-4 py-2 border rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors duration-200">Cancelar</button>
         </div>
       </form>
     </div>
   </div>
 
   <!-- Edit Modal -->
-  <div id="modal-edit" class="hidden fixed inset-0 z-50 bg-black/50 flex items-center justify-center p-4">
+  <div id="modal-edit" class="hidden fixed inset-0 z-50 bg-black/50 flex items-center justify-center p-4 transition-opacity duration-200">
     <div class="bg-white dark:bg-gray-900 rounded-xl border p-6 w-full max-w-md max-h-[90vh] overflow-y-auto">
       <h3 class="text-lg font-bold mb-4">Editar Acta</h3>
       <form id="form-edit" class="space-y-4">
@@ -88,7 +88,7 @@ const title = 'Actas';
         <div><label class="block text-sm font-medium mb-1">Notas</label><textarea name="notas" id="edit-notas" rows="3" class="w-full px-4 py-2 border rounded-lg"></textarea></div>
         <div><label class="block text-sm font-medium mb-1">Estado Firma</label><select name="estado_firma" id="edit-estado" class="w-full px-4 py-2 border rounded-lg"><option value="sin_firmar">Sin Firmar</option><option value="esperando_firma">Esperando</option><option value="firmado">Firmado</option><option value="archivado">Archivado</option></select></div>
         <div id="edit-error" class="hidden text-red-600 text-sm p-3 bg-red-50 rounded-lg"></div>
-        <div class="flex gap-3"><button type="submit" class="flex-1 bg-blue-600 text-white py-2 rounded-lg font-medium hover:bg-blue-700">Guardar</button><button type="button" onclick="document.getElementById('modal-edit').classList.add('hidden')" class="px-4 py-2 border rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800">Cancelar</button></div>
+        <div class="flex gap-3"><button type="submit" class="flex-1 bg-blue-600 text-white py-2 rounded-lg font-medium hover:bg-blue-700">Guardar</button><button type="button" onclick="document.getElementById('modal-edit').classList.add('hidden')" class="px-4 py-2 border rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors duration-200">Cancelar</button></div>
       </form>
     </div>
   </div>
@@ -102,11 +102,11 @@ const title = 'Actas';
     async function loadReqsForDropdown() {
       var token = getToken(); if (!token) return;
       try {
-        var pres = await fetch(API + '/projects', { headers: { 'Authorization': 'Bearer ' + token } });
+        var pres = await fetch(API + '/projects', { headers: { 'Accept': 'application/json', 'Authorization': 'Bearer ' + token } });
         var pjson = await pres.json();
         var projects = pjson.data || [];
         for (var i = 0; i < projects.length; i++) {
-          var res = await fetch(API + '/projects/' + projects[i].id + '/requirements', { headers: { 'Authorization': 'Bearer ' + token } });
+          var res = await fetch(API + '/projects/' + projects[i].id + '/requirements', { headers: { 'Accept': 'application/json', 'Authorization': 'Bearer ' + token } });
           var json = await res.json();
           if (json.success && json.data) {
             var reqs = Array.isArray(json.data) ? json.data : [json.data];
@@ -126,7 +126,7 @@ const title = 'Actas';
       try {
         var allActas = [];
         for (var i = 0; i < allReqs.length; i++) {
-          var res = await fetch(API + '/requirements/' + allReqs[i].id + '/actas', { headers: { 'Authorization': 'Bearer ' + token } });
+          var res = await fetch(API + '/requirements/' + allReqs[i].id + '/actas', { headers: { 'Accept': 'application/json', 'Authorization': 'Bearer ' + token } });
           var json = await res.json();
           if (json.success && json.data) {
             var actas = Array.isArray(json.data) ? json.data : [json.data];
@@ -138,7 +138,7 @@ const title = 'Actas';
         var sc = { firmado: 'bg-green-100 text-green-700', esperando_firma: 'bg-yellow-100 text-yellow-700', sin_firmar: 'bg-red-100 text-red-700', archivado: 'bg-gray-100 text-gray-700' };
         container.innerHTML = allActas.map(function(a) {
           var parts = Array.isArray(a.participantes) ? a.participantes.join(', ') : (a.participantes || '');
-          return '<div class="bg-white dark:bg-gray-900 rounded-xl border p-4">' +
+          return '<div class="bg-white dark:bg-gray-900 rounded-xl border p-4 transition-shadow hover:shadow-md">' +
             '<div class="flex items-start justify-between mb-2">' +
             '<div><h4 class="font-medium">Acta #' + a.id + '</h4>' +
             '<p class="text-xs text-gray-400">' + (a.project_name||'') + ' → ' + (a.req_title||'') + '</p></div>' +
@@ -165,7 +165,7 @@ const title = 'Actas';
       });
       var errEl = document.getElementById('create-error');
       var res = await fetch(API + '/requirements/' + d.requirement_id + '/actas', {
-        method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token }, body: JSON.stringify(d)
+        method: 'POST', headers: { 'Content-Type': 'application/json', 'Accept': 'application/json', 'Authorization': 'Bearer ' + token }, body: JSON.stringify(d)
       });
       var json = await res.json();
       if (json.success) { document.getElementById('modal-create').classList.add('hidden'); this.reset(); loadActas(); }
@@ -174,7 +174,7 @@ const title = 'Actas';
 
     async function editActa(id, rid) {
       var token = getToken(); if (!token) return;
-      var res = await fetch(API + '/requirements/' + rid + '/actas/' + id, { headers: { 'Authorization': 'Bearer ' + token } });
+      var res = await fetch(API + '/requirements/' + rid + '/actas/' + id, { headers: { 'Accept': 'application/json', 'Authorization': 'Bearer ' + token } });
       var json = await res.json();
       if (json.success && json.data) {
         var a = json.data;
@@ -199,7 +199,7 @@ const title = 'Actas';
         else if (k !== 'id' && k !== 'requirement_id') d[k] = v;
       });
       var res = await fetch(API + '/requirements/' + rid + '/actas/' + id + '?_method=PUT', {
-        method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token }, body: JSON.stringify(d)
+        method: 'POST', headers: { 'Content-Type': 'application/json', 'Accept': 'application/json', 'Authorization': 'Bearer ' + token }, body: JSON.stringify(d)
       });
       var json = await res.json();
       if (json.success) { document.getElementById('modal-edit').classList.add('hidden'); loadActas(); }
@@ -209,7 +209,7 @@ const title = 'Actas';
     async function deleteActa(id, rid) {
       if (!confirm('¿Eliminar acta?')) return;
       var token = getToken(); if (!token) return;
-      await fetch(API + '/requirements/' + rid + '/actas/' + id, { method: 'DELETE', headers: { 'Authorization': 'Bearer ' + token } });
+      await fetch(API + '/requirements/' + rid + '/actas/' + id, { method: 'DELETE', headers: { 'Accept': 'application/json', 'Authorization': 'Bearer ' + token } });
       loadActas();
     }
 
