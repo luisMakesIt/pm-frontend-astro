@@ -194,7 +194,7 @@ const title = 'Proyectos';
       }
     });
 
-    async function editProject(id) {
+    window.editProject = async function(id) {
       var token = getToken();
       if (!token) return;
       try {
@@ -216,7 +216,7 @@ const title = 'Proyectos';
       } catch(e) {
         alert('Error al cargar proyecto');
       }
-    }
+    };
 
     document.getElementById('form-edit').addEventListener('submit', async function(e) {
       e.preventDefault();
@@ -247,7 +247,7 @@ const title = 'Proyectos';
       }
     });
 
-    async function deleteProject(id) {
+    window.deleteProject = async function(id) {
       if (!confirm('¿Eliminar este proyecto?')) return;
       var token = getToken();
       if (!token) return;
@@ -264,7 +264,7 @@ const title = 'Proyectos';
       } catch(e) {
         alert('Error de conexión');
       }
-    }
+    };
 
     loadProjects();
   </script>
