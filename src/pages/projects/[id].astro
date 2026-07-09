@@ -135,7 +135,7 @@ const title = 'Detalle del Proyecto';
       return t;
     }
 
-    function switchTab(tab) {
+    window.switchTab = function(tab) {
       var reqsContent = document.getElementById('tab-content-reqs');
       var membersContent = document.getElementById('tab-content-members');
       var tabReqs = document.getElementById('tab-reqs');
@@ -306,7 +306,7 @@ const title = 'Detalle del Proyecto';
       }
     });
 
-    async function deleteReq(id) {
+    window.deleteReq = async function(id) {
       if (!confirm('¿Eliminar este requerimiento?')) return;
       var token = getToken();
       if (!token) return;
@@ -319,7 +319,7 @@ const title = 'Detalle del Proyecto';
       } catch(e) { alert('Error al eliminar'); }
     }
 
-    async function deleteMember(id) {
+    window.deleteMember = async function(id) {
       if (!confirm('¿Eliminar este miembro?')) return;
       var token = getToken();
       if (!token) return;

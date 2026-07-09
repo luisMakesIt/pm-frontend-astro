@@ -174,7 +174,7 @@ const title = 'Bitácora de Desarrollo';
       else { errEl.textContent = json.message || 'Error'; errEl.classList.remove('hidden'); }
     });
 
-    async function editLog(id, actId) {
+    window.editLog = async function(id, actId) {
       var token = getToken(); if (!token) return;
       var res = await fetch(API + '/activities/' + actId + '/development-logs/' + id, { headers: { 'Accept': 'application/json', 'Authorization': 'Bearer ' + token } });
       var json = await res.json();
@@ -205,7 +205,7 @@ const title = 'Bitácora de Desarrollo';
       else { document.getElementById('edit-error').textContent = json.message || 'Error'; document.getElementById('edit-error').classList.remove('hidden'); }
     });
 
-    async function deleteLog(id, actId) {
+    window.deleteLog = async function(id, actId) {
       if (!confirm('¿Eliminar registro?')) return;
       var token = getToken(); if (!token) return;
       await fetch(API + '/activities/' + actId + '/development-logs/' + id, { method: 'DELETE', headers: { 'Accept': 'application/json', 'Authorization': 'Bearer ' + token } });

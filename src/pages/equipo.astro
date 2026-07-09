@@ -182,7 +182,7 @@ const title = 'Equipo';
       else { errEl.textContent = json.message || 'Error'; errEl.classList.remove('hidden'); }
     });
 
-    async function editMember(id, pid) {
+    window.editMember = async function(id, pid) {
       var token = getToken(); if (!token) return;
       var res = await fetch(API + '/projects/' + pid + '/team-members/' + id, { headers: { 'Accept': 'application/json', 'Authorization': 'Bearer ' + token } });
       var json = await res.json();
@@ -212,7 +212,7 @@ const title = 'Equipo';
       else { document.getElementById('edit-error').textContent = json.message || 'Error'; document.getElementById('edit-error').classList.remove('hidden'); }
     });
 
-    async function deleteMember(id, pid) {
+    window.deleteMember = async function(id, pid) {
       if (!confirm('¿Eliminar miembro del equipo?')) return;
       var token = getToken(); if (!token) return;
       await fetch(API + '/projects/' + pid + '/team-members/' + id, { method: 'DELETE', headers: { 'Accept': 'application/json', 'Authorization': 'Bearer ' + token } });

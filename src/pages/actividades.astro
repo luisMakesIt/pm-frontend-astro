@@ -192,7 +192,7 @@ const title = 'Actividades';
       else { errEl.textContent = json.message || 'Error'; errEl.classList.remove('hidden'); }
     });
 
-    async function editAct(id, rid) {
+    window.editAct = async function(id, rid) {
       var token = getToken(); if (!token) return;
       var res = await fetch(API + '/requirements/' + rid + '/activities/' + id, { headers: { 'Accept': 'application/json', 'Authorization': 'Bearer ' + token } });
       var json = await res.json();
@@ -223,7 +223,7 @@ const title = 'Actividades';
       else { document.getElementById('edit-error').textContent = json.message || 'Error'; document.getElementById('edit-error').classList.remove('hidden'); }
     });
 
-    async function deleteAct(id, rid) {
+    window.deleteAct = async function(id, rid) {
       if (!confirm('¿Eliminar actividad?')) return;
       var token = getToken(); if (!token) return;
       await fetch(API + '/requirements/' + rid + '/activities/' + id, { method: 'DELETE', headers: { 'Accept': 'application/json', 'Authorization': 'Bearer ' + token } });

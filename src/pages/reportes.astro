@@ -97,7 +97,7 @@ const title = 'Reportes';
       } catch(e) {}
     }
 
-    async function loadProjectReport() {
+    window.loadProjectReport = async function() {
       var token = getToken();
       if (!token) return;
       var pid = document.getElementById('report-project').value;

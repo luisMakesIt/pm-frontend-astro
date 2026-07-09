@@ -194,7 +194,7 @@ const title = 'Requerimientos';
       } catch(err) { errEl.textContent = err.message; errEl.classList.remove('hidden'); }
     });
 
-    async function editReq(id, pid) {
+    window.editReq = async function(id, pid) {
       var token = getToken(); if (!token) return;
       try {
         var res = await fetch(API + '/projects/' + pid + '/requirements/' + id, { headers: { 'Accept': 'application/json', 'Authorization': 'Bearer ' + token } });
@@ -229,7 +229,7 @@ const title = 'Requerimientos';
       } catch(err) { errEl.textContent = err.message; errEl.classList.remove('hidden'); }
     });
 
-    async function deleteReq(id, pid) {
+    window.deleteReq = async function(id, pid) {
       if (!confirm('¿Eliminar requerimiento?')) return;
       var token = getToken(); if (!token) return;
       try { await fetch(API + '/projects/' + pid + '/requirements/' + id, { method: 'DELETE', headers: { 'Accept': 'application/json', 'Authorization': 'Bearer ' + token } }); loadReqs(); }

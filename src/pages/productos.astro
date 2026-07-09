@@ -183,7 +183,7 @@ const title = 'Productos';
       else { errEl.textContent = json.message || 'Error'; errEl.classList.remove('hidden'); }
     });
 
-    async function editProduct(id, actId) {
+    window.editProduct = async function(id, actId) {
       var token = getToken(); if (!token) return;
       var res = await fetch(API + '/activities/' + actId + '/products/' + id, { headers: { 'Accept': 'application/json', 'Authorization': 'Bearer ' + token } });
       var json = await res.json();
@@ -212,7 +212,7 @@ const title = 'Productos';
       else { document.getElementById('edit-error').textContent = json.message || 'Error'; document.getElementById('edit-error').classList.remove('hidden'); }
     });
 
-    async function deleteProduct(id, actId) {
+    window.deleteProduct = async function(id, actId) {
       if (!confirm('¿Eliminar producto?')) return;
       var token = getToken(); if (!token) return;
       await fetch(API + '/activities/' + actId + '/products/' + id, { method: 'DELETE', headers: { 'Accept': 'application/json', 'Authorization': 'Bearer ' + token } });
