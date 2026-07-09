@@ -57,8 +57,8 @@ import Layout from '../layouts/Layout.astro';
           localStorage.setItem('pm_user', JSON.stringify(json.data.user));
           window.location.href = '/';
         } else {
-          errEl!.textContent = json.message || 'Credenciales incorrectas';
-          errEl!.classList.remove('hidden');
+          errEl.textContent = json.message || 'Credenciales incorrectas';
+          errEl.classList.remove('hidden');
         }
       } catch {
         // If backend unreachable, try mock login
