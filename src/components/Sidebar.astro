@@ -14,7 +14,7 @@ const navItems = [
 
 <div class="flex">
   <!-- Mobile overlay -->
-  <div class="fixed inset-0 z-40 bg-black/50 lg:hidden hidden" id="sidebar-overlay" onclick="document.getElementById('sidebar-mobile')?.classList.add('hidden')"></div>
+  <div class="fixed inset-0 z-40 bg-black/50 lg:hidden hidden" id="sidebar-overlay" onclick="document.getElementById('sidebar-mobile')?.classList.add('-translate-x-full'); document.getElementById('sidebar-overlay')?.classList.add('hidden')"></div>
 
   <!-- Sidebar toggle (mobile) -->
   <button
@@ -22,7 +22,7 @@ const navItems = [
     onclick="
       const sb = document.getElementById('sidebar-mobile');
       const ov = document.getElementById('sidebar-overlay');
-      sb?.classList.toggle('hidden');
+      sb?.classList.toggle('-translate-x-full');
       ov?.classList.toggle('hidden');
     "
     aria-label="Toggle sidebar"
