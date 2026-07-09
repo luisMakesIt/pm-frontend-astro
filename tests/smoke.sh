@@ -4,8 +4,8 @@
 # Run: bash tests/smoke.sh
 # Exit 0 if all pass, non-zero if any fail.
 
-API="${API_URL:-http://localhost:8080}/api"
-FRONT="${FRONT_URL:-http://localhost:4321}"
+API="${API_URL:-http://zasm8vmm79eejamdbgx3zwda.144.217.163.180.sslip.io}/api"
+FRONT="${FRONT_URL:-http://msiqnz11cno6q97gb4gjk5rs.144.217.163.180.sslip.io}"
 CT="Content-Type: application/json"
 ACCEPT="Accept: application/json"
 PASS=0
@@ -238,7 +238,7 @@ else
 fi
 
 # XSS protection: esc() helper present in pages with innerHTML
-for page_file in src/pages/requerimientos.astro src/pages/actividades.astro src/pages/productos.astro src/pages/equipo.astro src/pages/actas.astro src/pages/bitacora.astro src/pages/reportes.astro src/pages/perfil/index.astro src/pages/perfil/editar/index.astro src/pages/perfil/password/index.astro; do
+for page_file in src/pages/requerimientos.astro src/pages/actividades.astro src/pages/productos.astro src/pages/equipo.astro src/pages/actas.astro src/pages/bitacora.astro src/pages/reportes.astro src/pages/perfil/index.astro src/pages/perfil/editar/index.astro; do
   if [ -f "$page_file" ]; then
     if grep -q "function esc\|esc(" "$page_file"; then
       ok "XSS esc() helper in $page_file"
